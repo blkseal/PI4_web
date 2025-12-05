@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+// Criar instância do axios configurada para a API
+// O baseURL aponta para /v1 porque o backend usa versionamento na URL
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: '/v1',
   headers: {
     'Content-Type': 'application/json',
   },

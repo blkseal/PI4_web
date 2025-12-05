@@ -1,0 +1,85 @@
+/*
+ * Checkbox.css - Estilos para o componente Checkbox
+ * Suporta variantes dark (fundos escuros) e light (fundos claros)
+ */
+
+/* ========================================
+   CONTAINER DA CHECKBOX
+   ======================================== */
+
+/* Label que contém a checkbox e o texto */
+.checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-family: var(--font-body, 'Libre Franklin', sans-serif);
+}
+
+/* ========================================
+   INPUT CHECKBOX
+   ======================================== */
+
+/* Checkbox estilizada */
+.checkbox-input {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   LABEL DA CHECKBOX
+   ======================================== */
+
+/* Texto da checkbox */
+.checkbox-label {
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Links dentro das labels */
+.checkbox-label a {
+    text-decoration: underline;
+    transition: opacity 0.2s ease;
+}
+
+.checkbox-label a:hover {
+    opacity: 0.8;
+}
+
+/* ========================================
+   VARIANTE DARK
+   ======================================== */
+
+/* Para fundos escuros como no login */
+.checkbox-dark .checkbox-input {
+    accent-color: var(--primary-color, #A37F52);
+}
+
+.checkbox-dark .checkbox-label {
+    color: rgba(246, 243, 238, 0.8);
+}
+
+.checkbox-dark .checkbox-label a {
+    color: var(--text-light, #F6F3EE);
+}
+
+/* ========================================
+   VARIANTE LIGHT
+   ======================================== */
+
+/* Para fundos claros */
+.checkbox-light .checkbox-input {
+    accent-color: var(--primary-color, #A37F52);
+}
+
+.checkbox-light .checkbox-label {
+    color: var(--text-dark, #333);
+}
+
+.checkbox-light .checkbox-label a {
+    color: var(--primary-color, #A37F52);
+}

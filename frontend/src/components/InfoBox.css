@@ -1,0 +1,105 @@
+/*
+ * InfoBox.css - Estilos para o componente InfoBox
+ * Caixa de informação com diferentes variantes
+ */
+
+/* ========================================
+   BOX BASE
+   ======================================== */
+
+/* Estilos base da caixa de informação */
+.info-box {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px 30px;
+    border-radius: 12px;
+    text-align: center;
+    font-family: var(--font-body, 'Libre Franklin', sans-serif);
+}
+
+/* ========================================
+   ELEMENTOS INTERNOS
+   ======================================== */
+
+/* Texto principal da info box */
+.info-box .info-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+/* Container para número de telefone ou link */
+.info-box .phone-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.95rem;
+}
+
+/* Link do telefone ou outro link */
+.info-box .phone-number a {
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.info-box .phone-number a:hover {
+    text-decoration: underline;
+}
+
+/* ========================================
+   VARIANTE DARK
+   ======================================== */
+
+/* Para fundos escuros (usado no login) */
+.info-box-dark {
+    background: rgba(109, 85, 54, 0.85);
+}
+
+.info-box-dark .info-text {
+    color: rgba(246, 243, 238, 0.9);
+}
+
+.info-box-dark .phone-number {
+    color: var(--text-light, #F6F3EE);
+}
+
+.info-box-dark .phone-number a {
+    color: var(--text-light, #F6F3EE);
+}
+
+/* ========================================
+   VARIANTE LIGHT
+   ======================================== */
+
+/* Para fundos claros */
+.info-box-light {
+    background: var(--bg-white, hsla(36, 21%, 91%, 1));
+    border: 1px solid #ddd;
+}
+
+.info-box-light .info-text {
+    color: #666;
+}
+
+.info-box-light .phone-number {
+    color: var(--text-dark, #333);
+}
+
+.info-box-light .phone-number a {
+    color: var(--primary-color, #A37F52);
+}
+
+/* ========================================
+   VARIANTE WARNING
+   ======================================== */
+
+/* Para avisos ou alertas */
+.info-box-warning {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+}
+
+.info-box-warning .info-text {
+    color: #856404;
+}

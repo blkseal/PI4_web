@@ -1,0 +1,103 @@
+/*
+ * InputField.css - Estilos para o componente InputField
+ * Suporta variantes dark (para fundos escuros) e light (para fundos claros)
+ */
+
+/* ========================================
+   CONTAINER DO INPUT
+   ======================================== */
+
+/* Grupo que contém o ícone e o input */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* ========================================
+   ÍCONE DO INPUT
+   ======================================== */
+
+/* Ícone posicionado à esquerda dentro do input */
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* SVG dentro do ícone */
+.input-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ========================================
+   CAMPO DE INPUT
+   ======================================== */
+
+/* Estilos base do input */
+.input-field {
+    width: 100%;
+    padding: 14px 15px 14px 45px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: var(--font-body, 'Libre Franklin', sans-serif);
+    transition: all 0.3s ease;
+}
+
+/* ========================================
+   VARIANTE DARK (para fundos escuros)
+   ======================================== */
+
+/* Input dark - usado no login sobre fundo castanho */
+.input-dark .input-icon {
+    color: rgba(246, 243, 238, 0.7);
+}
+
+.input-dark .input-field {
+    background: rgba(163, 127, 82, 0.4);
+    border: 1px solid rgba(246, 243, 238, 0.2);
+    color: var(--text-light, #F6F3EE);
+}
+
+.input-dark .input-field::placeholder {
+    color: rgba(246, 243, 238, 0.7);
+}
+
+.input-dark .input-field:focus {
+    outline: none;
+    border-color: rgba(246, 243, 238, 0.5);
+    background: rgba(163, 127, 82, 0.6);
+    box-shadow: 0 0 0 3px rgba(246, 243, 238, 0.1);
+}
+
+/* ========================================
+   VARIANTE LIGHT (para fundos claros)
+   ======================================== */
+
+/* Input light - para formulários em fundos claros */
+.input-light .input-icon {
+    color: var(--bg-brown-solid, #6D5536);
+}
+
+.input-light .input-field {
+    background: #fff;
+    border: 1px solid #ddd;
+    color: var(--text-dark, #333);
+}
+
+.input-light .input-field::placeholder {
+    color: #999;
+}
+
+.input-light .input-field:focus {
+    outline: none;
+    border-color: var(--primary-color, #A37F52);
+    box-shadow: 0 0 0 3px rgba(163, 127, 82, 0.1);
+}

@@ -1,0 +1,74 @@
+/*
+ * Logo.css - Estilos para o componente Logo
+ * Configura o tamanho e aparência do logótipo CLINIMOLELOS
+ */
+
+/* ========================================
+   CONTAINER DO LOGO
+   ======================================== */
+
+/* Container que agrupa o ícone e o texto */
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ========================================
+   IMAGEM DO LOGO
+   ======================================== */
+
+/* Imagem do logo - ajuste automático */
+.logo-icon {
+    object-fit: contain;
+}
+
+/* ========================================
+   TEXTO DO LOGO
+   ======================================== */
+
+/* Texto CLINIMOLELOS - fonte Montserrat */
+.logo-text {
+    font-family: var(--font-logo, 'Montserrat', sans-serif);
+    font-weight: 400;
+    letter-spacing: 4px;
+    color: var(--primary-color, #A37F52);
+}
+
+/* ========================================
+   VARIANTES DE TAMANHO
+   ======================================== */
+
+/* Tamanho pequeno - para headers, etc */
+.logo-small .logo-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.logo-small .logo-text {
+    font-size: 1rem;
+    letter-spacing: 2px;
+}
+
+/* Tamanho médio - default */
+.logo-medium .logo-icon {
+    width: 80px;
+    height: 80px;
+}
+
+.logo-medium .logo-text {
+    font-size: 1.8rem;
+    letter-spacing: 4px;
+}
+
+/* Tamanho grande - para páginas de destaque */
+.logo-large .logo-icon {
+    width: 120px;
+    height: 120px;
+}
+
+.logo-large .logo-text {
+    font-size: 2.4rem;
+    letter-spacing: 6px;
+}

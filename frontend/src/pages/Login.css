@@ -1,0 +1,199 @@
+/* 
+ * Login.css - Estilos para a página de login do CLINIMOLELOS
+ * Esquema de cores castanho/dourado com design moderno e premium
+ * Usa fontes Montserrat (logo) e Libre Franklin (texto)
+ */
+
+/* ========================================
+   CONTAINER PRINCIPAL
+   ======================================== */
+
+/* Container que ocupa toda a viewport e centra o conteúdo */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg-white, hsla(36, 21%, 91%, 1));
+  position: relative;
+  overflow: hidden;
+}
+
+/* ========================================
+   SECÇÃO DO LOGO
+   ======================================== */
+
+/* Área do logo no topo da página */
+.login-logo-section {
+  padding: 40px 20px;
+  text-align: center;
+  z-index: 2;
+}
+
+/* ========================================
+   SECÇÃO DO FORMULÁRIO (CARD CASTANHO)
+   ======================================== */
+
+/* Secção castanha curva com o formulário */
+.login-form-section {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Fundo curvo castanho com gradiente */
+.curved-background {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150%;
+  height: 100%;
+  background: var(--bg-brown, linear-gradient(155deg, #6D5536 10.24%, #886A44 109.69%));
+  border-radius: 50% 50% 0 0 / 60px;
+  z-index: 0;
+}
+
+/* ========================================
+   CARD DO FORMULÁRIO
+   ======================================== */
+
+/* Card com o formulário de login */
+.login-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  padding: 40px 30px;
+  margin-top: 20px;
+}
+
+/* Título do formulário */
+.login-title {
+  color: var(--text-light, #F6F3EE);
+  font-size: 1.1rem;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 30px;
+  letter-spacing: 0.5px;
+  font-family: var(--font-body);
+}
+
+/* ========================================
+   CHECKBOXES AREA
+   ======================================== */
+
+/* Área das checkboxes */
+.checkbox-area {
+  margin: 25px 0;
+}
+
+/* ========================================
+   BOTÕES E LINKS DE ACÇÃO
+   ======================================== */
+
+/* Área de acções (link esqueceu pin + botão) */
+.action-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Link "Esqueceu-se do seu Pin?" */
+.forgot-pin-link {
+  color: var(--text-light, #F6F3EE);
+  font-size: 0.9rem;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  font-family: var(--font-body);
+}
+
+.forgot-pin-link:hover {
+  opacity: 0.8;
+}
+
+/* Botão de Entrar */
+.login-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--bg-white, hsla(36, 21%, 91%, 1));
+  color: var(--bg-brown-solid, #6D5536);
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-body);
+}
+
+/* Ícone da seta no botão */
+.login-button svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+/* Efeito hover no botão */
+.login-button:hover {
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.login-button:hover svg {
+  transform: translateX(3px);
+}
+
+/* Estado desabilitado do botão */
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ========================================
+   MENSAGENS DE ERRO
+   ======================================== */
+
+/* Container da mensagem de erro */
+.error-message {
+  background: rgba(220, 53, 69, 0.2);
+  border: 1px solid rgba(220, 53, 69, 0.5);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  color: #ffc9cf;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+
+/* Tablets e dispositivos menores */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 30px 20px;
+  }
+
+  .action-area {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .login-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
