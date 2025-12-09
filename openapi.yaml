@@ -1,0 +1,2560 @@
+openapi: 3.0.3
+info:
+  title: API PI4
+  version: 1.0.0
+  description: >-
+    Especificação inicial da API baseada no script da base de dados e
+    nas páginas (login, home, notificações, documentação: exames, justificações,
+    tratamentos anteriores) fornecidas. Apenas rotas necessárias para os ecrãs
+    enviados. Estrutura pronta para futura expansão.
+
+servers:
+  - url: https://api.clinimolelos.com/v1
+    description: Produção
+  - url: http://localhost:3000/v1
+    description: Staging
+
+tags:
+  - name: Autenticação
+    description: Operações de autenticação e sessão.
+  - name: Admin
+    description: Operações administrativas (criação de utilizadores).
+  - name: Home
+    description: Dados agregados da página inicial.
+  - name: Consultas
+    description: Gestão de consultas e pedidos.
+  - name: Especialidades
+    description: Catálogo de especialidades e profissionais.
+  - name: Notificações
+    description: Acesso e gestão de notificações do utilizador.
+  - name: Documentação
+    description: Categoria geral para documentação clínica.
+  - name: Exames
+    description: Lista e detalhe de exames realizados.
+  - name: Justificações
+    description: Declarações / justificações de ausência.
+  - name: Tratamentos
+    description: Tratamentos / planos anteriores do utente.
+  - name: Contactos
+    description: Contactos e localização da clínica.
+  - name: Perfil
+    description: Dados do perfil do utente, dependentes e credenciais.
+  - name: Pacientes
+    description: Gestão de pacientes (Gestor).
+  - name: Gestores
+    description: Administração de gestores (Gestor).
+  - name: Agenda
+    description: Agenda semanal de consultas (Gestor).
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      description: Página de resultados (1-indexado).
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PageSizeParam:
+      name: pageSize
+      in: query
+      description: Número de registos por página.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 10
+    IdPathParam:
+      name: id
+      in: path
+      required: true
+      description: Identificador numérico do recurso.
+      schema:
+        type: integer
+    AnexoIdPathParam:
+      name: anexoId
+      in: path
+      required: true
+      description: Identificador do anexo.
+      schema:
+        type: integer
+    QQueryParam:
+      name: q
+      in: query
+      description: Texto de pesquisa.
+      schema:
+        type: string
+    DataQueryParam:
+      name: data
+      in: query
+      description: Data no formato AAAA-MM-DD.
+      schema:
+        type: string
+        format: date
+    DataInicioQueryParam:
+      name: dataInicio
+      in: query
+      description: Data inicial no formato AAAA-MM-DD.
+      schema:
+        type: string
+        format: date
+    DataFimQueryParam:
+      name: dataFim
+      in: query
+      description: Data final no formato AAAA-MM-DD.
+      schema:
+        type: string
+        format: date
+    EspecialidadeIdQueryParam:
+      name: especialidadeId
+      in: query
+      description: Identificador da especialidade.
+      schema:
+        type: integer
+    MedicoIdQueryParam:
+      name: medicoId
+      in: query
+      description: Identificador do médico.
+      schema:
+        type: integer
+    EntidadeMedicaIdQueryParam:
+      name: idEntidadeMedica
+      in: query
+      description: Identificador da entidade médica (FK da tabela AGENDA).
+      schema:
+        type: integer
+    InicioSemanaQueryParam:
+      name: inicio
+      in: query
+      description: Data inicial (segunda-feira) da semana.
+      required: true
+      schema:
+        type: string
+        format: date
+  responses:
+    PedidoInvalido:
+      description: Pedido inválido.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Erro'
+    NaoAutenticado:
+      description: Não autenticado.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Erro'
+    NaoEncontrado:
+      description: Não encontrado.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Erro'
+    Conflito:
+      description: Conflito de estado.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Erro'
+    ErroInterno:
+      description: Erro interno do servidor.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Erro'
+
+  schemas:
+    # --- SCHEMAS BASE DE AUTENTICAÇÃO ---
+    UserAuthRequest:
+      type: object
+      required: [email, pin]
+      properties:
+        email:
+          type: string
+          format: email
+          example: joao.trigo@exemplo.com
+        pin:
+          type: integer
+          example: 123456
+    AuthTokenResponse:
+      type: object
+      required: [accessToken, tokenType, expiresIn, utilizador]
+      properties:
+        accessToken:
+          type: string
+          description: JWT para chamadas autenticadas.
+        tokenType:
+          type: string
+          example: Bearer
+        expiresIn:
+          type: integer
+          format: int32
+          description: Segundos até expirar.
+          example: 3600
+        utilizador:
+          $ref: '#/components/schemas/UtilizadorResumo'
+    RefreshTokenRequest:
+      type: object
+      required: [refreshToken]
+      properties:
+        refreshToken:
+          type: string
+    # --- HOME & CONSULTAS ---
+    UtilizadorResumo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        nome:
+          type: string
+          example: José Trigo
+        numeroUtente:
+          type: string
+          description: Número interno do utente.
+          example: "123456789"
+    HomeResumo:
+      type: object
+      properties:
+        utilizador:
+          $ref: '#/components/schemas/UtilizadorResumo'
+        proximasConsultas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Consulta'
+    Consulta:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 15
+        titulo:
+          type: string
+          example: Limpeza
+        data:
+          type: string
+          format: date
+          example: 2025-06-12
+        horaInicio:
+          type: string
+          format: time
+          example: 14:00
+        horaFim:
+          type: string
+          format: time
+          example: 15:15
+        especialidade:
+          type: string
+          example: Higiene Oral
+        medico:
+          type: string
+          example: Dr. João Coimbra
+        estado:
+          type: string
+          enum: [agendada, pendente, concluida, cancelada]
+          example: agendada
+        associadoATratamento:
+          type: boolean
+          example: false
+    ConsultaDetalhe:
+      allOf:
+        - $ref: '#/components/schemas/Consulta'
+        - type: object
+          properties:
+            local:
+              type: string
+              example: Sala 3
+            observacoes:
+              type: string
+              example: "Paciente prefere anestesia tópica."
+    ConsultaResumo:
+      type: object
+      properties:
+        consulta:
+          $ref: '#/components/schemas/Consulta'
+        estadoFinal:
+          type: string
+          example: concluida
+        notasClinicas:
+          type: string
+          example: "Limpeza realizada sem intercorrências."
+        documentos:
+          type: object
+          properties:
+            resumoUrl:
+              type: string
+              format: uri
+            justificacaoUrl:
+              type: string
+              format: uri
+    Especialidade:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+        nome:
+          type: string
+          example: Higiene Oral
+    Medico:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 9
+        nome:
+          type: string
+          example: Dr. João Coimbra
+        especialidadeId:
+          type: integer
+          example: 2
+        especialidadeNome:
+          type: string
+          example: Cirurgia
+    SlotHorario:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "2025-06-20T14:00:00"
+        horaInicio:
+          type: string
+          format: time
+          example: 14:00
+        horaFim:
+          type: string
+          format: time
+          example: 14:30
+    PedidoConsultaRequest:
+      type: object
+      required: [data, especialidadeId, motivo]
+      properties:
+        data:
+          type: string
+          format: date
+          example: 2025-06-20
+        especialidadeId:
+          type: integer
+          example: 4
+        motivo:
+          type: string
+          example: "Dores de sensibilidade"
+    PedidoConsultaResponse:
+      type: object
+      properties:
+        idPedido:
+          type: integer
+          example: 77
+        status:
+          type: string
+          example: recebido
+    # --- NOTIFICAÇÕES ---
+    # Corresponde à tabela NOTIFICACOES (com join a UTILIZADORES_NOTIFICACOES)
+    Notificacao:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID_NOTIFICACAO
+          example: 3
+        titulo:
+          type: string
+          description: TITULO
+          example: "Lembrete de Consulta"
+        conteudo:
+          type: string
+          description: CONTEUDO
+          example: "A sua consulta está marcada para amanhã às 14h."
+        horario:
+          type: string
+          format: date
+          description: HORARIO
+          example: 2025-06-01
+        lida:
+          type: boolean
+          description: Campo da tabela UTILIZADORES_NOTIFICACOES (a adicionar)
+          example: false
+    # --- DOCUMENTAÇÃO: EXAMES ---
+    # Corresponde à tabela EXAMES
+    Exame:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID_EXAME
+          example: 101
+        idUtente:
+          type: integer
+          description: ID_UTENTE (FK)
+          example: 42
+        anexoUrl:
+          type: string
+          format: uri
+          description: URL para download do ficheiro (ANEXO)
+          example: "/v1/documentacao/exames/101/ficheiro"
+    # --- DOCUMENTAÇÃO: JUSTIFICAÇÕES ---
+    # Corresponde à tabela DECLARACOES
+    Declaracao:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID_DECLARACAO
+          example: 12
+        consultaId:
+          type: integer
+          description: ID_CONSULTA (FK)
+          example: 15
+        anexoUrl:
+          type: string
+          format: uri
+          description: URL para download do ficheiro (ANEXO)
+          example: "/v1/documentacao/justificacoes/12/ficheiro"
+    # --- DOCUMENTAÇÃO: TRATAMENTOS ---
+    # Corresponde à tabela PLANOS_TRATAMENTO
+    PlanoTratamento:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID_P_TRATAMENTO
+          example: 55
+        idUtente:
+          type: integer
+          description: ID_UTENTE (FK)
+          example: 42
+        tipoTratamento:
+          $ref: '#/components/schemas/TratamentoTipo'
+        dataInicio:
+          type: string
+          format: date
+          description: DATA_INICIO
+          example: 2025-06-20
+        observacoes:
+          type: string
+          description: OBSERVACOES
+          example: "Paciente respondeu bem ao tratamento inicial."
+        anexosUrl:
+          type: string
+          format: uri
+          description: URL para download dos anexos (ANEXOS)
+          example: "/v1/documentacao/tratamentos/55/ficheiro"
+    # --- GESTOR: PACIENTES & GESTORES ---
+    PacienteResumo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 101
+        nomeCompleto:
+          type: string
+          example: António Martins Silva
+        numeroUtente:
+          type: string
+          example: "123456789"
+        dataNascimento:
+          type: string
+          format: date
+          example: 2001-09-13
+    PacienteDetalhe:
+      allOf:
+        - $ref: '#/components/schemas/DadosPessoais'
+        - type: object
+          properties:
+            id:
+              type: integer
+              example: 101
+            telefone:
+              type: string
+              example: "+351 969 888 797"
+            dependente:
+              type: boolean
+              example: false
+    NovoPacienteRequest:
+      type: object
+      required: [nomeCompleto, dataNascimento, genero, email]
+      properties:
+        nomeCompleto:
+          type: string
+        dataNascimento:
+          type: string
+          format: date
+        genero:
+          type: string
+          example: Masculino
+        criarUtilizador:
+          type: boolean
+          description: Se true, cria automaticamente um utilizador e envia credenciais por email.
+          default: false
+        morada:
+          type: object
+          properties:
+            rua:
+              type: string
+            codigoPostal:
+              type: string
+            localidade:
+              type: string
+        numeroUtente:
+          type: string
+        nif:
+          type: string
+        dependente:
+          type: boolean
+        email:
+          type: string
+          format: email
+        telefone:
+          type: string
+        estadoCivil:
+          type: string
+    AtualizarPacienteRequest:
+      allOf:
+        - $ref: '#/components/schemas/NovoPacienteRequest'
+    Gestor:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 7
+        nome:
+          type: string
+          example: Leonardo Saraiva
+        medico:
+          type: boolean
+          example: true
+    NovoGestorRequest:
+      type: object
+      required: [nome, medico, email]
+      properties:
+        nome:
+          type: string
+        email:
+          type: string
+          format: email
+        medico:
+          type: boolean
+    # --- GESTOR: TRATAMENTOS E TIPOS ---
+    # Corresponde à tabela TIPOS_PLANOS_TRATAMENTO
+    TratamentoTipo:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID_T_P_TRATAMENTO
+          example: 3
+        nome:
+          type: string
+          description: NOME
+          example: Limpeza (Profilaxia)
+        duracao:
+          type: string
+          description: DURACAO (texto, ex '6 meses')
+          example: "6 meses"
+        numeroConsultas:
+          type: integer
+          description: NUMERO_CONSULTAS
+          example: 12
+        informacoes:
+          type: string
+          description: INFORMACOES
+    NovoTratamentoRequest:
+      type: object
+      required: [dataInicio]
+      properties:
+        tipoTratamentoId:
+          type: integer
+          description: Opcional se preenchido nome personalizado.
+        nome:
+          type: string
+          description: Nome customizado quando não é usado um tipo.
+        dataInicio:
+          type: string
+          format: date
+        duracaoMeses:
+          type: integer
+        numeroConsultas:
+          type: integer
+        informacoesUteis:
+          type: string
+        observacoesAdicionais:
+          type: string
+        anexos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Anexo'
+    TratamentoListaItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        duracaoMeses:
+          type: integer
+        numeroConsultas:
+          type: integer
+        paciente:
+          $ref: '#/components/schemas/PacienteResumo'
+    TratamentoDetalhe:
+      allOf:
+        - $ref: '#/components/schemas/PlanoTratamento'
+        - type: object
+          properties:
+            paciente:
+              $ref: '#/components/schemas/PacienteResumo'
+            informacoesUteis:
+              type: string
+            observacoesAdicionais:
+              type: string
+            anexos:
+              type: array
+              items:
+                $ref: '#/components/schemas/Anexo'
+            consultas:
+              type: array
+              items:
+                $ref: '#/components/schemas/Consulta'
+    Anexo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 25
+        nome:
+          type: string
+          example: Consentimento_Informado_25.pdf
+        url:
+          type: string
+          format: uri
+    # --- GESTOR: CONSULTAS ---
+    ConsultaAdminItem:
+      allOf:
+        - $ref: '#/components/schemas/Consulta'
+        - type: object
+          properties:
+            paciente:
+              $ref: '#/components/schemas/PacienteResumo'
+    ScheduleConsultaRequest:
+      type: object
+      required: [pacienteId, data, slotId, medicoId, especialidadeId]
+      properties:
+        pacienteId:
+          type: integer
+        data:
+          type: string
+          format: date
+        slotId:
+          type: string
+          example: "2025-10-01T09:30:00"
+        medicoId:
+          type: integer
+        especialidadeId:
+          type: integer
+        tratamentoId:
+          type: integer
+          description: Opcional, associar a um tratamento existente.
+        notas:
+          type: string
+    AtualizaConsultaRequest:
+      type: object
+      properties:
+        estado:
+          type: string
+          enum: [agendada, por_acontecer, concluida, cancelada]
+        associadoATratamento:
+          type: boolean
+        notas:
+          type: string
+    PedidoConsultaAdminItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        paciente:
+          $ref: '#/components/schemas/PacienteResumo'
+        dataPreferida:
+          type: string
+          format: date
+        especialidade:
+          $ref: '#/components/schemas/Especialidade'
+        motivo:
+          type: string
+        estado:
+          type: string
+          enum: [pendente, aprovado, recusado, concluido]
+    UpdatePedidoConsultaStatusRequest:
+      type: object
+      required: [estado]
+      properties:
+        estado:
+          type: string
+          enum: [aprovado, recusado, concluido]
+    UploadDocumentoRequest:
+      type: object
+      properties:
+        tipo:
+          type: string
+          enum: [resumo, justificacao, atestado, outro]
+        ficheiro:
+          type: string
+          format: binary
+    # --- CONTACTOS DA CLÍNICA ---
+    # Corresponde à tabela CONTACTOS_CLINICA
+    ContactosClinica:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID_CONTACTOS_CLINICA
+          example: 1
+        email:
+          type: string
+          format: email
+          description: EMAIL
+          example: clinimolelos@gmail.com
+        telefone:
+          type: string
+          description: TELEFONE
+          example: "+351 239 393 607"
+        telemovel:
+          type: string
+          description: TELEMOVEL
+          example: "+351 912 345 678"
+        facebook:
+          type: string
+          description: FACEBOOK
+          example: "Clinimolelos"
+        instagram:
+          type: string
+          description: INSTAGRAM
+          example: "@clinimolelos"
+        tiktok:
+          type: string
+          description: TIKTOK
+          example: "@clinimolelos"
+        linkedin:
+          type: string
+          description: LINKEDIN
+          example: "clinimolelos"
+        linkGoogleMaps:
+          type: string
+          format: uri
+          description: LINK_GOOGLE_MAPS
+          example: "https://maps.google.com/?q=Clinimolelos"
+        morada:
+          type: string
+          description: MORADA
+          example: "Av. Dr. Adriano Elísio, 150, 3460-000 Tondela"
+    # --- PERFIL DO UTENTE ---
+    PerfilResumo:
+      type: object
+      properties:
+        nomeCompleto:
+          type: string
+          example: José Trigo
+        numeroUtente:
+          type: string
+          example: "123456789"
+        dataNascimento:
+          type: string
+          format: date
+          example: 1985-02-03
+        qrCodeUrl:
+          type: string
+          format: uri
+          example: https://api.clinimolelos.com/v1/perfil/qr
+    DadosPessoais:
+      type: object
+      properties:
+        nomeCompleto:
+          type: string
+        dataNascimento:
+          type: string
+          format: date
+        genero:
+          type: string
+          example: Masculino
+        morada:
+          type: object
+          properties:
+            rua:
+              type: string
+            codigoPostal:
+              type: string
+            localidade:
+              type: string
+        numeroUtente:
+          type: string
+        nif:
+          type: string
+          example: "123456789"
+        estadoCivil:
+          type: string
+          example: Solteiro
+        email:
+          type: string
+          format: email
+    DependenteResumo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        nomeCompleto:
+          type: string
+          example: Filomena Trigo
+    DependenteDetalhe:
+      allOf:
+        - $ref: '#/components/schemas/DadosPessoais'
+        - type: object
+          properties:
+            id:
+              type: integer
+              example: 2
+    UpdatePinRequest:
+      type: object
+      required: [novoPin, confirmarNovoPin]
+      properties:
+        novoPin:
+          type: string
+          minLength: 4
+          maxLength: 12
+        confirmarNovoPin:
+          type: string
+          minLength: 4
+          maxLength: 12
+    # Corresponde à tabela HISTORICO_DENTARIO
+    HistoricoDentario:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID_HISTORICO_DENTARIO
+          example: 1
+        motivoPrimeiraConsulta:
+          type: string
+          description: MOTIVO_PRIMEIRA_CONSULTA
+        condicoesDentarias:
+          type: string
+          description: CONDICOES_DENTARIAS
+        tratamentosPassados:
+          type: string
+          description: TRATAMENTOS_PASSADOS
+        expAnestesia:
+          type: string
+          description: EXP_ANESTESIA
+        historicoDor:
+          type: string
+          description: HISTORICO_DOR
+    CriarUtilizadorRequest:
+      type: object
+      required: [email, tipoUtilizador]
+      properties:
+        email:
+          type: string
+          format: email
+        tipoUtilizador:
+          type: string
+          enum: [Utente, Gestor]
+    Erro:
+      type: object
+      properties:
+        mensagem:
+          type: string
+        codigo:
+          type: integer
+    PerfilQrResponse:
+      type: object
+      properties:
+        qrCodeSvg:
+          type: string
+          description: SVG do QR em string.
+    # --- AGENDA (GESTOR) ---
+    Agenda:
+      type: object
+      description: Registo da tabela AGENDA.
+      properties:
+        id_agenda:
+          type: integer
+          example: 1
+        id_entidade_medica:
+          type: integer
+          nullable: true
+          example: 10
+        data:
+          type: string
+          format: date
+          example: 2025-01-15
+        hora:
+          type: string
+          format: time
+          example: 09:30
+        duracao:
+          type: integer
+          description: Duração em minutos.
+          example: 30
+    AgendaCreate:
+      type: object
+      required: [data, hora]
+      properties:
+        id_entidade_medica:
+          type: integer
+          nullable: true
+        data:
+          type: string
+          format: date
+        hora:
+          type: string
+          format: time
+        duracao:
+          type: integer
+          description: Duração em minutos.
+          default: 30
+    AgendaUpdate:
+      type: object
+      properties:
+        id_entidade_medica:
+          type: integer
+          nullable: true
+        data:
+          type: string
+          format: date
+        hora:
+          type: string
+          format: time
+        duracao:
+          type: integer
+          description: Duração em minutos.
+
+security:
+  - bearerAuth: []
+
+# =====================================================================================
+# AUTENTICAÇÃO
+# =====================================================================================
+paths:
+  /auth/login:
+    post:
+      tags: [Autenticação]
+      summary: Iniciar sessão
+      operationId: authLogin
+      description: Autentica o utilizador através de email e PIN.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAuthRequest'
+      responses:
+        '200':
+          description: Sessão iniciada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokenResponse'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /auth/logout:
+    post:
+      tags: [Autenticação]
+      summary: Terminar sessão
+      operationId: authLogout
+      description: Invalida o token atual.
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Sessão terminada.
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /auth/refresh:
+    post:
+      tags:
+        - Autenticação
+      summary: Renovar token
+      description: Obtém um novo access token usando um refresh token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '200':
+          description: Sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokenResponse'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /admin/utilizadores:
+    post:
+      tags:
+        - Admin
+      summary: Criar Utilizador para Entidade Existente
+      description: >-
+        Cria um utilizador (login) para um Utente ou Gestor já existente que ainda não tenha conta.
+        Gera um PIN aleatório e envia por email.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CriarUtilizadorRequest'
+      responses:
+        '201':
+          description: Utilizador criado com sucesso.
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+        '409':
+          $ref: '#/components/responses/Conflito'
+
+# =====================================================================================
+# HOME
+# =====================================================================================
+  /home:
+    get:
+      tags: [Home]
+      summary: Resumo inicial
+      operationId: homeResumo
+      description: Retorna dados do utilizador e próximas consultas para o ecrã inicial.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Dados da home.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeResumo'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+
+# =====================================================================================
+# CONSULTAS
+# =====================================================================================
+  /consultas/proximas:
+    get:
+      tags: [Consultas]
+      summary: Listar próximas consultas
+      operationId: consultasListarProximas
+      description: Lista consultas futuras do utente autenticado.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: limite
+          schema:
+            type: integer
+            default: 5
+          description: Quantidade máxima de registos.
+      responses:
+        '200':
+          description: Lista de próximas consultas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Consulta'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /consultas/disponibilidade:
+    get:
+      tags: [Consultas]
+      summary: Consultar disponibilidade por especialidade e data
+      operationId: consultasDisponibilidade
+      description: Devolve slots disponíveis para a data e filtros indicados.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/DataQueryParam'
+        - $ref: '#/components/parameters/EspecialidadeIdQueryParam'
+        - $ref: '#/components/parameters/MedicoIdQueryParam'
+      responses:
+        '200':
+          description: Lista de slots disponíveis.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SlotHorario'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '500':
+          $ref: '#/components/responses/ErroServidor'
+  /consultas/historico:
+    get:
+      tags: [Consultas]
+      summary: Listar histórico de consultas
+      operationId: consultasHistorico
+      description: Lista consultas passadas do utente autenticado.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+        - $ref: '#/components/parameters/DataInicioQueryParam'
+        - $ref: '#/components/parameters/DataFimQueryParam'
+      responses:
+        '200':
+          description: Lista de consultas passadas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Consulta'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '500':
+          $ref: '#/components/responses/ErroServidor'
+  /consultas/solicitacao:
+    post:
+      tags: [Consultas]
+      summary: Submeter pedido de consulta
+      operationId: consultasSubmeterPedido
+      description: Submete um pedido de consulta para avaliação pela clínica.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PedidoConsultaRequest'
+      responses:
+        '201':
+          description: Pedido recebido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PedidoConsultaResponse'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '500':
+          $ref: '#/components/responses/ErroServidor'
+  /consultas/{id}:
+    get:
+      tags: [Consultas]
+      summary: Obter detalhe da consulta
+      operationId: consultasObter
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Detalhe da consulta.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultaDetalhe'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+        '500':
+          $ref: '#/components/responses/ErroServidor'
+    patch:
+      tags: [Consultas]
+      summary: Atualizar estado/nota da consulta
+      operationId: consultasAtualizar
+      description: Atualiza campos de uma consulta (gestor).
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AtualizaConsultaRequest'
+      responses:
+        '200':
+          description: Consulta atualizada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultaDetalhe'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+        '500':
+          $ref: '#/components/responses/ErroServidor'
+  /consultas/{id}/resumo:
+    get:
+      tags: [Consultas]
+      summary: Obter resumo clínico/administrativo
+      operationId: consultasResumo
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Resumo da consulta.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultaResumo'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+        '500':
+          $ref: '#/components/responses/ErroServidor'
+
+# =====================================================================================
+# NOTIFICAÇÕES
+# =====================================================================================
+  /notificacoes:
+    get:
+      tags: [Notificações]
+      summary: Listar notificações
+      operationId: notificacoesListar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+      responses:
+        '200':
+          description: Notificações do utilizador.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notificacao'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+    post:
+      tags: [Notificações]
+      summary: Criar notificação
+      operationId: notificacoesCriar
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [mensagem, utilizadorId]
+              properties:
+                mensagem:
+                  type: string
+                utilizadorId:
+                  type: integer
+      responses:
+        '201':
+          description: Notificação criada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notificacao'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /notificacoes/{id}/ler:
+    post:
+      tags: [Notificações]
+      summary: Marcar como lida
+      operationId: notificacoesMarcarComoLida
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '204':
+          description: Notificação marcada como lida.
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+
+# =====================================================================================
+# CONTACTOS
+# =====================================================================================
+  /contactos:
+    get:
+      tags: [Contactos]
+      summary: Obter contactos da clínica
+      operationId: contactosObter
+      responses:
+        '200':
+          description: Dados de contacto e redes sociais.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactosClinica'
+
+# =====================================================================================
+# ESPECIALIDADES E MÉDICOS
+# =====================================================================================
+  /especialidades:
+    get:
+      tags: [Especialidades]
+      summary: Listar especialidades
+      operationId: especialidadesListar
+      responses:
+        '200':
+          description: Lista de especialidades.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Especialidade'
+    post:
+      tags: [Especialidades]
+      summary: Criar especialidade
+      operationId: especialidadesCriar
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nome]
+              properties:
+                nome:
+                  type: string
+      responses:
+        '201':
+          description: Especialidade criada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Especialidade'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /medicos:
+    get:
+      tags: [Especialidades]
+      summary: Listar médicos
+      operationId: medicosListar
+      parameters:
+        - $ref: '#/components/parameters/EspecialidadeIdQueryParam'
+      responses:
+        '200':
+          description: Lista de médicos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Medico'
+
+# =====================================================================================
+# DOCUMENTAÇÃO: EXAMES, JUSTIFICAÇÕES, TRATAMENTOS (UTENTE)
+# =====================================================================================
+  /documentacao/exames:
+    get:
+      tags: [Documentação, Exames]
+      summary: Listar exames do utente
+      operationId: examesListar
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de exames.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Exame'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /documentacao/exames/{id}:
+    get:
+      tags: [Documentação, Exames]
+      summary: Obter exame
+      operationId: examesObter
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Detalhe do exame.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exame'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /documentacao/justificacoes:
+    get:
+      tags: [Documentação, Justificações]
+      summary: Listar justificações
+      operationId: justificacoesListar
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de justificações.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Declaracao'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /documentacao/justificacoes/{id}:
+    get:
+      tags: [Documentação, Justificações]
+      summary: Obter justificação
+      operationId: justificacoesObter
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Detalhe da justificação.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Declaracao'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /documentacao/tratamentos:
+    get:
+      tags: [Documentação, Tratamentos]
+      summary: Listar tratamentos do utente
+      operationId: tratamentosUtenteListar
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de tratamentos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlanoTratamento'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /documentacao/tratamentos/{id}:
+    get:
+      tags: [Documentação, Tratamentos]
+      summary: Obter tratamento do utente
+      operationId: tratamentosUtenteObter
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Detalhe do tratamento.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TratamentoDetalhe'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /documentacao/exames/{id}/ficheiro:
+    get:
+      tags: [Documentação, Exames]
+      summary: Descarregar ficheiro do exame
+      operationId: examesFicheiroDownload
+      description: Devolve o ficheiro anexado ao exame (PDF, imagem, etc.)
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Ficheiro do exame.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /documentacao/justificacoes/{id}/ficheiro:
+    get:
+      tags: [Documentação, Justificações]
+      summary: Descarregar ficheiro da justificação
+      operationId: justificacoesFicheiroDownload
+      description: Devolve o ficheiro anexado à declaração/justificação.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Ficheiro da justificação.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /documentacao/tratamentos/{id}/ficheiro:
+    get:
+      tags: [Documentação, Tratamentos]
+      summary: Descarregar ficheiro do tratamento
+      operationId: tratamentosFicheiroDownload
+      description: Devolve os anexos do plano de tratamento.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Ficheiro do tratamento.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+
+# =====================================================================================
+# PERFIL
+# =====================================================================================
+  /perfil:
+    get:
+      tags: [Perfil]
+      summary: Resumo do perfil
+      operationId: perfilResumo
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Dados de resumo do perfil.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerfilResumo'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /perfil/meus-dados:
+    get:
+      tags: [Perfil]
+      summary: Obter dados pessoais
+      operationId: perfilObterDados
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Dados pessoais do utente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DadosPessoais'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+    put:
+      tags: [Perfil]
+      summary: Atualizar dados pessoais
+      operationId: perfilAtualizarDados
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AtualizarPacienteRequest'
+      responses:
+        '200':
+          description: Dados atualizados.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DadosPessoais'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /perfil/credenciais:
+    put:
+      tags: [Perfil]
+      summary: Alterar PIN de acesso
+      operationId: perfilAlterarPin
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePinRequest'
+      responses:
+        '204':
+          description: PIN atualizado.
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /perfil/dependentes:
+    get:
+      tags: [Perfil]
+      summary: Listar dependentes
+      operationId: perfilDependentesListar
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de dependentes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DependenteResumo'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+    post:
+      tags: [Perfil]
+      summary: Adicionar dependente
+      operationId: perfilDependentesAdicionar
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NovoPacienteRequest'
+      responses:
+        '201':
+          description: Dependente criado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DependenteDetalhe'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /perfil/dependentes/{id}:
+    get:
+      tags: [Perfil]
+      summary: Obter dependente
+      operationId: perfilDependentesObter
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Dados do dependente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DependenteDetalhe'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+    put:
+      tags: [Perfil]
+      summary: Atualizar dependente
+      operationId: perfilDependentesAtualizar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DependenteDetalhe'
+      responses:
+        '200':
+          description: Dependente atualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DependenteDetalhe'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+    delete:
+      tags: [Perfil]
+      summary: Remover dependente
+      operationId: perfilDependentesRemover
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '204':
+          description: Dependente removido.
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /perfil/historico-dentario:
+    get:
+      tags: [Perfil]
+      summary: Obter histórico dentário
+      operationId: perfilHistoricoObter
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Histórico dentário do utente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoricoDentario'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+    put:
+      tags: [Perfil]
+      summary: Atualizar histórico dentário
+      operationId: perfilHistoricoAtualizar
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistoricoDentario'
+      responses:
+        '200':
+          description: Histórico atualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoricoDentario'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /perfil/historico-dentario/ficheiro:
+    get:
+      tags: [Perfil]
+      summary: Descarregar histórico dentário em PDF
+      operationId: perfilHistoricoDownload
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Ficheiro PDF do histórico dentário.
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /perfil/qr:
+    get:
+      tags: [Perfil]
+      summary: Obter QR do perfil
+      operationId: perfilQr
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: QR Code do perfil (SVG em string).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerfilQrResponse'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+
+# =====================================================================================
+# PACIENTES (GESTOR)
+# =====================================================================================
+  /pacientes:
+    get:
+      tags: [Pacientes]
+      summary: Listar pacientes
+      operationId: pacientesListar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+        - $ref: '#/components/parameters/QQueryParam'
+      responses:
+        '200':
+          description: Lista de pacientes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PacienteResumo'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+    post:
+      tags: [Pacientes]
+      summary: Criar paciente
+      operationId: pacientesCriar
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NovoPacienteRequest'
+      responses:
+        '201':
+          description: Paciente criado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PacienteDetalhe'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /pacientes/by-qr:
+    get:
+      tags: [Pacientes]
+      summary: Obter paciente por QR
+      operationId: pacientesPorQr
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/QQueryParam'
+      responses:
+        '200':
+          description: Paciente correspondente ao QR fornecido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PacienteResumo'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /pacientes/{id}:
+    get:
+      tags: [Pacientes]
+      summary: Obter paciente
+      operationId: pacientesObter
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Detalhe do paciente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PacienteDetalhe'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+    put:
+      tags: [Pacientes]
+      summary: Atualizar paciente
+      operationId: pacientesAtualizar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AtualizarPacienteRequest'
+      responses:
+        '200':
+          description: Paciente atualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PacienteDetalhe'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /pacientes/{id}/enviar-credenciais:
+    post:
+      tags: [Pacientes]
+      summary: Enviar credenciais por email
+      operationId: pacientesEnviarCredenciais
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '202':
+          description: Pedido de envio de credenciais aceite.
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /pacientes/{id}/historico-dentario:
+    get:
+      tags: [Pacientes]
+      summary: Obter histórico dentário do paciente
+      operationId: pacientesHistoricoObter
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Histórico dentário do paciente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoricoDentario'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+    put:
+      tags: [Pacientes]
+      summary: Atualizar histórico dentário do paciente
+      operationId: pacientesHistoricoAtualizar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistoricoDentario'
+      responses:
+        '200':
+          description: Histórico atualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoricoDentario'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /pacientes/{id}/historico-dentario/ficheiro:
+    get:
+      tags: [Pacientes]
+      summary: Descarregar histórico dentário em PDF
+      operationId: pacientesHistoricoDownload
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Ficheiro PDF do histórico dentário.
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /pacientes/{id}/tratamentos:
+    get:
+      tags: [Pacientes, Tratamentos]
+      summary: Listar tratamentos do paciente
+      operationId: pacientesTratamentosListar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Lista de tratamentos do paciente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TratamentoListaItem'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+    post:
+      tags: [Pacientes, Tratamentos]
+      summary: Criar tratamento para paciente
+      operationId: pacientesTratamentosCriar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NovoTratamentoRequest'
+      responses:
+        '201':
+          description: Tratamento criado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TratamentoDetalhe'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+
+# =====================================================================================
+# TRATAMENTOS (GESTOR)
+# =====================================================================================
+  /tratamentos/atuais:
+    get:
+      tags: [Tratamentos]
+      summary: Listar tratamentos atuais
+      operationId: tratamentosListarAtuais
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: pacienteId
+          in: query
+          schema:
+            type: integer
+          description: Filtrar por paciente.
+      responses:
+        '200':
+          description: Lista de tratamentos em curso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TratamentoListaItem'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /tratamentos/{id}:
+    get:
+      tags: [Tratamentos]
+      summary: Obter tratamento
+      operationId: tratamentosObter
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Detalhe do tratamento.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TratamentoDetalhe'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+    put:
+      tags: [Tratamentos]
+      summary: Atualizar tratamento
+      operationId: tratamentosAtualizar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NovoTratamentoRequest'
+      responses:
+        '200':
+          description: Tratamento atualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TratamentoDetalhe'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /tratamentos/{id}/anexos:
+    get:
+      tags: [Tratamentos]
+      summary: Listar anexos de tratamento
+      operationId: tratamentosAnexosListar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Lista de anexos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Anexo'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+    post:
+      tags: [Tratamentos]
+      summary: Adicionar anexo ao tratamento
+      operationId: tratamentosAnexosAdicionar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                ficheiro:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Anexo adicionado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anexo'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /tratamentos/tipos:
+    get:
+      tags: [Tratamentos]
+      summary: Listar tipos de tratamento
+      operationId: tratamentosTiposListar
+      responses:
+        '200':
+          description: Lista de tipos de tratamento.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TratamentoTipo'
+
+# =====================================================================================
+# CONSULTAS (GESTOR)
+# =====================================================================================
+  /admin/consultas:
+    get:
+      tags: [Consultas]
+      summary: Listar consultas (gestor)
+      operationId: adminConsultasListar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/DataInicioQueryParam'
+        - $ref: '#/components/parameters/DataFimQueryParam'
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+      responses:
+        '200':
+          description: Lista de consultas administrativas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConsultaAdminItem'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+    post:
+      tags: [Consultas]
+      summary: Agendar consulta (gestor)
+      operationId: adminConsultasAgendar
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleConsultaRequest'
+      responses:
+        '201':
+          description: Consulta agendada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultaDetalhe'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /consultas/{id}/documentos:
+    post:
+      tags: [Consultas]
+      summary: Anexar documento à consulta
+      operationId: consultasAnexarDocumento
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                tipo:
+                  type: string
+                  enum: [resumo, justificacao, atestado, outro]
+                ficheiro:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Documento anexado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  tipo:
+                    type: string
+                  url:
+                    type: string
+                    format: uri
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+  /admin/pedidos-consulta:
+    get:
+      tags: [Consultas]
+      summary: Listar pedidos de consulta
+      operationId: adminPedidosConsultaListar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+      responses:
+        '200':
+          description: Lista de pedidos de consulta.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PedidoConsultaAdminItem'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /admin/pedidos-consulta/{tipo}/{id}:
+    delete:
+      tags: [Consultas]
+      summary: Apagar pedido de consulta
+      operationId: adminPedidosConsultaApagar
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: tipo
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [utilizador, nao_utilizador]
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '204':
+          description: Pedido apagado.
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+
+# =====================================================================================
+# GESTORES (ADMIN)
+# =====================================================================================
+  /gestores:
+    get:
+      tags: [Gestores]
+      summary: Listar gestores
+      operationId: gestoresListar
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de gestores.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Gestor'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+    post:
+      tags: [Gestores]
+      summary: Criar gestor
+      operationId: gestoresCriar
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NovoGestorRequest'
+      responses:
+        '201':
+          description: Gestor criado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gestor'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /gestores/{id}:
+    get:
+      tags: [Gestores]
+      summary: Obter gestor
+      operationId: gestoresObter
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Detalhe do gestor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gestor'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+    put:
+      tags: [Gestores]
+      summary: Atualizar gestor
+      operationId: gestoresAtualizar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NovoGestorRequest'
+      responses:
+        '200':
+          description: Gestor atualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gestor'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+
+# =====================================================================================
+# AGENDA (GESTOR)
+# =====================================================================================
+  /agenda:
+    get:
+      tags: [Agenda]
+      summary: Listar registos de agenda
+      operationId: agendaListar
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/DataInicioQueryParam'
+        - $ref: '#/components/parameters/DataFimQueryParam'
+        - $ref: '#/components/parameters/EntidadeMedicaIdQueryParam'
+      responses:
+        '200':
+          description: Lista de registos da agenda.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agenda'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+    post:
+      tags: [Agenda]
+      summary: Criar registo de agenda
+      operationId: agendaCriar
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgendaCreate'
+      responses:
+        '201':
+          description: Registo criado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agenda'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+  /agenda/{id_agenda}:
+    get:
+      tags: [Agenda]
+      summary: Obter registo da agenda
+      operationId: agendaObter
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id_agenda
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Registo encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agenda'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+    put:
+      tags: [Agenda]
+      summary: Atualizar registo da agenda
+      operationId: agendaAtualizar
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id_agenda
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgendaUpdate'
+      responses:
+        '200':
+          description: Registo atualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agenda'
+        '400':
+          $ref: '#/components/responses/PedidoInvalido'
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'
+    delete:
+      tags: [Agenda]
+      summary: Apagar registo da agenda
+      operationId: agendaApagar
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id_agenda
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Registo apagado.
+        '401':
+          $ref: '#/components/responses/NaoAutenticado'
+        '404':
+          $ref: '#/components/responses/NaoEncontrado'

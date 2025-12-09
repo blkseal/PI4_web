@@ -10,3 +10,7 @@ export { default as InputField } from './InputField';
 export { default as Checkbox } from './Checkbox';
 export { default as InfoBox } from './InfoBox';
 export { default as Button } from './Button';
+export { default as InlineSvg } from './InlineSvg';
+export { default as ConsultationsList } from './ConsultationsList';
+export { default as ActionGrid } from './ActionGrid';
+export { default as Navbar } from './Navbar';

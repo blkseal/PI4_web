@@ -8,32 +8,24 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import api, { storeTokens, clearTokens } from '../services/api';
 import { Logo, InputField, Checkbox, InfoBox } from '../components';
+import emailSvg from '../assets/email.svg?raw';
+import lockSvg from '../assets/lock.svg?raw';
+import arrowRightSvg from '../assets/arrow-right.svg?raw';
 import './Login.css';
 
-/**
- * Ícones SVG reutilizáveis para os inputs
- */
-const EmailIcon = () => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <rect x="2" y="4" width="20" height="16" rx="2" />
-        <path d="M22 6L12 13L2 6" />
-    </svg>
+const InlineSvg = ({ svg, className = '' }) => (
+    <span
+        className={className}
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: svg }}
+    />
 );
 
-const LockIcon = () => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <rect x="3" y="11" width="18" height="11" rx="2" />
-        <path d="M7 11V7a5 5 0 0110 0v4" />
-    </svg>
-);
-
-const ArrowIcon = () => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M5 12h14M12 5l7 7-7 7" />
-    </svg>
-);
+const EmailIcon = () => <InlineSvg svg={emailSvg} />;
+const LockIcon = () => <InlineSvg svg={lockSvg} />;
+const ArrowIcon = () => <InlineSvg svg={arrowRightSvg} />;
 
 function Login() {
     // Estados para os campos do formulário
@@ -82,13 +74,16 @@ function Login() {
             // Extrair dados da resposta
             const { accessToken, refreshToken, utilizador } = response.data;
 
-            // Guardar tokens na localStorage
-            localStorage.setItem('token', accessToken);
-            localStorage.setItem('refreshToken', refreshToken);
+            // Guardar tokens de forma consistente
+            storeTokens({ accessToken, refreshToken });
             localStorage.setItem('user', JSON.stringify(utilizador));
 
-            // Redirecionar para a página inicial (home)
-            navigate('/home');
+            // Redirecionar conforme o tipo de utilizador
+            if (utilizador?.tipo === 'gestor') {
+                navigate('/agenda');
+            } else {
+                navigate('/home');
+            }
 
         } catch (err) {
             // Tratar erros da API
@@ -99,6 +94,8 @@ function Login() {
             } else {
                 setError('Ocorreu um erro ao fazer login. Tente novamente.');
             }
+            // Em qualquer erro, limpar tokens residuais
+            clearTokens();
         } finally {
             setLoading(false);
         }

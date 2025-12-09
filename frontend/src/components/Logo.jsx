@@ -5,7 +5,7 @@
  * Reutilizável em qualquer parte da aplicação.
  */
 
-import logoImage from '../imgs/logo_clinimolelos.png';
+import logoImage from '../assets/clinimolelos_logo.png';
 import './Logo.css';
 
 /**

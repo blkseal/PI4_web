@@ -10,7 +10,7 @@
 /* Container que agrupa o ícone e o texto */
 .logo-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 10px;
 }
@@ -34,6 +34,7 @@
     font-weight: 400;
     letter-spacing: 4px;
     color: var(--primary-color, #A37F52);
+    line-height: 1.1;
 }
 
 /* ========================================
