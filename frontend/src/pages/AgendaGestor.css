@@ -1,0 +1,143 @@
+.agenda-page {
+  min-height: 100vh;
+  background: #f2eee9;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-logo);
+}
+
+.agenda-main {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.agenda-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-range {
+  background: white;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  font-weight: 600;
+  color: #5c4730;
+}
+
+.ghost-btn {
+  background: white;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.filter-btn {
+  background: white;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: #5c4730;
+}
+
+.agenda-grid {
+  background: #d1c0aa;
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+.grid-head {
+  display: grid;
+  grid-template-columns: 110px repeat(5, 1fr);
+  background: rgba(0,0,0,0.05);
+  border-radius: 10px 10px 0 0;
+}
+
+.grid-head .time-col {
+  padding: 0.75rem;
+}
+
+.grid-head .day-col {
+  padding: 0.75rem;
+  text-align: center;
+  font-weight: 700;
+  color: #2f2417;
+}
+
+.grid-body {
+  display: grid;
+  grid-template-rows: repeat(auto-fill, minmax(40px, auto));
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.time-row {
+  display: grid;
+  grid-template-columns: 110px repeat(5, 1fr);
+  align-items: stretch;
+  min-height: 44px;
+}
+
+.time-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #4d3b28;
+  background: rgba(0,0,0,0.04);
+  border-radius: 8px;
+}
+
+.slot {
+  background: linear-gradient(135deg, #a48356 0%, #8b6e4a 100%);
+  opacity: 0.08;
+  border-radius: 8px;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.slot:hover {
+  opacity: 0.16;
+  transform: translateY(-1px);
+}
+
+.agenda-footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: #6b563d;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 1100px) {
+  .grid-head, .time-row {
+    grid-template-columns: 80px repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .agenda-main {
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .grid-head, .time-row {
+    grid-template-columns: 70px repeat(5, 1fr);
+  }
+}
