@@ -11,12 +11,12 @@ function Consultas() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    const parsed = storedUser ? JSON.parse(storedUser) : null;
-    if (parsed?.tipo === 'gestor') {
-      window.location.replace('/agenda');
-      return;
-    }
+    // const storedUser = localStorage.getItem('user');
+    // const parsed = storedUser ? JSON.parse(storedUser) : null;
+    // if (parsed?.tipo === 'gestor') {
+    //   window.location.replace('/agenda');
+    //   return;
+    // }
 
     let cancelled = false;
     const fetchConsultas = async () => {
@@ -46,12 +46,12 @@ function Consultas() {
     {
       title: 'HISTÓRICO DE<br/>CONSULTAS',
       icon: <InlineSvg svg={historicoSvg} />,
-      onClick: () => {},
+      onClick: () => { },
     },
     {
       title: 'TRATAMENTOS',
       icon: <InlineSvg svg={toothSvg} className="tooth-svg" />,
-      onClick: () => {},
+      onClick: () => { },
     },
   ];
 

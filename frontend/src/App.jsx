@@ -11,13 +11,18 @@ import Home from './pages/Home';
 import Documentacao from './pages/Documentacao';
 import Consultas from './pages/Consultas';
 import AgendaGestor from './pages/AgendaGestor';
+import Profile from './pages/Profile';
+import MeusDados from './pages/MeusDados';
+import HistoricoDentario from './pages/HistoricoDentario';
+import Dependentes from './pages/Dependentes';
+import EditarCredenciais from './pages/EditarCredenciais';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem('accessToken');
-  if (!token) {
-    return <Navigate to="/" replace />;
-  }
+  // const token = localStorage.getItem('accessToken');
+  // if (!token) {
+  //   return <Navigate to="/" replace />;
+  // }
   return children;
 };
 
@@ -67,6 +72,56 @@ function App() {
           element={(
             <ProtectedRoute>
               <AgendaGestor />
+            </ProtectedRoute>
+          )}
+        />
+
+        {/* Rota para perfil (protegida) */}
+        <Route
+          path="/perfil"
+          element={(
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          )}
+        />
+
+        {/* Rota para os meus dados (protegida) */}
+        <Route
+          path="/perfil/dados"
+          element={(
+            <ProtectedRoute>
+              <MeusDados />
+            </ProtectedRoute>
+          )}
+        />
+
+        {/* Rota para histórico dentário (protegida) */}
+        <Route
+          path="/perfil/historico"
+          element={(
+            <ProtectedRoute>
+              <HistoricoDentario />
+            </ProtectedRoute>
+          )}
+        />
+
+        {/* Rota para dependentes (protegida) */}
+        <Route
+          path="/perfil/dependentes"
+          element={(
+            <ProtectedRoute>
+              <Dependentes />
+            </ProtectedRoute>
+          )}
+        />
+
+        {/* Rota para editar credenciais (protegida) */}
+        <Route
+          path="/perfil/credenciais"
+          element={(
+            <ProtectedRoute>
+              <EditarCredenciais />
             </ProtectedRoute>
           )}
         />

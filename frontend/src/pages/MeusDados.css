@@ -1,0 +1,116 @@
+.meus-dados-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #F0EFE9;
+}
+
+.page-header {
+    background: #6D5536;
+    /* Matching Profile banner */
+    color: white;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.meus-dados-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1rem;
+    gap: 2rem;
+}
+
+.meus-dados-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0;
+    color: black;
+    letter-spacing: 0.05em;
+}
+
+.data-card {
+    background-color: #F8F7F4;
+    /* Slightly off-white/beige based on screenshot card tone */
+    border-radius: 12px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.fields-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.data-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.field-label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.field-value {
+    font-size: 1.1rem;
+    color: #555;
+    margin: 0;
+}
+
+.edit-credentials-btn {
+    align-self: flex-end;
+    background-color: #8B7355;
+    /* Brown color */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.2s;
+}
+
+.edit-credentials-btn:hover {
+    background-color: #6D5536;
+}

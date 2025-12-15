@@ -1,0 +1,117 @@
+.dependentes-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #F0EFE9;
+}
+
+.dependentes-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5rem 1rem;
+    /* Increased top padding to vertically center title/content more like screenshot */
+    gap: 3rem;
+}
+
+.dependentes-page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0;
+    color: black;
+    letter-spacing: 0.05em;
+}
+
+/* LIST VIEW STYLES */
+.dependents-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 400px;
+    align-items: center;
+}
+
+.dependent-btn {
+    background-color: white;
+    border: none;
+    border-radius: 8px;
+    /* Slightly rounded */
+    padding: 1rem 3rem;
+    width: 100%;
+    max-width: 300px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: #6D5536;
+    /* Brownish text color */
+    font-weight: 500;
+    text-transform: capitalize;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dependent-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* DETAIL VIEW STYLES (Reused from MeusDados mostly) */
+.data-card {
+    background-color: #F8F7F4;
+    border-radius: 12px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.fields-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.data-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.field-label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.field-value {
+    font-size: 1.1rem;
+    color: #555;
+    margin: 0;
+}
+
+.switch-profile-btn {
+    align-self: flex-end;
+    background-color: #8B7355;
+    /* Brown color */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.2s;
+}
+
+.switch-profile-btn:hover {
+    background-color: #6D5536;
+}
