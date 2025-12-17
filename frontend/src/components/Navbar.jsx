@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Bell, User } from 'lucide-react';
 import Logo from './Logo';
+import Notifications from './Notifications'; // 🔔 IMPORTANTE
 import { clearTokens } from '../services/api';
 import './Navbar.css';
 
@@ -23,7 +24,9 @@ const navItemsByVariant = {
 function Navbar({ variant = 'utente' }) {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false); // 🔔 NOVO
 
   const navItems = navItemsByVariant[variant] || navItemsByVariant.utente;
   const brandTarget = variant === 'gestor' ? '/agenda' : '/home';
@@ -37,70 +40,90 @@ function Navbar({ variant = 'utente' }) {
 
   useEffect(() => {
     setMenuOpen(false);
+    setShowNotifications(false); // fecha notificações ao mudar de página
   }, [location.pathname]);
 
   const isActive = (path) => path && location.pathname.startsWith(path);
 
   return (
-    <header className="navbar">
-      <button
-        type="button"
-        className="navbar-left"
-        onClick={() => navigate(brandTarget)}
-        aria-label="Voltar ao início"
-      >
-        <Logo
-          size={variant === 'gestor' ? 'small' : 'medium'}
-          showText
-        />
-      </button>
-
-      <nav className="navbar-nav">
-        {navItems.map((item) => (
-          item.to ? (
-            <Link
-              key={item.label}
-              to={item.to}
-              className={`navbar-link ${isActive(item.to) ? 'active' : ''}`}
-            >
-              {item.label}
-            </Link>
-          ) : (
-            <button
-              key={item.label}
-              type="button"
-              className="navbar-link disabled"
-              disabled
-            >
-              {item.label}
-            </button>
-          )
-        ))}
-      </nav>
-
-      <div className="navbar-actions">
-        <button className="icon-button" aria-label="Notificações" type="button">
-          <Bell size={22} color="white" />
+    <>
+      <header className="navbar">
+        {/* LOGO */}
+        <button
+          type="button"
+          className="navbar-left"
+          onClick={() => navigate(brandTarget)}
+          aria-label="Voltar ao início"
+        >
+          <Logo
+            size={variant === 'gestor' ? 'small' : 'medium'}
+            showText
+          />
         </button>
-        <div className="navbar-user">
+
+        {/* LINKS */}
+        <nav className="navbar-nav">
+          {navItems.map((item) =>
+            item.to ? (
+              <Link
+                key={item.label}
+                to={item.to}
+                className={`navbar-link ${isActive(item.to) ? 'active' : ''}`}
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <button
+                key={item.label}
+                type="button"
+                className="navbar-link disabled"
+                disabled
+              >
+                {item.label}
+              </button>
+            )
+          )}
+        </nav>
+
+        {/* AÇÕES */}
+        <div className="navbar-actions">
+          {/* 🔔 BOTÃO NOTIFICAÇÕES */}
           <button
             className="icon-button"
-            aria-label="Perfil"
+            aria-label="Notificações"
             type="button"
-            onClick={() => setMenuOpen((v) => !v)}
+            onClick={() => setShowNotifications((v) => !v)}
           >
-            <User size={22} color="white" />
+            <Bell size={22} color="white" />
           </button>
-          {menuOpen && (
-            <div className="navbar-user-menu">
-              <button type="button" onClick={handleLogout}>
-                Terminar sessão
-              </button>
-            </div>
-          )}
+
+          {/* 👤 UTILIZADOR */}
+          <div className="navbar-user">
+            <button
+              className="icon-button"
+              aria-label="Perfil"
+              type="button"
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              <User size={22} color="white" />
+            </button>
+
+            {menuOpen && (
+              <div className="navbar-user-menu">
+                <button type="button" onClick={handleLogout}>
+                  Terminar sessão
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* 🔔 PAINEL DE NOTIFICAÇÕES */}
+      {showNotifications && (
+        <Notifications onClose={() => setShowNotifications(false)} />
+      )}
+    </>
   );
 }
 

@@ -1,0 +1,81 @@
+.notifications-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 1000;
+}
+
+.notifications-panel {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 360px;
+  background-color: #9b7b57;
+  border-radius: 16px;
+  padding: 16px;
+  color: #fff;
+}
+
+/* HEADER */
+.notifications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.notifications-header h3 {
+  font-size: 18px;
+}
+
+.close-panel {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* LISTA */
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* NOTIFICAÇÃO */
+.notification-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  border: 1.5px solid white;
+  border-radius: 12px;
+}
+
+.notification-icon {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.notification-text {
+  flex: 1;
+}
+
+.notification-text p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.notification-text span {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* X INDIVIDUAL */
+.close-notification {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-left: 4px;
+}
