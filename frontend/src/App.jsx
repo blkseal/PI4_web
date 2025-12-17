@@ -77,6 +77,52 @@ function App() {
           element={(
             <ProtectedRoute>
               <Contactos />
+        {/* Rota para perfil (protegida) */}
+        <Route
+          path="/perfil"
+          element={(
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          )}
+        />
+
+        {/* Rota para os meus dados (protegida) */}
+        <Route
+          path="/perfil/dados"
+          element={(
+            <ProtectedRoute>
+              <MeusDados />
+            </ProtectedRoute>
+          )}
+        />
+
+        {/* Rota para histórico dentário (protegida) */}
+        <Route
+          path="/perfil/historico"
+          element={(
+            <ProtectedRoute>
+              <HistoricoDentario />
+            </ProtectedRoute>
+          )}
+        />
+
+        {/* Rota para dependentes (protegida) */}
+        <Route
+          path="/perfil/dependentes"
+          element={(
+            <ProtectedRoute>
+              <Dependentes />
+            </ProtectedRoute>
+          )}
+        />
+
+        {/* Rota para editar credenciais (protegida) */}
+        <Route
+          path="/perfil/credenciais"
+          element={(
+            <ProtectedRoute>
+              <EditarCredenciais />
             </ProtectedRoute>
           )}
         />

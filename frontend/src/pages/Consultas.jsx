@@ -14,7 +14,7 @@ function Consultas() {
     const storedUser = localStorage.getItem('user');
     const parsed = storedUser ? JSON.parse(storedUser) : null;
     if (parsed?.tipo === 'gestor') {
-    /window.location.replace('/agenda');
+    window.location.replace('/agenda');
       return;
     }
 
@@ -46,12 +46,12 @@ function Consultas() {
     {
       title: 'HISTÓRICO DE<br/>CONSULTAS',
       icon: <InlineSvg svg={historicoSvg} />,
-      onClick: () => {},
+      onClick: () => { },
     },
     {
       title: 'TRATAMENTOS',
       icon: <InlineSvg svg={toothSvg} className="tooth-svg" />,
-      onClick: () => {},
+      onClick: () => { },
     },
   ];
 

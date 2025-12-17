@@ -1,0 +1,94 @@
+.credenciais-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #F0EFE9;
+}
+
+.credenciais-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1rem;
+    gap: 3rem;
+}
+
+.credenciais-page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0;
+    color: black;
+    letter-spacing: 0.05em;
+    text-align: center;
+}
+
+.credenciais-card {
+    background-color: #F0EFE9;
+    /* In screenshot it looks uniform or slightly lighter? Screenshot shows card shadow but same bg color inside? Or maybe just simple inputs on the background? Wait, looking closely at screenshot steps 245 image: It looks like a card with shadow but maybe nearly same color or transparent? Actually there is a card border/shadow. Let's make it consistent with previous pages but centered form. */
+    background-color: #F0EFE9;
+    /* Actually screenshot looks like it has a neumorphic or simple shadow box around the form */
+    background-color: #EEECE7;
+    /* Slightly darker/different shade? Or just shadow. Let's stick to card style from MeusDados for consistency: #F8F7F4 */
+    background-color: #F8F7F4;
+
+    border-radius: 12px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-label {
+    font-size: 1rem;
+    color: #8B6E4A;
+    /* Brownish label text based on screenshot? Or simple gray? Screenshot looks brownish/gold. */
+    color: #9C8262;
+    font-weight: 600;
+}
+
+.input-field-custom {
+    padding: 0.8rem;
+    border: 1px solid #CCC;
+    border-radius: 6px;
+    background-color: transparent;
+    /* Screenshot input background looks transparent or matching bg */
+    border: 1px solid #B09B7E;
+    font-size: 1rem;
+    outline: none;
+}
+
+.input-field-custom:focus {
+    border-color: #6D5536;
+    box-shadow: 0 0 0 2px rgba(109, 85, 54, 0.1);
+}
+
+.submit-btn {
+    align-self: flex-end;
+    background-color: #8B6E4A;
+    /* Darker brown button */
+    color: white;
+    border: none;
+    padding: 0.6rem 2rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #6D5536;
+}

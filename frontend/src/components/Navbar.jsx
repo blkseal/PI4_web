@@ -96,34 +96,16 @@ function Navbar({ variant = 'utente' }) {
           >
             <Bell size={22} color="white" />
           </button>
-
-          {/* 👤 UTILIZADOR */}
-          <div className="navbar-user">
-            <button
-              className="icon-button"
-              aria-label="Perfil"
-              type="button"
-              onClick={() => setMenuOpen((v) => !v)}
-            >
-              <User size={22} color="white" />
-            </button>
-
-            {menuOpen && (
-              <div className="navbar-user-menu">
-                <button type="button" onClick={handleLogout}>
-                  Terminar sessão
-                </button>
-              </div>
-            )}
-          </div>
+          {menuOpen && (
+            <div className="navbar-user-menu">
+              <button type="button" onClick={handleLogout}>
+                Terminar sessão
+              </button>
+            </div>
+          )}
         </div>
-      </header>
-
-      {/* 🔔 PAINEL DE NOTIFICAÇÕES */}
-      {showNotifications && (
-        <Notifications onClose={() => setShowNotifications(false)} />
-      )}
-    </>
+      </div>
+    </header>
   );
 }
 
