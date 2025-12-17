@@ -11,18 +11,14 @@ import Home from './pages/Home';
 import Documentacao from './pages/Documentacao';
 import Consultas from './pages/Consultas';
 import AgendaGestor from './pages/AgendaGestor';
-import Profile from './pages/Profile';
-import MeusDados from './pages/MeusDados';
-import HistoricoDentario from './pages/HistoricoDentario';
-import Dependentes from './pages/Dependentes';
-import EditarCredenciais from './pages/EditarCredenciais';
+import Contactos from './pages/Contactos';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem('accessToken');
-  if (!token) {
-    return <Navigate to="/" replace />;
-  }
+  //const token = localStorage.getItem('accessToken');
+  //if (!token) {
+    //return <Navigate to="/" replace />;
+  //}
   return children;
 };
 
@@ -76,6 +72,11 @@ function App() {
           )}
         />
 
+        <Route
+          path="/contactos"
+          element={(
+            <ProtectedRoute>
+              <Contactos />
         {/* Rota para perfil (protegida) */}
         <Route
           path="/perfil"
