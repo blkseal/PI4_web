@@ -1,0 +1,144 @@
+/* Profile Container */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #F0EFE9;
+    /* Adjust based on screenshot beige/grey tone */
+}
+
+/* Reusing user-banner styles from Home if possible, but defining specific overrides here */
+.user-banner {
+    background: linear-gradient(90deg, #8B6E4A 0%, #A48356 100%);
+    /* Matching solid brown from Navbar (likely var(--bg-brown-solid)) or check Navbar.css */
+    color: white;
+    text-align: center;
+    padding: 4rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.user-name {
+    font-size: 2.5rem;
+    /* Increased from 2rem */
+    font-weight: 700;
+    margin: 0;
+}
+
+.user-number,
+.user-date {
+    font-size: 1.25rem;
+    /* Increased from 1rem */
+    opacity: 0.95;
+    margin: 0;
+}
+
+/* Main Content */
+.profile-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1rem;
+    gap: 2rem;
+    /* Increased gap */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.profile-page-title {
+    font-size: 2rem;
+    /* Increased from 1.5rem */
+    font-weight: 700;
+    color: black;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.qr-instruction {
+    color: #666;
+    margin-top: -1.5rem;
+    font-size: 1.1rem;
+}
+
+.qr-code-container {
+    margin-bottom: 2rem;
+}
+
+.qr-code-img {
+    width: 180px;
+    /* Increased from 150px */
+    height: 180px;
+    display: block;
+}
+
+/* Cards Grid */
+.profile-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    /* Increased gap */
+    width: 100%;
+    max-width: 1000px;
+    /* Increased max-width */
+}
+
+@media (max-width: 768px) {
+    .profile-actions-grid {
+        grid-template-columns: 1fr;
+        max-width: 350px;
+    }
+}
+
+/* Individual Card */
+.profile-card {
+    background: linear-gradient(180deg, #9C8262 0%, #8B7355 100%);
+    /* Brown gradient based on screenshot */
+    border: none;
+    border-radius: 16px;
+    /* Increased radius */
+    padding: 1.5rem;
+    /* Reduced from 2.5rem */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    /* Reduced from 2rem */
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    aspect-ratio: 1 / 1;
+    /* Make them square-ish */
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    color: white;
+    font-weight: 700;
+    font-size: 1.3rem;
+    /* Increased from 1rem */
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.card-icon-circle {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 90px;
+    /* Increased from 64px */
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}

@@ -1,16 +1,86 @@
+/*
+ * index.css - Estilos globais da aplicação CLINIMOLELOS
+ * 
+ * Define variáveis CSS, fontes e estilos base.
+ * Usa Montserrat para o logo e Libre Franklin para o resto.
+ */
+
+/* ========================================
+   IMPORTAÇÃO DE FONTES GOOGLE
+   ======================================== */
+
+/* Montserrat - usada no logo CLINIMOLELOS */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+
+/* Libre Franklin - usada no resto da aplicação */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400;500;600;700&display=swap');
+
+/* ========================================
+   VARIÁVEIS CSS (DESIGN TOKENS)
+   ======================================== */
+
+:root {
+  /* Cores principais (gradientes) */
+  --primary-gradient: linear-gradient(180deg, #A37F52 0%, #B08E63 100%);
+  --secondary-gradient: linear-gradient(180deg, #8F6F47 0%, #9C7A4E 100%);
+
+  /* Cores sólidas (para bordas, ícones, etc) */
+  --primary-color: #A37F52;
+  --primary-light: #B08E63;
+  --secondary-color: #8F6F47;
+  --secondary-light: #9C7A4E;
+
+  /* Cores de fundo */
+  --bg-white: hsla(36, 21%, 91%, 1);
+  --bg-brown: linear-gradient(155deg, #6D5536 10.24%, #886A44 109.69%);
+  --bg-brown-solid: #6D5536;
+  --bg-brown-light: #886A44;
+
+  /* Cores de texto */
+  --text-light: #F6F3EE;
+  --text-dark: #333333;
+  --text-muted: #666666;
+
+  /* Fontes */
+  --font-logo: 'Montserrat', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+}
+
+/* ========================================
+   RESET E ESTILOS BASE
+   ======================================== */
+
+/* Reset de margens e paddings */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Estilos base do body */
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-body);
   line-height: 1.5;
+  color: var(--text-dark);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Container principal da app */
 #root {
   min-height: 100vh;
+}
+
+/* ========================================
+   LINKS
+   ======================================== */
+
+/* Estilos base para links */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
