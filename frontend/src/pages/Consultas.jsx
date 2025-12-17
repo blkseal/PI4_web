@@ -11,12 +11,12 @@ function Consultas() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    //const storedUser = localStorage.getItem('user');
-    //const parsed = storedUser ? JSON.parse(storedUser) : null;
-    //if (parsed?.tipo === 'gestor') {
-      //window.location.replace('/agenda');
-      //return;
-    //}
+    const storedUser = localStorage.getItem('user');
+    const parsed = storedUser ? JSON.parse(storedUser) : null;
+    if (parsed?.tipo === 'gestor') {
+      window.location.replace('/agenda');
+      return;
+    }
 
     let cancelled = false;
     const fetchConsultas = async () => {

@@ -14,11 +14,11 @@ function AgendaGestor() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //const storedUser = localStorage.getItem('user');
-    //const parsed = storedUser ? JSON.parse(storedUser) : null;
-    //if (parsed?.tipo !== 'gestor') {
-     // navigate('/home', { replace: true });
-    //}
+    const storedUser = localStorage.getItem('user');
+    const parsed = storedUser ? JSON.parse(storedUser) : null;
+    if (parsed?.tipo !== 'gestor') {
+      navigate('/home', { replace: true });
+    }
   }, [navigate]);
 
   return (
