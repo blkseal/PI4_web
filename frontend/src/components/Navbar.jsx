@@ -93,6 +93,15 @@ function Navbar({ variant = 'utente' }) {
           </button>
           {menuOpen && (
             <div className="navbar-user-menu">
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  navigate('/perfil');
+                }}
+              >
+                Ver Perfil
+              </button>
               <button type="button" onClick={handleLogout}>
                 Terminar sessão
               </button>
