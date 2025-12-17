@@ -1,26 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar } from '../components';
 import { useNavigate } from 'react-router-dom';
 import './HistoricoDentario.css';
+import profileService from '../services/profile.service';
 
 function HistoricoDentario() {
     const navigate = useNavigate();
+    const [historico, setHistorico] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Mock data matching the screenshot
-    const historico = {
-        motivo: "Necessidade de manutenção dentária regular. Mudança para Tondela.",
-        condicoes: "Cerca de 3 cáries.",
-        tratamentos: "Uso de aparelho expansor durante 6 meses. Uso de aparelho ortodôntico durante 1 ano.",
-        anestesias: "Sempre reagiu bem.",
-        dor: "Dores nos dentes do ciso superiores ocasionais. Sensibilidade a bebidas muito frias."
-    };
+    useEffect(() => {
+        const fetchHistory = async () => {
+            try {
+                const data = await profileService.getDentalHistory();
+                setHistorico(data);
+            } catch (err) {
+                console.error("Erro ao carregar histórico:", err);
+                setError("Não foi possível carregar o histórico dentário.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchHistory();
+    }, []);
+
+    if (loading) return <div className="historico-container"><Navbar variant="utente" /><div className="loading">A carregar...</div></div>;
+    if (error) return <div className="historico-container"><Navbar variant="utente" /><div className="error">{error}</div></div>;
 
     const sections = [
-        { title: "Motivo da primeira consulta", content: historico.motivo },
-        { title: "Condições dentárias pré-existentes", content: historico.condicoes },
-        { title: "Tratamentos Passados", content: historico.tratamentos },
-        { title: "Experiência com Anestesias", content: historico.anestesias },
-        { title: "Histórico de Dor, Desconforto e Sensibilidade", content: historico.dor },
+        { title: "Motivo da primeira consulta", content: historico?.motivoPrimeiraConsulta || "Sem informação" },
+        { title: "Condições dentárias pré-existentes", content: historico?.condicoesDentarias || "Sem informação" },
+        { title: "Tratamentos Passados", content: historico?.tratamentosPassados || "Sem informação" },
+        { title: "Experiência com Anestesias", content: historico?.expAnestesia || "Sem informação" },
+        { title: "Histórico de Dor, Desconforto e Sensibilidade", content: historico?.historicoDor || "Sem informação" },
     ];
 
     return (

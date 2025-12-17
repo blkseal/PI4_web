@@ -1,62 +1,79 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar } from '../components';
-import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import './Dependentes.css';
+import profileService from '../services/profile.service';
 
 function Dependentes() {
     const navigate = useNavigate();
+    const [dependents, setDependents] = useState([]);
     const [selectedDependent, setSelectedDependent] = useState(null);
+    const [loadingList, setLoadingList] = useState(true);
+    const [loadingDetails, setLoadingDetails] = useState(false);
+    const [error, setError] = useState(null);
 
-    // Mock dependents data
-    const dependents = [
-        {
-            id: 1,
-            name: "Fátima Trigo",
-            dataNascimento: "22/04/2018",
-            genero: "Feminino",
-            morada: "Rua Dr. João Paulo Almeida, 25, Sótão",
-            codigoPostal: "3099-888",
-            numeroUtente: "987654321",
-            nif: "123456789",
-            estadoCivil: "Solteira",
-            email: "fatimatrigo@mail.com",
-            telemovel: "+351 912 345 678"
-        },
-        {
-            id: 2,
-            name: "João Trigo",
-            dataNascimento: "15/06/2020",
-            genero: "Masculino",
-            morada: "Rua Dr. João Paulo Almeida, 25, Sótão",
-            codigoPostal: "3099-888",
-            numeroUtente: "456789123",
-            nif: "456123789",
-            estadoCivil: "Solteiro",
-            email: "joaotrigo@mail.com",
-            telemovel: "+351 919 876 543"
+    // Fetch list of dependents on mount
+    useEffect(() => {
+        const fetchList = async () => {
+            try {
+                const data = await profileService.getDependents();
+                setDependents(data);
+            } catch (err) {
+                console.error("Erro ao carregar dependentes:", err);
+                setError("Não foi possível carregar a lista de dependentes.");
+            } finally {
+                setLoadingList(false);
+            }
+        };
+
+        fetchList();
+    }, []);
+
+    const handleSelectDependent = async (id) => {
+        setLoadingDetails(true);
+        setError(null);
+        try {
+            const details = await profileService.getDependentDetails(id);
+            setSelectedDependent(details);
+        } catch (err) {
+            console.error("Erro ao carregar detalhes do dependente:", err);
+            setError("Não foi possível carregar os detalhes do dependente.");
+        } finally {
+            setLoadingDetails(false);
         }
-    ];
-
-    const fields = selectedDependent ? [
-        { label: "Data de Nascimento", value: selectedDependent.dataNascimento },
-        { label: "Género", value: selectedDependent.genero },
-        { label: "Morada", value: selectedDependent.morada },
-        { label: "Código Postal", value: selectedDependent.codigoPostal },
-        { label: "Número de Utente", value: selectedDependent.numeroUtente },
-        { label: "Número de Identificação Fiscal", value: selectedDependent.nif },
-        { label: "Estado Civil", value: selectedDependent.estadoCivil },
-        { label: "Email", value: selectedDependent.email },
-        { label: "Telemóvel", value: selectedDependent.telemovel },
-    ] : [];
+    };
 
     const handleBack = () => {
         if (selectedDependent) {
             setSelectedDependent(null);
+            setError(null);
         } else {
             navigate('/perfil');
         }
     };
+
+    // Formatar data
+    const formatDate = (dateString) => {
+        if (!dateString) return "N/A";
+        const date = new Date(dateString);
+        return date.toLocaleDateString('pt-PT');
+    };
+
+    // Prepare structure for details view
+    const moradaCompleta = selectedDependent?.morada ? `${selectedDependent.morada.rua || ''}, ${selectedDependent.morada.localidade || ''}` : "N/A";
+    const codigoPostal = selectedDependent?.morada?.codigoPostal || "N/A";
+
+    const fields = selectedDependent ? [
+        { label: "Data de Nascimento", value: formatDate(selectedDependent.dataNascimento) },
+        { label: "Género", value: selectedDependent.genero || "N/A" },
+        { label: "Morada", value: moradaCompleta.replace(/^, /, '') },
+        { label: "Código Postal", value: codigoPostal },
+        { label: "Número de Utente", value: selectedDependent.numeroUtente || "N/A" },
+        { label: "Número de Identificação Fiscal", value: selectedDependent.nif || "N/A" },
+        { label: "Estado Civil", value: selectedDependent.estadoCivil || "N/A" },
+        { label: "Email", value: selectedDependent.email || "N/A" },
+        { label: "Telemóvel", value: selectedDependent.telefone || "N/A" }, // API uses 'telefone'
+    ] : [];
 
     return (
         <div className="dependentes-container">
@@ -65,34 +82,51 @@ function Dependentes() {
             <main className="dependentes-main">
                 <h1 className="dependentes-page-title">DEPENDENTES</h1>
 
-                {!selectedDependent ? (
+                {error && <div className="error-message">{error}</div>}
+
+                {loadingList ? (
+                    <div className="loading">A carregar lista...</div>
+                ) : !selectedDependent ? (
                     /* Initial View: List of buttons */
                     <div className="dependents-list">
-                        {dependents.map(dep => (
-                            <button
-                                key={dep.id}
-                                className="dependent-btn"
-                                onClick={() => setSelectedDependent(dep)}
-                            >
-                                {dep.name}
-                            </button>
-                        ))}
+                        {dependents.length === 0 ? (
+                            <p className="no-data">Não existem dependentes associados.</p>
+                        ) : (
+                            dependents.map(dep => (
+                                <button
+                                    key={dep.id}
+                                    className="dependent-btn"
+                                    onClick={() => handleSelectDependent(dep.id)}
+                                >
+                                    {dep.nomeCompleto}
+                                </button>
+                            ))
+                        )}
                     </div>
                 ) : (
-                    /* Detailed View: Similar to Meus Dados */
+                    /* Detailed View */
                     <div className="data-card">
-                        <div className="fields-container">
-                            {fields.map((field, index) => (
-                                <div key={index} className="data-field">
-                                    <label className="field-label">{field.label}</label>
-                                    <p className="field-value">{field.value}</p>
+                        {loadingDetails ? (
+                            <div className="loading">A carregar detalhes...</div>
+                        ) : (
+                            <>
+                                <button className="back-btn-inline" onClick={handleBack}>
+                                    &larr; Voltar à lista
+                                </button>
+                                <div className="fields-container">
+                                    {fields.map((field, index) => (
+                                        <div key={index} className="data-field">
+                                            <label className="field-label">{field.label}</label>
+                                            <p className="field-value">{field.value}</p>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
 
-                        <button className="switch-profile-btn">
-                            Alterar para este perfil
-                        </button>
+                                <button className="switch-profile-btn">
+                                    Alterar para este perfil
+                                </button>
+                            </>
+                        )}
                     </div>
                 )}
             </main>

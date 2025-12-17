@@ -1,35 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar } from '../components';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import './MeusDados.css';
+import profileService from '../services/profile.service';
 
 function MeusDados() {
     const navigate = useNavigate();
+    const [utilizador, setUtilizador] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Mock data matching the screenshot
-    const utilizador = {
-        dataNascimento: "22/04/2018",
-        genero: "Masculino",
-        morada: "Rua Dr. João Paulo Almeida, 25, Sótão",
-        codigoPostal: "3099-888",
-        numeroUtente: "123456789",
-        nif: "987654321",
-        estadoCivil: "Solteiro",
-        email: "iamjosetrigo@mail.com",
-        telemovel: "+351 969 898 797"
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await profileService.getPersonalData();
+                setUtilizador(data);
+            } catch (err) {
+                console.error("Erro ao carregar dados pessoais:", err);
+                setError("Não foi possível carregar os dados.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    // Formatar data
+    const formatDate = (dateString) => {
+        if (!dateString) return "N/A";
+        const date = new Date(dateString);
+        return date.toLocaleDateString('pt-PT');
     };
 
+    if (loading) return <div className="meus-dados-container"><Navbar variant="utente" /><div className="loading">A carregar...</div></div>;
+    if (error) return <div className="meus-dados-container"><Navbar variant="utente" /><div className="error">{error}</div></div>;
+
+    const moradaCompleta = utilizador?.morada ? `${utilizador.morada.rua || ''}, ${utilizador.morada.localidade || ''}` : "N/A";
+    const codigoPostal = utilizador?.morada?.codigoPostal || "N/A";
+
     const fields = [
-        { label: "Data de Nascimento", value: utilizador.dataNascimento },
-        { label: "Género", value: utilizador.genero },
-        { label: "Morada", value: utilizador.morada },
-        { label: "Código Postal", value: utilizador.codigoPostal },
-        { label: "Número de Utente", value: utilizador.numeroUtente },
-        { label: "Número de Identificação Fiscal", value: utilizador.nif },
-        { label: "Estado Civil", value: utilizador.estadoCivil },
-        { label: "Email", value: utilizador.email },
-        { label: "Telemóvel", value: utilizador.telemovel },
+        { label: "Data de Nascimento", value: formatDate(utilizador?.dataNascimento) },
+        { label: "Género", value: utilizador?.genero || "N/A" },
+        { label: "Morada", value: moradaCompleta.replace(/^, /, '') },
+        { label: "Código Postal", value: codigoPostal },
+        { label: "Número de Utente", value: utilizador?.numeroUtente || "N/A" },
+        { label: "Número de Identificação Fiscal", value: utilizador?.nif || "N/A" },
+        { label: "Estado Civil", value: utilizador?.estadoCivil || "N/A" },
+        { label: "Email", value: utilizador?.email || "N/A" },
+        { label: "Telemóvel", value: utilizador?.telefone || "N/A" },
     ];
 
     return (

@@ -2,18 +2,50 @@ import React, { useState } from 'react';
 import { Navbar } from '../components';
 import { useNavigate } from 'react-router-dom';
 import './EditarCredenciais.css';
+import profileService from '../services/profile.service';
 
 function EditarCredenciais() {
     const navigate = useNavigate();
     const [pin, setPin] = useState('');
     const [confirmPin, setConfirmPin] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Here you would add validation and API call
-        console.log("Password changed", { pin });
-        alert("Credenciais atualizadas com sucesso! (Simulação)");
-        navigate('/perfil/dados');
+        setError(null);
+        setSuccess(null);
+
+        if (pin.length < 4 || pin.length > 12) {
+            setError('O novo PIN deve ter entre 4 e 12 dígitos.');
+            return;
+        }
+
+        if (pin !== confirmPin) {
+            setError('Os PINs novos não coincidem.');
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            await profileService.updatePin({
+                novoPin: pin,
+                confirmarNovoPin: confirmPin
+            });
+            setSuccess('Credenciais atualizadas com sucesso!');
+            setPin('');
+            setConfirmPin('');
+            setTimeout(() => {
+                navigate('/perfil/dados');
+            }, 2000);
+        } catch (err) {
+            console.error("Erro ao atualizar PIN:", err);
+            setError('Não foi possível atualizar o PIN. Tente novamente.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -24,6 +56,8 @@ function EditarCredenciais() {
                 <h1 className="credenciais-page-title">EDITAR CREDENCIAIS</h1>
 
                 <form className="credenciais-card" onSubmit={handleSubmit}>
+                    {error && <div className="error-message">{error}</div>}
+                    {success && <div className="success-message">{success}</div>}
 
                     <div className="form-group">
                         <label htmlFor="new-pin" className="input-label">Novo Pin</label>
@@ -33,6 +67,7 @@ function EditarCredenciais() {
                             className="input-field-custom"
                             value={pin}
                             onChange={(e) => setPin(e.target.value)}
+                            required
                         />
                     </div>
 
@@ -44,11 +79,12 @@ function EditarCredenciais() {
                             className="input-field-custom"
                             value={confirmPin}
                             onChange={(e) => setConfirmPin(e.target.value)}
+                            required
                         />
                     </div>
 
-                    <button type="submit" className="submit-btn">
-                        Enviar
+                    <button type="submit" className="submit-btn" disabled={loading}>
+                        {loading ? 'A enviar...' : 'Enviar'}
                     </button>
                 </form>
             </main>

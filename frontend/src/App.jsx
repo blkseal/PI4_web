@@ -19,10 +19,10 @@ import EditarCredenciais from './pages/EditarCredenciais';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
-  // const token = localStorage.getItem('accessToken');
-  // if (!token) {
-  //   return <Navigate to="/" replace />;
-  // }
+  const token = localStorage.getItem('accessToken');
+  if (!token) {
+    return <Navigate to="/" replace />;
+  }
   return children;
 };
 
