@@ -29,8 +29,8 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   return (
     <Router>
-      <Routes>
-        {/* Rota principal - Página de Login */}
+     <Routes>
+      {/* Rota principal - Página de Login */}
         <Route path="/" element={<Login />} />
 
         {/* Rota para documentação (protegida) */}
@@ -43,7 +43,7 @@ function App() {
           )}
         />
 
-        {/* Rota para a página inicial (protegida) */}
+          {/* Rota para a página inicial (protegida) */}
         <Route
           path="/home"
           element={(
@@ -53,7 +53,7 @@ function App() {
           )}
         />
 
-        <Route
+            <Route
           path="/consultas"
           element={(
             <ProtectedRoute>
@@ -62,7 +62,7 @@ function App() {
           )}
         />
 
-        {/* Rota para agenda do gestor (protegida) */}
+            {/* Rota para agenda do gestor (protegida) */}
         <Route
           path="/agenda"
           element={(
@@ -72,22 +72,51 @@ function App() {
           )}
         />
 
-        <Route
-          path="/contactos"
-          element={(
-            <ProtectedRoute>
-              <Contactos />
-        {/* Rota para perfil (protegida) */}
-        <Route
-          path="/perfil"
-          element={(
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          )}
-        />
+   <Routes>
+  {/* Rota para contactos (protegida) */}
+  <Route
+    path="/contactos"
+    element={
+      <ProtectedRoute>
+        <Contactos />
+      </ProtectedRoute>
+    }
+  />
 
-        {/* Rota para os meus dados (protegida) */}
+  {/* Rota para perfil (protegida) */}
+  <Route
+    path="/perfil"
+    element={
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    }
+  />
+</Routes>
+
+<Routes>
+  {/* Rota para contactos (protegida) */}
+  <Route
+    path="/contactos"
+    element={
+      <ProtectedRoute>
+        <Contactos />
+      </ProtectedRoute>
+    }
+  />
+
+  {/* Rota para perfil (protegida) */}
+  <Route
+    path="/perfil"
+    element={
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    }
+  />
+</Routes>
+
+ {/* Rota para os meus dados (protegida) */}
         <Route
           path="/perfil/dados"
           element={(
@@ -97,7 +126,7 @@ function App() {
           )}
         />
 
-        {/* Rota para histórico dentário (protegida) */}
+         {/* Rota para histórico dentário (protegida) */}
         <Route
           path="/perfil/historico"
           element={(
@@ -126,12 +155,9 @@ function App() {
             </ProtectedRoute>
           )}
         />
-
-        {/* Redirecionar rotas desconhecidas para o login */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+        
+     </Routes>
+      </Router>
   );
 }
 
-export default App;
