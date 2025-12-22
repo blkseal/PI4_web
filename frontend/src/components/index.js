@@ -14,3 +14,7 @@ export { default as InlineSvg } from './InlineSvg';
 export { default as ConsultationsList } from './ConsultationsList';
 export { default as ActionGrid } from './ActionGrid';
 export { default as Navbar } from './Navbar';
+export { default as SearchBar } from './SearchBar';
+export { default as PatientCard } from './PatientCard';
+export { default as ActionCard } from './ActionCard';
+

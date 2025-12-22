@@ -11,11 +11,15 @@ import Home from './pages/Home';
 import Documentacao from './pages/Documentacao';
 import Consultas from './pages/Consultas';
 import AgendaGestor from './pages/AgendaGestor';
+import Pacientes from './pages/Pacientes';
+import NovoPaciente from './pages/NovoPaciente';
+import FichaPaciente from './pages/FichaPaciente';
 import Profile from './pages/Profile';
 import MeusDados from './pages/MeusDados';
 import HistoricoDentario from './pages/HistoricoDentario';
 import Dependentes from './pages/Dependentes';
 import EditarCredenciais from './pages/EditarCredenciais';
+import EditarPaciente from './pages/EditarPaciente';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -23,6 +27,57 @@ const ProtectedRoute = ({ children }) => {
   if (!token) {
     return <Navigate to="/" replace />;
   }
+  return children;
+};
+
+// Rota exclusiva para gestores - redireciona não-gestores para /home
+const GestorRoute = ({ children }) => {
+  const token = localStorage.getItem('accessToken');
+  if (!token) {
+    return <Navigate to="/" replace />;
+  }
+
+  const storedUser = localStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
+  if (user?.tipo !== 'gestor') {
+    return <Navigate to="/home" replace />;
+  }
+
+  return children;
+};
+
+// Rota exclusiva para utentes - redireciona gestores para /agenda
+const UtenteRoute = ({ children }) => {
+  const token = localStorage.getItem('accessToken');
+  if (!token) {
+    return <Navigate to="/" replace />;
+  }
+
+  const storedUser = localStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
+  if (user?.tipo === 'gestor') {
+    return <Navigate to="/agenda" replace />;
+  }
+
+  return children;
+};
+
+// Rota para a página de login - redireciona utilizadores logados
+const LoginRoute = ({ children }) => {
+  const token = localStorage.getItem('accessToken');
+  const storedUser = localStorage.getItem('user');
+
+  if (token && storedUser) {
+    const user = JSON.parse(storedUser);
+    if (user.tipo === 'gestor') {
+      return <Navigate to="/agenda" replace />;
+    } else {
+      return <Navigate to="/home" replace />;
+    }
+  }
+
   return children;
 };
 
@@ -35,94 +90,139 @@ function App() {
     <Router>
       <Routes>
         {/* Rota principal - Página de Login */}
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={
+          <LoginRoute>
+            <Login />
+          </LoginRoute>
+        } />
 
-        {/* Rota para documentação (protegida) */}
+        {/* Rota para documentação (utente) */}
         <Route
           path="/documentacao"
           element={(
-            <ProtectedRoute>
+            <UtenteRoute>
               <Documentacao />
-            </ProtectedRoute>
+            </UtenteRoute>
           )}
         />
 
-        {/* Rota para a página inicial (protegida) */}
+        {/* Rota para a página inicial (utente) */}
         <Route
           path="/home"
           element={(
-            <ProtectedRoute>
+            <UtenteRoute>
               <Home />
-            </ProtectedRoute>
+            </UtenteRoute>
           )}
         />
 
+        {/* Rota para consultas (utente) */}
         <Route
           path="/consultas"
           element={(
-            <ProtectedRoute>
+            <UtenteRoute>
               <Consultas />
-            </ProtectedRoute>
+            </UtenteRoute>
           )}
         />
 
-        {/* Rota para agenda do gestor (protegida) */}
+        {/* Rota para agenda do gestor (gestor only) */}
         <Route
           path="/agenda"
           element={(
-            <ProtectedRoute>
+            <GestorRoute>
               <AgendaGestor />
-            </ProtectedRoute>
+            </GestorRoute>
           )}
         />
 
-        {/* Rota para perfil (protegida) */}
+        {/* Rota para pacientes (gestor only) */}
+        <Route
+          path="/pacientes"
+          element={(
+            <GestorRoute>
+              <Pacientes />
+            </GestorRoute>
+          )}
+        />
+
+        {/* Rota para criar novo paciente (gestor only) */}
+        <Route
+          path="/pacientes/novo"
+          element={(
+            <GestorRoute>
+              <NovoPaciente />
+            </GestorRoute>
+          )}
+        />
+
+        {/* Rota para detalhes do paciente (gestor only) */}
+        <Route
+          path="/pacientes/:id"
+          element={(
+            <GestorRoute>
+              <FichaPaciente />
+            </GestorRoute>
+          )}
+        />
+
+        {/* Rota para editar paciente (gestor only) */}
+        <Route
+          path="/pacientes/:id/editar"
+          element={(
+            <GestorRoute>
+              <EditarPaciente />
+            </GestorRoute>
+          )}
+        />
+
+        {/* Rota para perfil (utente) */}
         <Route
           path="/perfil"
           element={(
-            <ProtectedRoute>
+            <UtenteRoute>
               <Profile />
-            </ProtectedRoute>
+            </UtenteRoute>
           )}
         />
 
-        {/* Rota para os meus dados (protegida) */}
+        {/* Rota para os meus dados (utente) */}
         <Route
           path="/perfil/dados"
           element={(
-            <ProtectedRoute>
+            <UtenteRoute>
               <MeusDados />
-            </ProtectedRoute>
+            </UtenteRoute>
           )}
         />
 
-        {/* Rota para histórico dentário (protegida) */}
+        {/* Rota para histórico dentário (utente) */}
         <Route
           path="/perfil/historico"
           element={(
-            <ProtectedRoute>
+            <UtenteRoute>
               <HistoricoDentario />
-            </ProtectedRoute>
+            </UtenteRoute>
           )}
         />
 
-        {/* Rota para dependentes (protegida) */}
+        {/* Rota para dependentes (utente) */}
         <Route
           path="/perfil/dependentes"
           element={(
-            <ProtectedRoute>
+            <UtenteRoute>
               <Dependentes />
-            </ProtectedRoute>
+            </UtenteRoute>
           )}
         />
 
-        {/* Rota para editar credenciais (protegida) */}
+        {/* Rota para editar credenciais (utente) */}
         <Route
           path="/perfil/credenciais"
           element={(
-            <ProtectedRoute>
+            <UtenteRoute>
               <EditarCredenciais />
-            </ProtectedRoute>
+            </UtenteRoute>
           )}
         />
 
