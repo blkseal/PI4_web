@@ -13,7 +13,7 @@ const navItemsByVariant = {
   ],
   gestor: [
     { label: 'AGENDA', to: '/agenda' },
-    { label: 'PACIENTES' },
+    { label: 'PACIENTES', to: '/pacientes' },
     { label: 'CONSULTAS' },
     { label: 'TRATAMENTOS' },
     { label: 'GESTORES' },
