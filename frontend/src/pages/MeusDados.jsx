@@ -10,22 +10,55 @@ function MeusDados() {
     const [utilizador, setUtilizador] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [dependents, setDependents] = useState([]);
+    const [isViewingDependent, setIsViewingDependent] = useState(false);
+    const [responsibleName, setResponsibleName] = useState("");
+
+    const loadData = async () => {
+        setLoading(true);
+        try {
+            // Load my data
+            const myData = await profileService.getPersonalData();
+            // Normalizar telemovel/telefone se necessário (backend envia telemovel, frontend usa telefone)
+            if (myData.telemovel && !myData.telefone) myData.telefone = myData.telemovel;
+
+            setUtilizador(myData);
+            setResponsibleName(myData.nomeCompleto);
+            setIsViewingDependent(false);
+
+            // Load dependents
+            const deps = await profileService.getDependents();
+            setDependents(deps || []);
+        } catch (err) {
+            console.error("Erro ao carregar dados:", err);
+            setError("Não foi possível carregar os dados.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await profileService.getPersonalData();
-                setUtilizador(data);
-            } catch (err) {
-                console.error("Erro ao carregar dados pessoais:", err);
-                setError("Não foi possível carregar os dados.");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
+        loadData();
     }, []);
+
+    const handleSwitchToDependent = async (id) => {
+        setLoading(true);
+        try {
+            const depData = await profileService.getDependent(id);
+            setUtilizador(depData);
+            setIsViewingDependent(true);
+        } catch (err) {
+            console.error("Erro ao mudar perfil:", err);
+            setError("Erro ao carregar perfil do dependente.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSwitchToResponsible = async () => {
+        // Reload everything (simplest reset)
+        loadData();
+    };
 
     // Formatar data
     const formatDate = (dateString) => {
@@ -57,7 +90,9 @@ function MeusDados() {
             <Navbar variant="utente" />
 
             <main className="meus-dados-main">
-                <h1 className="meus-dados-title">OS MEUS DADOS</h1>
+                <h1 className="meus-dados-title">
+                    {isViewingDependent ? `PERFIL: ${utilizador?.nomeCompleto}` : "OS MEUS DADOS"}
+                </h1>
 
                 <div className="data-card">
                     <div className="fields-container">
@@ -69,12 +104,60 @@ function MeusDados() {
                         ))}
                     </div>
 
-                    <button
-                        className="edit-credentials-btn"
-                        onClick={() => navigate('/perfil/credenciais')}
-                    >
-                        Editar Credenciais
-                    </button>
+                    {!isViewingDependent && (
+                        <button
+                            className="edit-credentials-btn"
+                            onClick={() => navigate('/perfil/credenciais')}
+                        >
+                            Editar Credenciais
+                        </button>
+                    )}
+                </div>
+
+                {/* Secção de Dependentes ou Link para Responsável */}
+                <div className="dependents-section">
+                    {!isViewingDependent ? (
+                        /* Mostrar lista de Dependentes */
+                        <div className="dependents-card">
+                            <h2>Dependentes</h2>
+                            {dependents.length === 0 ? (
+                                <p style={{ color: '#666' }}>Não tem dependentes associados.</p>
+                            ) : (
+                                <div className="dependents-list">
+                                    {dependents.map(dep => (
+                                        <div
+                                            key={dep.id}
+                                            className="dependent-item"
+                                            onClick={() => handleSwitchToDependent(dep.id)}
+                                        >
+                                            <div>
+                                                <strong className="dep-name">{dep.nomeCompleto}</strong>
+                                                <span className="dep-meta">Data de Nascimento: {formatDate(dep.dataNascimento)}</span>
+                                            </div>
+                                            <span className="view-profile-link">Ver Perfil &rarr;</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        /* Mostrar Link para Responsável */
+                        <div className="responsible-card">
+                            <h2>Responsável</h2>
+                            <div
+                                className="responsible-item"
+                                onClick={handleSwitchToResponsible}
+                            >
+                                <div className="responsible-avatar">
+                                    {responsibleName.charAt(0)}
+                                </div>
+                                <div>
+                                    <strong className="dep-name">{responsibleName} (Eu)</strong>
+                                    <span className="dep-meta">Voltar ao meu perfil</span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </main>
 

@@ -42,6 +42,16 @@ const profileService = {
     },
 
     /**
+     * Obtém os detalhes de um dependente específico.
+     * @param {number|string} id - ID do dependente
+     * @returns {Promise<Object>} Detalhes do dependente
+     */
+    getDependent: async (id) => {
+        const response = await api.get(`/perfil/dependentes/${id}`);
+        return response.data;
+    },
+
+    /**
      * Atualiza o PIN (credenciais) do utilizador.
      * @param {Object} data - Objeto contendo { novoPin, confirmarNovoPin }
      * @returns {Promise<void>}

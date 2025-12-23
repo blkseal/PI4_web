@@ -114,3 +114,85 @@
 .edit-credentials-btn:hover {
     background-color: #6D5536;
 }
+
+/* Dependentes Section */
+.dependents-section {
+    width: 100%;
+    max-width: 500px;
+}
+
+.dependents-card, .responsible-card {
+    background-color: #F8F7F4;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dependents-card h2, .responsible-card h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    color: #1a1a1a;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.dependent-item, .responsible-item {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.dependent-item:hover, .responsible-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    background: #fcfcfc;
+    transform: translateY(-2px);
+}
+
+.responsible-item {
+    background: #fff; 
+    gap: 1rem;
+    justify-content: flex-start;
+}
+
+.responsible-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #8B7355;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.dep-name {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.2rem;
+}
+
+.dep-meta {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.view-profile-link {
+    color: #8B7355;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}

@@ -236,6 +236,17 @@
     background: #f5f0eb;
     border-radius: 8px;
     border-left: 4px solid #a48356;
+    transition: all 0.2s ease;
+}
+
+.dependente-card.clickable {
+    cursor: pointer;
+}
+
+.dependente-card.clickable:hover {
+    background: #e8e0d9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .dep-nome {

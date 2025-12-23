@@ -20,6 +20,7 @@ import HistoricoDentario from './pages/HistoricoDentario';
 import Dependentes from './pages/Dependentes';
 import EditarCredenciais from './pages/EditarCredenciais';
 import EditarPaciente from './pages/EditarPaciente';
+import HistoricoMedico from './pages/HistoricoMedico';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -223,6 +224,16 @@ function App() {
             <UtenteRoute>
               <EditarCredenciais />
             </UtenteRoute>
+          )}
+        />
+
+        {/* Rota para Histórico Médico (Gestor only) */}
+        <Route
+          path="/pacientes/:id/historico-medico"
+          element={(
+            <GestorRoute>
+              <HistoricoMedico />
+            </GestorRoute>
           )}
         />
 

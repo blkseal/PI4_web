@@ -1,0 +1,206 @@
+.historico-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #EFECE9;
+    /* Cor de fundo suave */
+    font-family: 'Outfit', sans-serif;
+}
+
+.historico-main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 98%;
+    /* Usar quase toda a largura disponível */
+    width: 98%;
+    margin: 0 auto;
+}
+
+.historico-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #000;
+    text-transform: uppercase;
+}
+
+.patient-name {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #444;
+}
+
+.historico-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* ESTILO DOS CARTÕES */
+.info-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card-header h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #000;
+}
+
+/* .card-body ruleset removed */
+
+.grid-2-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 2rem;
+}
+
+.info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.info-group label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.info-group p {
+    font-weight: 300;
+    font-size: 1rem;
+    color: #555;
+    margin: 0;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.card-actions {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 2rem;
+}
+
+.edit-btn {
+    background-color: #8C7867;
+    /* Cor bronze/castanha do tema */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.edit-btn:hover {
+    background-color: #6d5d4f;
+}
+
+/* SECÇÃO DE EXAMES */
+.exames-section {
+    background: #463935;
+    /* Cor escura do mockup */
+    border-radius: 12px;
+    padding: 2rem;
+    color: white;
+    position: relative;
+}
+
+.exames-header h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.exames-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.exame-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.exame-icon {
+    color: #ccc;
+}
+
+.exame-name {
+    flex: 1;
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+.download-link {
+    color: #fff;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    cursor: pointer;
+}
+
+.download-link:hover {
+    opacity: 1;
+}
+
+.no-exames {
+    font-style: italic;
+    opacity: 0.6;
+}
+
+.exames-upload {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.anexar-btn {
+    background-color: #554844;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.anexar-btn:hover {
+    background-color: #665651;
+}
+
+.simple-footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: #888;
+    font-size: 0.85rem;
+    margin-top: auto;
+}
