@@ -10,7 +10,9 @@ const PedidosConsulta = () => {
         try {
             setLoading(true);
             const response = await api.get('/admin/pedidos-consulta');
-            const formattedPedidos = response.data.map(pedido => ({
+            const data = Array.isArray(response.data) ? response.data : (response.data?.data || []);
+
+            const formattedPedidos = data.map(pedido => ({
                 id: pedido.id,
                 nome: pedido.nome,
                 dia: pedido.data_pedido ? new Date(pedido.data_pedido).toLocaleDateString('pt-PT') : 'A definir',

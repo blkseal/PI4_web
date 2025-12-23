@@ -24,6 +24,7 @@ import ConsultasGestor from './pages/ConsultasGestor';
 import PedidosConsulta from './pages/PedidosConsulta';
 import AgendarConsulta from './pages/AgendarConsulta';
 import ConsultaDetalhes from './pages/ConsultaDetalhes';
+import EditarConsulta from './pages/EditarConsulta';
 import HistoricoConsultas from './pages/HistoricoConsultas';
 import ResumoConsulta from './pages/ResumoConsulta';
 import './App.css';
@@ -208,6 +209,16 @@ function App() {
           element={(
             <GestorRoute>
               <ConsultaDetalhes />
+            </GestorRoute>
+          )}
+        />
+
+        {/* Rota para editar consulta (gestor only) */}
+        <Route
+          path="/gestor/consultas/:id/editar"
+          element={(
+            <GestorRoute>
+              <EditarConsulta />
             </GestorRoute>
           )}
         />
