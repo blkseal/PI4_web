@@ -22,6 +22,8 @@ import EditarCredenciais from './pages/EditarCredenciais';
 import EditarPaciente from './pages/EditarPaciente';
 import ConsultasGestor from './pages/ConsultasGestor';
 import PedidosConsulta from './pages/PedidosConsulta';
+import AgendarConsulta from './pages/AgendarConsulta';
+import ConsultaDetalhes from './pages/ConsultaDetalhes';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -194,6 +196,26 @@ function App() {
           element={(
             <GestorRoute>
               <PedidosConsulta />
+            </GestorRoute>
+          )}
+        />
+
+        {/* Rota para detalhes da consulta (gestor only) */}
+        <Route
+          path="/gestor/consultas/:id"
+          element={(
+            <GestorRoute>
+              <ConsultaDetalhes />
+            </GestorRoute>
+          )}
+        />
+
+        {/* Rota para agendar consulta (gestor only) */}
+        <Route
+          path="/gestor/agendar"
+          element={(
+            <GestorRoute>
+              <AgendarConsulta />
             </GestorRoute>
           )}
         />

@@ -89,7 +89,7 @@ const ConsultasGestor = () => {
                                         <ConsultaCard
                                             key={consulta.id}
                                             {...consulta}
-                                            onClick={() => console.log("Clicked consulta", consulta.id)}
+                                            onClick={() => navigate(`/gestor/consultas/${consulta.id}`)}
                                         />
                                     ))}
                                     {displayLimit < consultas.length && (

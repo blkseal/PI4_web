@@ -32,11 +32,12 @@
 
 /* Card Styles */
 .pedido-card {
-    background-color: #F9F7F5; /* Light creamy background from image */
+    background-color: #F9F7F5;
+    /* Light creamy background from image */
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     position: relative;
 }
 
@@ -54,8 +55,15 @@
     font-weight: 500;
 }
 
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .status-badge {
-    background-color: #8B6E4A; /* Brown color */
+    background-color: #8B6E4A;
+    /* Brown color */
     color: white;
     padding: 0.4rem 1rem;
     border-radius: 4px;
@@ -65,6 +73,33 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+}
+
+.status-badge.registado {
+    background-color: #8B6E4A;
+}
+
+.status-badge.nao_registado {
+    background-color: #5C4A3D;
+    /* Darker brown for visitors */
+}
+
+.delete-pedido-btn {
+    background: none;
+    border: none;
+    color: #c44;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.delete-pedido-btn:hover {
+    background-color: #ffe6e6;
+    color: #a33;
 }
 
 .pedido-body {
