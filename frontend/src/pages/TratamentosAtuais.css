@@ -1,0 +1,259 @@
+/**
+ * TratamentosAtuais.css - Estilos para a página de tratamentos atuais
+ */
+
+.tratamentos-atuais-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #efece9;
+  font-family: var(--font-body);
+}
+
+.tratamentos-atuais-main {
+  flex: 1;
+  padding: 2rem 4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===== HEADER ===== */
+.tratamentos-atuais-header {
+  margin-bottom: 3rem;
+}
+
+.tratamentos-atuais-header .header-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.tratamentos-atuais-header .header-row .back-btn {
+  position: absolute;
+  left: 0;
+}
+
+.tratamentos-atuais-header .page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+  text-transform: uppercase;
+}
+
+/* Back button */
+.tratamentos-atuais-page .back-btn {
+  background-color: #8c7867;
+  color: white;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.tratamentos-atuais-page .back-btn:hover {
+  background-color: #6d5d4f;
+}
+
+.tratamentos-atuais-loading,
+.tratamentos-atuais-error,
+.tratamentos-atuais-empty {
+  text-align: center;
+  padding: 2rem;
+  color: #6b563d;
+  font-size: 0.95rem;
+}
+
+.tratamentos-atuais-error {
+  color: #c44;
+}
+
+/* ========================================
+   FILTROS
+   ======================================== */
+.tratamentos-atuais-filtros {
+  text-align: center;
+}
+
+.filtros-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #6b563d;
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.05em;
+}
+
+.filtros-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.filtro-input {
+  padding: 0.6rem 1rem;
+  border: 1px solid #d1c0aa;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-family: var(--font-logo);
+  color: #333;
+  background: white;
+  min-width: 150px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filtro-input::placeholder {
+  color: #999;
+}
+
+.filtro-input:focus {
+  outline: none;
+  border-color: #a48356;
+  box-shadow: 0 0 0 3px rgba(164, 131, 86, 0.12);
+}
+
+/* ========================================
+   LISTA
+   ======================================== */
+.tratamentos-atuais-lista-section {
+  text-align: center;
+}
+
+.lista-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2f2417;
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.05em;
+}
+
+.tratamentos-atuais-lista {
+  background: #e8e4de;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ========================================
+   ROW DE TRATAMENTO
+   ======================================== */
+.tratamento-atual-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tratamento-atual-row:hover {
+  background: rgba(164, 131, 86, 0.1);
+}
+
+.tratamento-atual-paciente {
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  text-align: left;
+}
+
+.paciente-nome {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2f2417;
+}
+
+.paciente-numero {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.tratamento-atual-nome {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #6b563d;
+  text-align: left;
+}
+
+.tratamento-atual-data {
+  font-size: 0.85rem;
+  color: #666;
+  white-space: nowrap;
+}
+
+/* ========================================
+   VER MAIS
+   ======================================== */
+.ver-mais-btn {
+  margin-top: 0.5rem;
+  background: none;
+  border: none;
+  color: #a48356;
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: var(--font-logo);
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s;
+}
+
+.ver-mais-btn:hover {
+  color: #8b6e4a;
+  text-decoration: underline;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.tratamentos-atuais-footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: #6b563d;
+  font-size: 0.85rem;
+  margin-top: auto;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+  .tratamentos-atuais-main {
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .filtros-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .filtro-input {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .tratamento-atual-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .tratamento-atual-paciente {
+    min-width: auto;
+  }
+
+  .tratamento-atual-nome {
+    text-align: left;
+  }
+}

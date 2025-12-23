@@ -1,90 +1,142 @@
+/**
+ * HistoricoDentario.css - Estilos para página de Histórico Dentário (Utente)
+ */
+
 .historico-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #F0EFE9;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #efece9;
+  font-family: var(--font-body);
 }
 
 .historico-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2.5rem 1rem;
-    gap: 2rem;
+  flex: 1;
+  padding: 2rem 4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===== HEADER ===== */
+.historico-header {
+  margin-bottom: 2rem;
+}
+
+.historico-header .header-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.historico-header .header-row .back-btn {
+  position: absolute;
+  left: 0;
+}
+
+/* Back button */
+.historico-container .back-btn {
+  background-color: #8c7867;
+  color: white;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.historico-container .back-btn:hover {
+  background-color: #6d5d4f;
 }
 
 .historico-page-title {
-    font-size: 2rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin: 0;
-    color: black;
-    letter-spacing: 0.05em;
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0;
+  color: #000;
 }
 
+/* ========================================
+   CARD
+   ======================================== */
 .historico-card {
-    background-color: #F8F7F4;
-    border-radius: 12px;
-    padding: 3rem;
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #e8e4de;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
 }
 
 .card-inner-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0 0 0.5rem 0;
-    color: black;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #2f2417;
 }
 
 .sections-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
 .historico-section {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
 
 .section-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #222;
-    margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #2f2417;
+  margin: 0;
 }
 
 .section-content {
-    font-size: 1rem;
-    color: #444;
-    margin: 0;
-    line-height: 1.4;
+  font-size: 0.9rem;
+  color: #4a4a4a;
+  margin: 0;
+  line-height: 1.5;
 }
 
 .download-btn {
-    align-self: flex-end;
-    background-color: #8B7355;
-    /* Brown color */
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 1rem;
-    transition: background-color 0.2s;
+  align-self: flex-end;
+  padding: 0.6rem 1.2rem;
+  background: #6b6b6b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color 0.2s;
 }
 
 .download-btn:hover {
-    background-color: #6D5536;
+  background: #555;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #6b563d;
+}
+
+.error {
+  color: #c44;
 }

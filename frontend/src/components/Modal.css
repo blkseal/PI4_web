@@ -115,7 +115,7 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
-  font-family: "Outfit", sans-serif;
+  font-family: var(--font-body);
   transition: border-color 0.2s, box-shadow 0.2s;
   background: #fff;
 }

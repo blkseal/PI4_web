@@ -7,7 +7,7 @@
   flex-direction: column;
   min-height: 100vh;
   background-color: #efece9;
-  font-family: "Outfit", sans-serif;
+  font-family: var(--font-body);
 }
 
 .hist-dent-main {

@@ -27,6 +27,18 @@ import EditarCredenciais from "./pages/EditarCredenciais";
 import EditarPaciente from "./pages/EditarPaciente";
 import HistoricoMedico from "./pages/HistoricoMedico";
 import HistoricoDentarioGestor from "./pages/HistoricoDentarioGestor";
+import Tratamentos from "./pages/Tratamentos";
+import CriarTratamento from "./pages/CriarTratamento";
+import ListaTratamentos from "./pages/ListaTratamentos";
+import TratamentoDetalhe from "./pages/TratamentoDetalhe";
+import TratamentosAtuais from "./pages/TratamentosAtuais";
+import NovoTratamentoPaciente from "./pages/NovoTratamentoPaciente";
+import TratamentosPaciente from "./pages/TratamentosPaciente";
+import TratamentoPacienteDetalhe from "./pages/TratamentoPacienteDetalhe";
+import TratamentosUtente from "./pages/TratamentosUtente";
+import TratamentoDetalheUtente from "./pages/TratamentoDetalheUtente";
+import ForgotPin from "./pages/ForgotPin";
+import ResetPin from "./pages/ResetPin";
 import "./App.css";
 
 const ProtectedRoute = ({ children }) => {
@@ -105,6 +117,12 @@ function App() {
             </LoginRoute>
           }
         />
+
+        {/* Rota para recuperação de PIN */}
+        <Route path="/forgot-pin" element={<ForgotPin />} />
+
+        {/* Rota para redefinir PIN */}
+        <Route path="/reset-pin" element={<ResetPin />} />
 
         {/* Rota para documentação (utente) */}
         <Route
@@ -225,6 +243,14 @@ function App() {
             </UtenteRoute>
           }
         />
+        <Route
+          path="/perfil/dependentes/:id"
+          element={
+            <UtenteRoute>
+              <Dependentes />
+            </UtenteRoute>
+          }
+        />
 
         {/* Rota para editar credenciais (utente) */}
         <Route
@@ -232,6 +258,26 @@ function App() {
           element={
             <UtenteRoute>
               <EditarCredenciais />
+            </UtenteRoute>
+          }
+        />
+
+        {/* Rota para tratamentos do utente (utente) */}
+        <Route
+          path="/tratamentos"
+          element={
+            <UtenteRoute>
+              <TratamentosUtente />
+            </UtenteRoute>
+          }
+        />
+
+        {/* Rota para detalhe de tratamento do utente (utente) */}
+        <Route
+          path="/tratamentos/:id"
+          element={
+            <UtenteRoute>
+              <TratamentoDetalheUtente />
             </UtenteRoute>
           }
         />
@@ -252,6 +298,86 @@ function App() {
           element={
             <GestorRoute>
               <HistoricoDentarioGestor />
+            </GestorRoute>
+          }
+        />
+
+        {/* Rota para Tratamentos do Paciente (Gestor only) */}
+        <Route
+          path="/pacientes/:id/tratamentos"
+          element={
+            <GestorRoute>
+              <TratamentosPaciente />
+            </GestorRoute>
+          }
+        />
+
+        {/* Rota para Criar Novo Tratamento para Paciente (Gestor only) */}
+        <Route
+          path="/pacientes/:id/tratamentos/novo"
+          element={
+            <GestorRoute>
+              <NovoTratamentoPaciente />
+            </GestorRoute>
+          }
+        />
+
+        {/* Rota para Detalhe de Tratamento do Paciente (Gestor only) */}
+        <Route
+          path="/pacientes/:id/tratamentos/:tratamentoId"
+          element={
+            <GestorRoute>
+              <TratamentoPacienteDetalhe />
+            </GestorRoute>
+          }
+        />
+
+        {/* Rota para Tratamentos (Gestor only) */}
+        <Route
+          path="/gestao/tratamentos"
+          element={
+            <GestorRoute>
+              <Tratamentos />
+            </GestorRoute>
+          }
+        />
+
+        {/* Rota para Criar Tratamento (Gestor only) */}
+        <Route
+          path="/gestao/tratamentos/criar"
+          element={
+            <GestorRoute>
+              <CriarTratamento />
+            </GestorRoute>
+          }
+        />
+
+        {/* Rota para Lista de Tratamentos (Gestor only) */}
+        <Route
+          path="/gestao/tratamentos/lista"
+          element={
+            <GestorRoute>
+              <ListaTratamentos />
+            </GestorRoute>
+          }
+        />
+
+        {/* Rota para Detalhe de Tipo de Tratamento (Gestor only) */}
+        <Route
+          path="/gestao/tratamentos/tipo/:id"
+          element={
+            <GestorRoute>
+              <TratamentoDetalhe />
+            </GestorRoute>
+          }
+        />
+
+        {/* Rota para Tratamentos Atuais (Gestor only) */}
+        <Route
+          path="/gestao/tratamentos/atuais"
+          element={
+            <GestorRoute>
+              <TratamentosAtuais />
             </GestorRoute>
           }
         />

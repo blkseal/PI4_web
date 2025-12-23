@@ -1,198 +1,234 @@
-.meus-dados-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #F0EFE9;
-}
+/**
+ * MeusDados.css - Estilos para página de Os Meus Dados (Utente)
+ * Segue o padrão das páginas de gestão
+ */
 
-.page-header {
-    background: #6D5536;
-    /* Matching Profile banner */
-    color: white;
-    padding: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.back-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    border-radius: 50%;
-    transition: background 0.2s;
-}
-
-.back-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.page-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+.meus-dados-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #efece9;
+  font-family: var(--font-body);
 }
 
 .meus-dados-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2.5rem 1rem;
-    gap: 2rem;
+  flex: 1;
+  padding: 2rem 4rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.meus-dados-title {
-    font-size: 2rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin: 0;
-    color: black;
-    letter-spacing: 0.05em;
+/* ===== HEADER ===== */
+.meus-dados-header {
+  margin-bottom: 3rem;
 }
 
-.data-card {
-    background-color: #F8F7F4;
-    /* Slightly off-white/beige based on screenshot card tone */
-    border-radius: 12px;
-    padding: 3rem;
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+.meus-dados-page .meus-dados-header .header-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  width: 100%;
 }
 
-.fields-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+.meus-dados-page .meus-dados-header .header-row .back-btn {
+  position: absolute !important;
+  left: 0 !important;
 }
 
-.data-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
+.meus-dados-page .meus-dados-header .meus-dados-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+  text-transform: uppercase;
+}
+
+/* Back button */
+.meus-dados-page .back-btn {
+  background-color: #8c7867;
+  color: white;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.meus-dados-page .back-btn:hover {
+  background-color: #6d5d4f;
+}
+
+/* Loading/Error states */
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 2rem;
+  color: #6b563d;
+  font-size: 0.95rem;
+}
+
+.error-state {
+  color: #c44;
+}
+
+/* ========================================
+   DATA CARD
+   ======================================== */
+.dados-card {
+  background: #e8e4de;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+.fields-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.field-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
 }
 
 .field-label {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #333;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2f2417;
 }
 
 .field-value {
-    font-size: 1.1rem;
-    color: #555;
-    margin: 0;
+  font-size: 0.95rem;
+  color: #5c4730;
+  margin: 0;
 }
 
 .edit-credentials-btn {
-    align-self: flex-end;
-    background-color: #8B7355;
-    /* Brown color */
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 1rem;
-    transition: background-color 0.2s;
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, #a48356 0%, #8b6e4a 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: block;
+  width: fit-content;
+  margin-left: auto;
 }
 
 .edit-credentials-btn:hover {
-    background-color: #6D5536;
+  background: linear-gradient(135deg, #8b6e4a 0%, #7a5f3d 100%);
+  transform: translateY(-1px);
 }
 
-/* Dependentes Section */
+/* ========================================
+   DEPENDENTES SECTION
+   ======================================== */
 .dependents-section {
-    width: 100%;
-    max-width: 500px;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-.dependents-card, .responsible-card {
-    background-color: #F8F7F4;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+.dependents-card,
+.responsible-card {
+  background: #e8e4de;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.dependents-card h2, .responsible-card h2 {
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
-    color: #1a1a1a;
-    font-weight: 700;
-    text-transform: uppercase;
+.dependents-card h2,
+.responsible-card h2 {
+  font-size: 1.1rem;
+  margin: 0 0 1rem 0;
+  color: #2f2417;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
-.dependent-item, .responsible-item {
-    background: #fff;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 0.8rem;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.2s ease;
+.dependents-list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.dependent-item:hover, .responsible-item:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    background: #fcfcfc;
-    transform: translateY(-2px);
+.dependent-item,
+.responsible-item {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.dependent-item:hover,
+.responsible-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
 }
 
 .responsible-item {
-    background: #fff; 
-    gap: 1rem;
-    justify-content: flex-start;
+  gap: 1rem;
+  justify-content: flex-start;
 }
 
 .responsible-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: #8B7355;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: #fff;
-    font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a48356 0%, #8b6e4a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #fff;
+  font-size: 1rem;
 }
 
 .dep-name {
-    display: block;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 0.2rem;
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2f2417;
+  margin-bottom: 0.1rem;
 }
 
 .dep-meta {
-    font-size: 0.9rem;
-    color: #666;
+  font-size: 0.85rem;
+  color: #6b563d;
 }
 
 .view-profile-link {
-    color: #8B7355;
-    font-size: 0.9rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.2rem;
+  color: #a48356;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.meus-dados-footer {
+  text-align: center;
+  padding: 1rem;
+  color: #6b563d;
+  font-size: 0.85rem;
 }

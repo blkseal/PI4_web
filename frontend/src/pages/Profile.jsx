@@ -44,7 +44,7 @@ function Profile() {
             {/* Banner do Utilizador */}
             <section className="user-banner">
                 <h1 className="user-name">{utilizador?.nomeCompleto || "Utilizador"}</h1>
-                <p className="user-number">Nº Utente: {utilizador?.numeroUtente || "N/A"}</p>
+                <p className="user-number">Nº Utente: {utilizador?.nus || "N/A"}</p>
                 <p className="user-date">Data de Nascimento: {formatDate(utilizador?.dataNascimento)}</p>
             </section>
 
