@@ -1,0 +1,120 @@
+.pedidos-consulta-page {
+    background-color: #f2eee9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-logo);
+}
+
+.pedidos-consulta-content {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    flex: 1;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 1.75rem;
+    margin-bottom: 2.5rem;
+    font-weight: 700;
+    color: #2f2417;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.pedidos-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Card Styles */
+.pedido-card {
+    background-color: #F9F7F5; /* Light creamy background from image */
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0,0,0,0.05);
+    position: relative;
+}
+
+.pedido-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.pedido-name {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+    font-weight: 500;
+}
+
+.status-badge {
+    background-color: #8B6E4A; /* Brown color */
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pedido-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.pedido-info-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.info-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #444;
+}
+
+.motivo-label {
+    font-weight: 600;
+    color: #444;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.motivo-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #666;
+}
+
+/* Footer (reuse from other pages style if possible, or defined here) */
+.pedidos-footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: #6b563d;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+    .pedido-body {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}

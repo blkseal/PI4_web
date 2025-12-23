@@ -20,6 +20,8 @@ import HistoricoDentario from './pages/HistoricoDentario';
 import Dependentes from './pages/Dependentes';
 import EditarCredenciais from './pages/EditarCredenciais';
 import EditarPaciente from './pages/EditarPaciente';
+import ConsultasGestor from './pages/ConsultasGestor';
+import PedidosConsulta from './pages/PedidosConsulta';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -172,6 +174,26 @@ function App() {
           element={(
             <GestorRoute>
               <EditarPaciente />
+            </GestorRoute>
+          )}
+        />
+
+        {/* Rota para consultas do gestor (gestor only) */}
+        <Route
+          path="/gestor/consultas"
+          element={(
+            <GestorRoute>
+              <ConsultasGestor />
+            </GestorRoute>
+          )}
+        />
+
+        {/* Rota para pedidos de consulta do gestor (gestor only) */}
+        <Route
+          path="/gestor/pedidos"
+          element={(
+            <GestorRoute>
+              <PedidosConsulta />
             </GestorRoute>
           )}
         />
