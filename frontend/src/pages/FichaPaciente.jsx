@@ -16,7 +16,8 @@ function FichaPaciente() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [paciente, setPaciente] = useState(null);
-    const [dependentes, setDependentes] = useState([]);
+    const [responsavelCompleto, setResponsavelCompleto] = useState(null);
+    const [dependentesCompletos, setDependentesCompletos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -26,10 +27,35 @@ function FichaPaciente() {
             setError('');
             try {
                 const resp = await api.get(`/pacientes/${id}`);
-                setPaciente(resp?.data?.data || resp?.data || null);
+                const data = resp?.data?.data || resp?.data || null;
+                setPaciente(data);
 
-                // Dependentes fetch removed as endpoint is not yet implemented
-                setDependentes([]);
+                // Reset extra states
+                setResponsavelCompleto(null);
+                setDependentesCompletos([]);
+
+                // Fetch full details for Responsável if exists
+                if (data?.responsavel?.id) {
+                    try {
+                        const respResp = await api.get(`/pacientes/${data.responsavel.id}`);
+                        setResponsavelCompleto(respResp?.data?.data || respResp?.data);
+                    } catch (err) {
+                        console.error("Erro ao carregar responsável:", err);
+                    }
+                }
+
+                // Fetch full details for Dependentes if exist
+                if (data?.dependentes?.length > 0) {
+                    try {
+                        const depsPromises = data.dependentes.map(d => api.get(`/pacientes/${d.id}`));
+                        const depsResponses = await Promise.all(depsPromises);
+                        const depsData = depsResponses.map(r => r?.data?.data || r?.data);
+                        setDependentesCompletos(depsData);
+                    } catch (err) {
+                        console.error("Erro ao carregar dependentes:", err);
+                    }
+                }
+
             } catch (err) {
                 if (err.response?.status === 404) {
                     setError('Paciente não encontrado.');
@@ -162,6 +188,16 @@ function FichaPaciente() {
 
                     {/* Action buttons */}
                     <aside className="actions-sidebar">
+                        {paciente?.responsavel && (
+                            <button
+                                type="button"
+                                className="action-btn light"
+                                onClick={() => alert('Funcionalidade de desvincular ainda não implementada.')}
+                            >
+                                DESVINCULAR DEPENDÊNCIA
+                            </button>
+                        )}
+
                         <button
                             type="button"
                             className="action-btn light"
@@ -202,40 +238,79 @@ function FichaPaciente() {
                         <button
                             type="button"
                             className="action-btn dark"
-                            disabled
+                            onClick={() => navigate(`/pacientes/${id}/historico-medico`)}
                         >
                             <span className="action-text">HISTÓRICO MÉDICO</span>
                             <div className="action-icon" style={{ marginTop: '0.25rem' }}>
                                 <Stethoscope size={32} strokeWidth={1.5} />
                             </div>
-                            <span className="action-subtext">SOMENTE ACESSÍVEL A MÉDICOS</span>
+                            {/* <span className="action-subtext">SOMENTE ACESSÍVEL A MÉDICOS</span> */}
                         </button>
                     </aside>
                 </div>
 
                 {/* Dependentes section */}
+                {/* Dependentes section or Responsible section */}
                 <section className="dependentes-section">
-                    <div className="dependentes-header">
-                        <h3>Dependentes</h3>
-                        <button type="button" className="editar-btn">Editar Dados ✎</button>
-                    </div>
-                    <div className="dependentes-list">
-                        {dependentes.length === 0 ? (
-                            <p className="no-dependentes">Sem dependentes registados.</p>
-                        ) : (
-                            dependentes.map((dep, idx) => (
-                                <div key={dep.id || idx} className="dependente-card">
-                                    <span className="dep-nome">{dep.nomeCompleto}</span>
-                                    <span className="dep-info">
-                                        Data de Nascimento: {formatDate(dep.dataNascimento)}
-                                        {calculateAge(dep.dataNascimento) !== null && ` (${calculateAge(dep.dataNascimento)})`}
-                                    </span>
-                                    <span className="dep-info">Nº Utente: {dep.numeroUtente || '—'}</span>
-                                    <span className="dep-info">Agregado: {dep.agregado || '—'}</span>
-                                </div>
-                            ))
-                        )}
-                    </div>
+                    {/* Caso tenha responsável (é dependente) */}
+                    {paciente?.responsavel ? (
+                        <>
+                            <div className="dependentes-header">
+                                <h3>Responsável</h3>
+                                <button type="button" className="editar-btn" onClick={() => navigate(`/pacientes/${id}/editar`)}>Editar Dados ✎</button>
+                            </div>
+                            <div className="dependentes-list">
+                                {responsavelCompleto ? (
+                                    <div
+                                        className="dependente-card clickable"
+                                        onClick={() => navigate(`/pacientes/${responsavelCompleto.id}`)}
+                                    >
+                                        <span className="dep-nome">{responsavelCompleto.nomeCompleto}</span>
+                                        <span className="dep-info">
+                                            Data de Nascimento: {formatDate(responsavelCompleto.dataNascimento)} {calculateAge(responsavelCompleto.dataNascimento) !== null && ` (${calculateAge(responsavelCompleto.dataNascimento)})`}
+                                        </span>
+                                        <span className="dep-info">Nº Utente: {responsavelCompleto.nus || '—'}</span>
+                                        <span className="dep-info">Agregado: Pai/Mãe</span>
+                                    </div>
+                                ) : (
+                                    <p className="loading-state">A carregar responsável...</p>
+                                )}
+                            </div>
+                        </>
+                    ) : (
+                        /* Caso não tenha responsável (é titular/independente) -> Mostra dependentes */
+                        <>
+                            <div className="dependentes-header">
+                                <h3>Dependentes</h3>
+                                <button type="button" className="editar-btn" onClick={() => navigate(`/pacientes/${id}/editar`)}>Editar Dados ✎</button>
+                            </div>
+                            <div className="dependentes-list">
+                                {(!dependentesCompletos || dependentesCompletos.length === 0) ? (
+                                    paciente?.dependentes?.length > 0 ? (
+                                        <p className="loading-state">A carregar dependentes...</p>
+                                    ) : (
+                                        <p className="no-dependentes">Sem dependentes registados.</p>
+                                    )
+                                ) : (
+                                    dependentesCompletos.map((dep) => (
+                                        <div
+                                            key={dep.id}
+                                            className="dependente-card clickable"
+                                            onClick={() => navigate(`/pacientes/${dep.id}`)}
+                                        >
+                                            <span className="dep-nome">{dep.nomeCompleto}</span>
+                                            <span className="dep-info">
+                                                Data de Nascimento: {formatDate(dep.dataNascimento)}
+                                                {calculateAge(dep.dataNascimento) !== null && ` (${calculateAge(dep.dataNascimento)})`}
+                                            </span>
+                                            <span className="dep-info">Nº Utente: {dep.nus || '—'}</span>
+                                            <span className="dep-info">Agregado: Filho(a)</span>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        </>
+                    )}
                 </section>
             </main>
 

@@ -1,0 +1,252 @@
+/**
+ * CriarTratamento.css - Estilos para a página de criar tratamento
+ */
+
+.criar-tratamento-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #efece9;
+  font-family: var(--font-body);
+}
+
+.criar-tratamento-main {
+  flex: 1;
+  padding: 2rem 4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===== HEADER ===== */
+.criar-tratamento-header {
+  margin-bottom: 3rem;
+}
+
+.criar-tratamento-header .header-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.criar-tratamento-header .header-row .back-btn {
+  position: absolute;
+  left: 0;
+}
+
+.criar-tratamento-header .page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+  text-transform: uppercase;
+}
+
+/* Back button */
+.criar-tratamento-page .back-btn {
+  background-color: #8c7867;
+  color: white;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.criar-tratamento-page .back-btn:hover {
+  background-color: #6d5d4f;
+}
+
+/* ========================================
+   FORM CONTAINER
+   ======================================== */
+.criar-tratamento-form {
+  background: #ebe6df;
+  border-radius: 14px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.form-error {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+/* ========================================
+   FORM ROWS
+   ======================================== */
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-row.three-cols .form-group {
+  flex: 1;
+}
+
+/* ========================================
+   FORM GROUP
+   ======================================== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2f2417;
+}
+
+/* ========================================
+   INPUT WITH ICON
+   ======================================== */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon input {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  border: 1px solid #d1c0aa;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: var(--font-logo);
+  color: #333;
+  background: white;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-with-icon input::placeholder {
+  color: #999;
+}
+
+.input-with-icon input:focus {
+  outline: none;
+  border-color: #a48356;
+  box-shadow: 0 0 0 3px rgba(164, 131, 86, 0.12);
+}
+
+.input-icon {
+  position: absolute;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.tooth-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.tooth-icon svg path {
+  fill: #a48356;
+}
+
+/* ========================================
+   TEXTAREA
+   ======================================== */
+.form-group textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1c0aa;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: var(--font-logo);
+  color: #333;
+  background: white;
+  resize: vertical;
+  min-height: 120px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group textarea::placeholder {
+  color: #999;
+}
+
+.form-group textarea:focus {
+  outline: none;
+  border-color: #a48356;
+  box-shadow: 0 0 0 3px rgba(164, 131, 86, 0.12);
+}
+
+/* ========================================
+   FORM ACTIONS
+   ======================================== */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.submit-btn {
+  padding: 0.75rem 2rem;
+  background: #8b7355;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: var(--font-logo);
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #6b563d;
+  transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.criar-tratamento-footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: #6b563d;
+  font-size: 0.85rem;
+  margin-top: auto;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+  .criar-tratamento-main {
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .criar-tratamento-form {
+    padding: 1.5rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-row.three-cols .form-group {
+    flex: none;
+  }
+}

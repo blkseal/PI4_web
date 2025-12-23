@@ -80,11 +80,12 @@ function NovoPaciente() {
                     localidade: '',
                 },
                 criarUtilizador: formData.dependente === false && formData.enviarCredenciais === true,
+                enviarCredenciais: formData.dependente === false && formData.enviarCredenciais === true,
             };
 
             // If dependente, add responsavelId
             if (formData.dependente && formData.responsavelId) {
-                payload.responsavelId = parseInt(formData.responsavelId, 10);
+                payload.idResponsavel = parseInt(formData.responsavelId, 10);
             }
 
             await api.post('/pacientes', payload);

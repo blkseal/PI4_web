@@ -1,0 +1,229 @@
+/**
+ * ResetPin.css - Estilos para a página de redefinição de PIN
+ * Segue o mesmo padrão visual da página de Login
+ */
+
+/* ========================================
+   CONTAINER PRINCIPAL
+   ======================================== */
+.reset-pin-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg-white, hsla(36, 21%, 91%, 1));
+  position: relative;
+  overflow: hidden;
+}
+
+/* ========================================
+   SECÇÃO DO LOGO
+   ======================================== */
+.reset-pin-logo-section {
+  padding: 40px 20px;
+  text-align: center;
+  z-index: 2;
+}
+
+/* ========================================
+   SECÇÃO DO FORMULÁRIO
+   ======================================== */
+.reset-pin-form-section {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reset-pin-form-section .curved-background {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150%;
+  height: 100%;
+  background: var(
+    --bg-brown,
+    linear-gradient(155deg, #6d5536 10.24%, #886a44 109.69%)
+  );
+  border-radius: 200% 200% 0 0 / 2000px;
+  z-index: 0;
+}
+
+/* ========================================
+   CARD DO FORMULÁRIO
+   ======================================== */
+.reset-pin-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  padding: 40px 30px;
+  margin-top: 20px;
+}
+
+.reset-pin-title {
+  color: var(--text-light, #f6f3ee);
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 15px;
+  font-family: var(--font-body);
+}
+
+.reset-pin-description {
+  color: var(--text-light, #f6f3ee);
+  font-size: 0.95rem;
+  text-align: center;
+  margin-bottom: 25px;
+  opacity: 0.9;
+  font-family: var(--font-body);
+}
+
+/* ========================================
+   ÁREA DE ACÇÕES
+   ======================================== */
+.reset-pin-card .action-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.reset-pin-card .back-link {
+  color: var(--text-light, #f6f3ee);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+  font-family: var(--font-body);
+}
+
+.reset-pin-card .back-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.reset-pin-card .submit-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--bg-white, hsla(36, 21%, 91%, 1));
+  color: var(--bg-brown-solid, #6d5536);
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-body);
+}
+
+.reset-pin-card .submit-button svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.reset-pin-card .submit-button:hover {
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.reset-pin-card .submit-button:hover svg {
+  transform: translateX(3px);
+}
+
+.reset-pin-card .submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ========================================
+   MENSAGENS
+   ======================================== */
+.reset-pin-card .error-message {
+  background: rgba(220, 53, 69, 0.2);
+  border: 1px solid rgba(220, 53, 69, 0.5);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  color: #ffc9cf;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.error-content {
+  text-align: center;
+}
+
+/* ========================================
+   SUCESSO
+   ======================================== */
+.success-content {
+  text-align: center;
+}
+
+.success-message {
+  background: rgba(40, 167, 69, 0.2);
+  border: 1px solid rgba(40, 167, 69, 0.5);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 25px;
+  color: #d4edda;
+  font-size: 0.95rem;
+}
+
+.success-message p {
+  margin: 0 0 10px 0;
+}
+
+.success-message p:last-child {
+  margin-bottom: 0;
+}
+
+.back-to-login-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--bg-white, hsla(36, 21%, 91%, 1));
+  color: var(--bg-brown-solid, #6d5536);
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-body);
+  text-decoration: none;
+}
+
+.back-to-login-btn:hover {
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+@media (max-width: 480px) {
+  .reset-pin-card {
+    padding: 30px 20px;
+  }
+
+  .reset-pin-card .action-area {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .reset-pin-card .submit-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,189 @@
+/**
+ * TratamentosUtente.css - Estilos para lista de tratamentos do utente
+ * Segue o padrão exato das páginas de gestão (ListaTratamentos)
+ */
+
+.tratamentos-utente-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #efece9;
+  font-family: var(--font-body);
+}
+
+.tratamentos-utente-main {
+  flex: 1;
+  padding: 2rem 4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===== HEADER ===== */
+.tratamentos-header {
+  margin-bottom: 3rem;
+}
+
+.tratamentos-utente-page .tratamentos-header .header-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.tratamentos-utente-page .tratamentos-header .header-row .back-btn {
+  position: absolute !important;
+  left: 0 !important;
+}
+
+.tratamentos-utente-page .tratamentos-header .page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+  text-transform: uppercase;
+}
+
+/* Back button */
+.tratamentos-utente-page .back-btn {
+  background-color: #8c7867;
+  color: white;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.tratamentos-utente-page .back-btn:hover {
+  background-color: #6d5d4f;
+}
+
+/* Loading/Error states */
+.loading-state,
+.error-state,
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #6b563d;
+  font-size: 0.95rem;
+}
+
+.error-state {
+  color: #c44;
+}
+
+/* ========================================
+   LISTA DE TRATAMENTOS
+   ======================================== */
+.tratamentos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ========================================
+   CARD DE TRATAMENTO
+   ======================================== */
+.tratamento-card {
+  background: #e8e4de;
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tratamento-card-content {
+  display: flex;
+  gap: 2rem;
+}
+
+.tratamento-card-left {
+  flex: 0 0 auto;
+  min-width: 200px;
+}
+
+.tratamento-card-right {
+  flex: 1;
+}
+
+.tratamento-nome {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2f2417;
+  margin: 0 0 0.75rem 0;
+}
+
+.tratamento-info {
+  font-size: 0.9rem;
+  color: #4a4a4a;
+  margin: 0.3rem 0;
+}
+
+.tratamento-info strong {
+  color: #2f2417;
+}
+
+.tratamento-info-section {
+  font-size: 0.9rem;
+  color: #4a4a4a;
+}
+
+.tratamento-info-section strong {
+  color: #2f2417;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.tratamento-info-section .info-text {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ========================================
+   BOTÃO VER TRATAMENTO
+   ======================================== */
+.ver-tratamento-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #a48356 0%, #8b6e4a 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ver-tratamento-btn:hover {
+  background: linear-gradient(135deg, #8b6e4a 0%, #7a5f3d 100%);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+  .tratamentos-utente-main {
+    padding: 1.5rem 1rem;
+  }
+
+  .tratamento-card-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .ver-tratamento-btn {
+    position: static;
+    margin-top: 1rem;
+    width: 100%;
+  }
+}

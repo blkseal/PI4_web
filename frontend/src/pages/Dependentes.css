@@ -1,117 +1,243 @@
-.dependentes-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #F0EFE9;
+/**
+ * Dependentes.css - Estilos para página de Dependentes (Utente)
+ * Segue o padrão exato das páginas de gestão
+ */
+
+.dependentes-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #efece9;
+  font-family: var(--font-body);
 }
 
 .dependentes-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2.5rem 1rem;
-    /* Increased top padding to vertically center title/content more like screenshot */
-    gap: 3rem;
+  flex: 1;
+  padding: 2rem 4rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.dependentes-page-title {
-    font-size: 2rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin: 0;
-    color: black;
-    letter-spacing: 0.05em;
+/* ===== HEADER ===== */
+.dependentes-header {
+  margin-bottom: 3rem;
 }
 
-/* LIST VIEW STYLES */
+.dependentes-page .dependentes-header .header-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.dependentes-page .dependentes-header .header-row .back-btn {
+  position: absolute !important;
+  left: 0 !important;
+}
+
+.dependentes-page .dependentes-header .dependentes-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+  text-transform: uppercase;
+}
+
+/* Back button */
+.dependentes-page .back-btn {
+  background-color: #8c7867;
+  color: white;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.dependentes-page .back-btn:hover {
+  background-color: #6d5d4f;
+}
+
+/* Loading/Error states */
+.loading-state,
+.error-state,
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #6b563d;
+  font-size: 0.95rem;
+}
+
+.error-state {
+  color: #c44;
+}
+
+/* ========================================
+   LIST VIEW
+   ======================================== */
 .dependents-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 400px;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .dependent-btn {
-    background-color: white;
-    border: none;
-    border-radius: 8px;
-    /* Slightly rounded */
-    padding: 1rem 3rem;
-    width: 100%;
-    max-width: 300px;
-    font-family: inherit;
-    font-size: 1rem;
-    color: #6D5536;
-    /* Brownish text color */
-    font-weight: 500;
-    text-transform: capitalize;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+  background: #e8e4de;
+  border: none;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 100%;
+  font-family: inherit;
+  font-size: 1.1rem;
+  color: #2f2417;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
 }
 
 .dependent-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #e0dbd4;
 }
 
-/* DETAIL VIEW STYLES (Reused from MeusDados mostly) */
-.data-card {
-    background-color: #F8F7F4;
-    border-radius: 12px;
-    padding: 3rem;
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+/* ========================================
+   DETAIL VIEW
+   ======================================== */
+.detail-card {
+  background: #e8e4de;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.fields-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+.detail-card .dependent-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2f2417;
+  margin: 0 0 1.5rem 0;
 }
 
-.data-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
+.fields-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem 2rem;
+}
+
+@media (max-width: 768px) {
+  .fields-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .field-label {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #333;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #2f2417;
 }
 
 .field-value {
-    font-size: 1.1rem;
-    color: #555;
-    margin: 0;
+  font-size: 1rem;
+  color: #4a4a4a;
+  margin: 0;
+}
+
+/* ========================================
+   ACTIONS
+   ======================================== */
+.detail-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  gap: 1rem;
 }
 
 .switch-profile-btn {
-    align-self: flex-end;
-    background-color: #8B7355;
-    /* Brown color */
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 1rem;
-    transition: background-color 0.2s;
+  padding: 0.6rem 1.5rem;
+  background: linear-gradient(135deg, #a48356 0%, #8b6e4a 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .switch-profile-btn:hover {
-    background-color: #6D5536;
+  background: linear-gradient(135deg, #8b6e4a 0%, #7a5f3d 100%);
+}
+
+.switch-profile-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   BANNER ACTING AS
+   ======================================== */
+.acting-as-banner {
+  background: linear-gradient(135deg, #a48356 0%, #8b6e4a 100%);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.acting-as-banner span {
+  font-weight: 500;
+}
+
+.return-to-main-btn {
+  background: white;
+  color: #8b6e4a;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.return-to-main-btn:hover {
+  background: #f5f5f5;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+  .dependentes-main {
+    padding: 1.5rem 1rem;
+  }
+
+  .detail-actions {
+    flex-direction: column;
+  }
+
+  .switch-profile-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }

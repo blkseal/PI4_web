@@ -1,135 +1,142 @@
 .pacientes-page {
-    min-height: 100vh;
-    background: #f2eee9;
-    display: flex;
-    flex-direction: column;
-    font-family: var(--font-logo);
+  min-height: 100vh;
+  background: #f2eee9;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-logo);
 }
 
 .pacientes-main {
-    flex: 1;
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 2rem 1.5rem 3rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .pacientes-title {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #2f2417;
-    text-align: center;
-    margin: 0;
-    letter-spacing: 0.05em;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2f2417;
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0.05em;
 }
 
 .pacientes-content {
-    display: flex;
-    gap: 2rem;
-    align-items: start;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
 }
 
 /* Lista de Pacientes */
 .pacientes-list-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .pacientes-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    background: #e8e2db;
-    border-radius: 12px;
-    padding: 1rem;
-    min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: #e8e2db;
+  border-radius: 12px;
+  padding: 1rem;
+  min-height: 400px;
 }
 
 .pacientes-loading,
 .pacientes-error,
 .pacientes-empty {
-    text-align: center;
-    padding: 2rem;
-    color: #6b563d;
-    font-size: 0.95rem;
+  text-align: center;
+  padding: 2rem;
+  color: #6b563d;
+  font-size: 0.95rem;
 }
 
 .pacientes-error {
-    color: #c44;
+  color: #c44;
 }
 
 .load-more-btn {
-    align-self: center;
-    background: none;
-    border: none;
-    color: #a48356;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    transition: color 0.2s;
-    font-family: var(--font-logo);
+  align-self: center;
+  background: none;
+  border: none;
+  color: #a48356;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: color 0.2s;
+  font-family: var(--font-logo);
 }
 
 .load-more-btn:hover {
-    color: #8b6e4a;
-    text-decoration: underline;
+  color: #8b6e4a;
+  text-decoration: underline;
 }
 
 /* Sidebar de Ações */
 .pacientes-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    width: 240px;
-    flex-shrink: 0;
-    margin-top: 3.5rem;
-    /* Align with list container (SearchBar height + gap) */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 240px;
+  flex-shrink: 0;
 }
 
 /* Footer */
 .pacientes-footer {
-    text-align: center;
-    padding: 1.5rem;
-    color: #6b563d;
-    font-size: 0.85rem;
+  text-align: center;
+  padding: 1.5rem;
+  color: #6b563d;
+  font-size: 0.85rem;
 }
 
 /* Responsive */
-@media (max-width: 900px) {
-    .pacientes-content {
-        flex-direction: column;
-    }
+@media (max-width: 1024px) {
+  .pacientes-main {
+    max-width: 100%;
+    padding: 2rem 1rem 3rem;
+  }
 
-    .pacientes-sidebar {
-        width: 100%;
-        flex-direction: row;
-        justify-content: center;
-    }
+  .pacientes-content {
+    flex-direction: column;
+  }
 
-    .pacientes-sidebar .action-card {
-        flex: 1;
-        max-width: 200px;
-    }
+  .pacientes-list-section {
+    width: 100%;
+  }
+
+  .pacientes-sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .pacientes-sidebar .action-card {
+    flex: 1;
+    max-width: 200px;
+  }
 }
 
 @media (max-width: 600px) {
-    .pacientes-main {
-        padding: 1.5rem 1rem 2rem;
-    }
+  .pacientes-main {
+    padding: 1.5rem 1rem 2rem;
+  }
 
-    .pacientes-sidebar {
-        flex-direction: column;
-        align-items: center;
-    }
+  .pacientes-sidebar {
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .pacientes-sidebar .action-card {
-        max-width: 100%;
-        width: 100%;
-    }
+  .pacientes-sidebar .action-card {
+    max-width: 100%;
+    width: 100%;
+  }
 }

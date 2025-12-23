@@ -1,14 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Navbar, ConsultationsList, ActionGrid, InlineSvg } from '../components';
-import api from '../services/api';
-import toothSvg from '../assets/tooth.svg?raw';
-import historicoSvg from '../assets/historico_consultas.svg?raw';
-import './Consultas.css';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Navbar,
+  ConsultationsList,
+  ActionGrid,
+  InlineSvg,
+} from "../components";
+import api from "../services/api";
+import toothSvg from "../assets/tooth.svg?raw";
+import historicoSvg from "../assets/historico_consultas.svg?raw";
+import "./Consultas.css";
 
 function Consultas() {
+  const navigate = useNavigate();
   const [consultas, setConsultas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     // const storedUser = localStorage.getItem('user');
@@ -21,17 +28,17 @@ function Consultas() {
     let cancelled = false;
     const fetchConsultas = async () => {
       setLoading(true);
-      setError('');
+      setError("");
       try {
-        const resp = await api.get('/home');
+        const resp = await api.get("/home");
         if (cancelled) return;
         setConsultas(resp?.data?.proximasConsultas || []);
       } catch (err) {
         if (cancelled) return;
         if (err.response?.status === 401) {
-          setError('Sessão expirada. Inicie sessão novamente.');
+          setError("Sessão expirada. Inicie sessão novamente.");
         } else {
-          setError('Não foi possível carregar as consultas.');
+          setError("Não foi possível carregar as consultas.");
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -39,19 +46,21 @@ function Consultas() {
     };
 
     fetchConsultas();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const actionItems = [
     {
-      title: 'HISTÓRICO DE<br/>CONSULTAS',
+      title: "HISTÓRICO DE<br/>CONSULTAS",
       icon: <InlineSvg svg={historicoSvg} />,
-      onClick: () => { },
+      onClick: () => navigate("/historico-dentario"),
     },
     {
-      title: 'TRATAMENTOS',
+      title: "TRATAMENTOS",
       icon: <InlineSvg svg={toothSvg} className="tooth-svg" />,
-      onClick: () => { },
+      onClick: () => navigate("/tratamentos"),
     },
   ];
 
