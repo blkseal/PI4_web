@@ -17,8 +17,18 @@ function ConsultaDetalhes() {
             setLoading(true);
             setError('');
             try {
-                const resp = await api.get(`/admin/consultas/${id}`);
-                setConsulta(resp.data);
+                // Como não existe endpoint de detalhe individual, vamos buscar a lista
+                // e encontrar a consulta pelo ID.
+                const resp = await api.get('/admin/consultas', { params: { pageSize: 1000 } });
+                const lista = Array.isArray(resp.data) ? resp.data : [];
+
+                const found = lista.find(c => c.id.toString() === id.toString());
+
+                if (found) {
+                    setConsulta(found);
+                } else {
+                    setError('Consulta não encontrada na lista do sistema.');
+                }
             } catch (err) {
                 console.error('Erro ao procurar consulta:', err);
                 setError('Não foi possível carregar os detalhes da consulta.');
@@ -31,13 +41,15 @@ function ConsultaDetalhes() {
     }, [id]);
 
     const handleUpdateStatus = async (novoStatus) => {
+        // [AVISO] Como não podemos mexer na API, esta função irá falhar se não
+        // existir o endpoint PUT /admin/consultas/:id/status no backend.
         try {
             await api.put(`/admin/consultas/${id}/status`, { status: novoStatus });
-            setConsulta(prev => ({ ...prev, status: novoStatus }));
+            setConsulta(prev => ({ ...prev, estado: novoStatus }));
             alert(`Consulta marcada como ${novoStatus === 'concluida' ? 'concluída' : 'cancelada'}!`);
         } catch (err) {
             console.error('Erro ao atualizar estado:', err);
-            alert('Erro ao atualizar o estado da consulta.');
+            alert('Erro: O backend ainda não tem o endpoint para atualizar o estado desta forma.');
         }
     };
 
@@ -52,23 +64,17 @@ function ConsultaDetalhes() {
         return timeStr.slice(0, 5);
     };
 
-    // Helper to check if date has passed
     const isPastDate = (dateStr, timeStr) => {
         if (!dateStr) return false;
         const now = new Date();
         const consultDate = new Date(dateStr);
-
-        // If it's a different day
         if (consultDate.setHours(0, 0, 0, 0) < now.setHours(0, 0, 0, 0)) return true;
-
-        // If it's same day, compare time
         if (consultDate.setHours(0, 0, 0, 0) === now.setHours(0, 0, 0, 0) && timeStr) {
             const [hours, minutes] = timeStr.split(':');
             const consultTime = new Date();
             consultTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
             return consultTime < new Date();
         }
-
         return false;
     };
 
@@ -93,8 +99,10 @@ function ConsultaDetalhes() {
         );
     }
 
+    // O backend usa 'estado', o teu código antigo usava 'status'
+    const estadoAtual = consulta.estado || 'pendente';
     const showStatusQuestion = isPastDate(consulta.data, consulta.horaInicio) &&
-        (consulta.status === 'pendente' || consulta.status === 'Por Acontecer');
+        (estadoAtual === 'pendente' || estadoAtual === 'por acontecer');
 
     return (
         <div className="consulta-detalhes-page">
@@ -145,19 +153,19 @@ function ConsultaDetalhes() {
                         </div>
                         <div className="info-item">
                             <span className="label">Associada a um tratamento?:</span>
-                            <span className="value">{consulta.tratamento ? 'Sim' : 'Não'}</span>
+                            <span className="value">{consulta.associadoATratamento ? 'Sim' : 'Não'}</span>
                         </div>
                         <div className="info-item">
                             <span className="label">Estado:</span>
                             <span className="value" style={{ textTransform: 'capitalize' }}>
-                                {consulta.status === 'pendente' ? 'Por Acontecer' : consulta.status}
+                                {estadoAtual === 'pendente' ? 'Por Acontecer' : estadoAtual}
                             </span>
                         </div>
 
                         <div className="notas-box">
                             <span className="label">Notas:</span>
                             <p className="notas-text">
-                                {consulta.notas || consulta.motivo || 'Sem notas adicionais.'}
+                                {consulta.titulo || consulta.notas || 'Sem notas adicionais.'}
                             </p>
                         </div>
                     </div>
@@ -171,7 +179,7 @@ function ConsultaDetalhes() {
                 </div>
             </main>
 
-            <footer className="home-footer">
+            <footer className="consultas-footer">
                 <p>Clinimolelos 2025 - Todos os direitos reservados.</p>
             </footer>
         </div>

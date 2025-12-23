@@ -233,7 +233,7 @@ function AgendarConsulta() {
                     </div>
                 </form>
             </main>
-            <footer className="agendar-consulta-footer">
+            <footer className="consultas-footer">
                 <p>Clinimolelos 2025 - Todos os direitos reservados.</p>
             </footer>
         </div>

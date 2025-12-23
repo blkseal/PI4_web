@@ -20,16 +20,17 @@ const ConsultasGestor = () => {
             setError(null);
             // UPDATED: Changed endpoint to /admin/consultas which lists all consultations
             const response = await api.get('/admin/consultas');
-            // Transform data to match component format
-            const formattedConsultas = response.data.map(consulta => ({
-                id: consulta.id,
-                // UPDATED: Backend returns patient info in 'paciente' object
-                nome: consulta.paciente?.nomeCompleto || 'Nome não disponível',
-                data: formatDate(consulta.data),
-                // UPDATED: Backend returns horaInicio and horaFim directly
-                horario: `${(consulta.horaInicio || '').slice(0, 5)} - ${(consulta.horaFim || '').slice(0, 5)}`,
-                especialidade: consulta.especialidade || 'Não especificada'
-            }));
+            // Transform and filter data
+            const formattedConsultas = response.data
+                .filter(consulta => (consulta.estado || '').toLowerCase() === 'pendente')
+                .map(consulta => ({
+                    id: consulta.id,
+                    nome: consulta.paciente?.nomeCompleto || 'Nome não disponível',
+                    data: formatDate(consulta.data),
+                    horario: `${(consulta.horaInicio || '').slice(0, 5)} - ${(consulta.horaFim || '').slice(0, 5)}`,
+                    especialidade: consulta.especialidade || 'Não especificada',
+                    estado: consulta.estado
+                }));
             setConsultas(formattedConsultas);
         } catch (err) {
             console.error('Erro ao buscar consultas:', err);

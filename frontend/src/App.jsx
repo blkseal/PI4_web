@@ -24,6 +24,8 @@ import ConsultasGestor from './pages/ConsultasGestor';
 import PedidosConsulta from './pages/PedidosConsulta';
 import AgendarConsulta from './pages/AgendarConsulta';
 import ConsultaDetalhes from './pages/ConsultaDetalhes';
+import HistoricoConsultas from './pages/HistoricoConsultas';
+import ResumoConsulta from './pages/ResumoConsulta';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -206,6 +208,26 @@ function App() {
           element={(
             <GestorRoute>
               <ConsultaDetalhes />
+            </GestorRoute>
+          )}
+        />
+
+        {/* Rota para histórico de consultas (gestor only) */}
+        <Route
+          path="/gestor/historico"
+          element={(
+            <GestorRoute>
+              <HistoricoConsultas />
+            </GestorRoute>
+          )}
+        />
+
+        {/* Rota para resumo da consulta (gestor only) */}
+        <Route
+          path="/gestor/consultas/:id/resumo"
+          element={(
+            <GestorRoute>
+              <ResumoConsulta />
             </GestorRoute>
           )}
         />
