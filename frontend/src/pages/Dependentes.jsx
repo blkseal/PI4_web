@@ -128,7 +128,8 @@ function Dependentes() {
         { label: "Código Postal", value: codigoPostal },
         {
           label: "Número de Utente",
-          value: selectedDependent.nus || "N/A",
+          value:
+            selectedDependent.numeroUtente || selectedDependent.nus || "N/A",
         },
         {
           label: "Número de Identificação Fiscal",

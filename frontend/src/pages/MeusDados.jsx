@@ -93,7 +93,10 @@ function MeusDados() {
     { label: "Género", value: utilizador?.genero || "N/A" },
     { label: "Morada", value: moradaCompleta.replace(/^, /, "") },
     { label: "Código Postal", value: codigoPostal },
-    { label: "Número de Utente", value: utilizador?.nus || "N/A" },
+    {
+      label: "Número de Utente",
+      value: utilizador?.numeroUtente || utilizador?.nus || "N/A",
+    },
     {
       label: "Número de Identificação Fiscal",
       value: utilizador?.nif || "N/A",

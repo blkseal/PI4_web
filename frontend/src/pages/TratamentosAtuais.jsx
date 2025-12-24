@@ -50,7 +50,8 @@ function TratamentosAtuais() {
     return tratamentos.filter((t) => {
       const nomeTratamento =
         t.id_t_p_tratamento_tipos_planos_tratamento?.nome || "";
-      const numeroUtente = t.id_utente_utente?.nus || "";
+      const numeroUtente =
+        t.id_utente_utente?.numeroUtente || t.id_utente_utente?.nus || "";
       const nomePaciente = t.id_utente_utente?.nome_completo || "";
 
       const matchNomeTratamento =
@@ -172,7 +173,10 @@ function TratamentosAtuais() {
                       {t.id_utente_utente?.nome_completo || "—"}
                     </span>
                     <span className="paciente-numero">
-                      Nº Utente: {t.id_utente_utente?.nus || "—"}
+                      Nº Utente:{" "}
+                      {t.id_utente_utente?.numeroUtente ||
+                        t.id_utente_utente?.nus ||
+                        "—"}
                     </span>
                   </div>
                   <div className="tratamento-atual-nome">
