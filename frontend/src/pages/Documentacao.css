@@ -2,7 +2,7 @@
 
 .doc-page {
   min-height: 100vh;
-  background-color: #F0EEE9;
+  background-color: #f0eee9;
   color: var(--text-dark);
   display: flex;
   flex-direction: column;
@@ -45,10 +45,17 @@
   align-items: center;
   gap: 1rem;
   padding: 1.1rem 1.5rem;
-  background: linear-gradient(135deg, #9C7A4E 0%, #8B6E4A 100%);
+  background: linear-gradient(135deg, #9c7a4e 0%, #8b6e4a 100%);
   color: white;
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.doc-card:hover {
+  cursor: pointer;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .doc-card-icon {
@@ -80,7 +87,7 @@
 }
 
 .doc-list-panel {
-  background: #F7F7F7;
+  background: #f7f7f7;
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
@@ -141,8 +148,8 @@
 }
 
 .doc-footer {
-  background: #8B6E4A;
-  color: #DDD;
+  background: #8b6e4a;
+  color: #ddd;
   text-align: center;
   padding: 1.5rem;
   font-size: 0.85rem;

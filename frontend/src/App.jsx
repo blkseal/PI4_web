@@ -5,28 +5,33 @@
  * A página de login é a rota principal.
  */
 
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/Login';
-import Home from './pages/Home';
-import Documentacao from './pages/Documentacao';
-import Consultas from './pages/Consultas';
-import AgendaGestor from './pages/AgendaGestor';
-import Pacientes from './pages/Pacientes';
-import NovoPaciente from './pages/NovoPaciente';
-import FichaPaciente from './pages/FichaPaciente';
-import Profile from './pages/Profile';
-import MeusDados from './pages/MeusDados';
-import HistoricoDentario from './pages/HistoricoDentario';
-import Dependentes from './pages/Dependentes';
-import EditarCredenciais from './pages/EditarCredenciais';
-import EditarPaciente from './pages/EditarPaciente';
-import ConsultasGestor from './pages/ConsultasGestor';
-import PedidosConsulta from './pages/PedidosConsulta';
-import AgendarConsulta from './pages/AgendarConsulta';
-import ConsultaDetalhes from './pages/ConsultaDetalhes';
-import EditarConsulta from './pages/EditarConsulta';
-import HistoricoConsultas from './pages/HistoricoConsultas';
-import ResumoConsulta from './pages/ResumoConsulta';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Documentacao from "./pages/Documentacao";
+import Consultas from "./pages/Consultas";
+import AgendaGestor from "./pages/AgendaGestor";
+import Pacientes from "./pages/Pacientes";
+import NovoPaciente from "./pages/NovoPaciente";
+import FichaPaciente from "./pages/FichaPaciente";
+import Profile from "./pages/Profile";
+import MeusDados from "./pages/MeusDados";
+import HistoricoDentario from "./pages/HistoricoDentario";
+import Dependentes from "./pages/Dependentes";
+import EditarCredenciais from "./pages/EditarCredenciais";
+import EditarPaciente from "./pages/EditarPaciente";
+import ConsultasGestor from "./pages/ConsultasGestor";
+import PedidosConsulta from "./pages/PedidosConsulta";
+import AgendarConsulta from "./pages/AgendarConsulta";
+import ConsultaDetalhes from "./pages/ConsultaDetalhes";
+import EditarConsulta from "./pages/EditarConsulta";
+import HistoricoConsultas from "./pages/HistoricoConsultas";
+import ResumoConsulta from "./pages/ResumoConsulta";
 import HistoricoMedico from "./pages/HistoricoMedico";
 import HistoricoDentarioGestor from "./pages/HistoricoDentarioGestor";
 import Tratamentos from "./pages/Tratamentos";
@@ -136,6 +141,42 @@ function App() {
           }
         />
 
+        {/* Documentacao sub-pages */}
+        <Route
+          path="/documentacao/exames"
+          element={
+            <UtenteRoute>
+              <Documentacao />
+            </UtenteRoute>
+          }
+        />
+        <Route
+          path="/documentacao/justificacoes"
+          element={
+            <UtenteRoute>
+              <Documentacao />
+            </UtenteRoute>
+          }
+        />
+
+        {/* Documentacao patient-scoped routes (gestor) */}
+        <Route
+          path="/pacientes/:id/documentacao/exames"
+          element={
+            <GestorRoute>
+              <Documentacao />
+            </GestorRoute>
+          }
+        />
+        <Route
+          path="/pacientes/:id/documentacao/justificacoes"
+          element={
+            <GestorRoute>
+              <Documentacao />
+            </GestorRoute>
+          }
+        />
+
         {/* Rota para a página inicial (utente) */}
         <Route
           path="/home"
@@ -196,6 +237,16 @@ function App() {
           }
         />
 
+        {/* Rota para documentação do paciente (gestor only) */}
+        <Route
+          path="/pacientes/:id/documentacao"
+          element={
+            <GestorRoute>
+              <Documentacao />
+            </GestorRoute>
+          }
+        />
+
         {/* Rota para editar paciente (gestor only) */}
         <Route
           path="/pacientes/:id/editar"
@@ -209,71 +260,71 @@ function App() {
         {/* Rota para consultas do gestor (gestor only) */}
         <Route
           path="/gestor/consultas"
-          element={(
+          element={
             <GestorRoute>
               <ConsultasGestor />
             </GestorRoute>
-          )}
+          }
         />
 
         {/* Rota para pedidos de consulta do gestor (gestor only) */}
         <Route
           path="/gestor/pedidos"
-          element={(
+          element={
             <GestorRoute>
               <PedidosConsulta />
             </GestorRoute>
-          )}
+          }
         />
 
         {/* Rota para detalhes da consulta (gestor only) */}
         <Route
           path="/gestor/consultas/:id"
-          element={(
+          element={
             <GestorRoute>
               <ConsultaDetalhes />
             </GestorRoute>
-          )}
+          }
         />
 
         {/* Rota para editar consulta (gestor only) */}
         <Route
           path="/gestor/consultas/:id/editar"
-          element={(
+          element={
             <GestorRoute>
               <EditarConsulta />
             </GestorRoute>
-          )}
+          }
         />
 
         {/* Rota para histórico de consultas (gestor only) */}
         <Route
           path="/gestor/historico"
-          element={(
+          element={
             <GestorRoute>
               <HistoricoConsultas />
             </GestorRoute>
-          )}
+          }
         />
 
         {/* Rota para resumo da consulta (gestor only) */}
         <Route
           path="/gestor/consultas/:id/resumo"
-          element={(
+          element={
             <GestorRoute>
               <ResumoConsulta />
             </GestorRoute>
-          )}
+          }
         />
 
         {/* Rota para agendar consulta (gestor only) */}
         <Route
           path="/gestor/agendar"
-          element={(
+          element={
             <GestorRoute>
               <AgendarConsulta />
             </GestorRoute>
-          )}
+          }
         />
 
         {/* Rota para perfil (utente) */}

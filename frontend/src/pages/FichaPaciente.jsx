@@ -224,6 +224,14 @@ function FichaPaciente() {
 
             <button
               type="button"
+              className="action-btn light"
+              onClick={() => navigate(`/pacientes/${id}/documentacao`)}
+            >
+              DOCUMENTAÇÃO
+            </button>
+
+            <button
+              type="button"
               className="action-btn brown"
               onClick={() => navigate(`/pacientes/${id}/tratamentos/novo`)}
             >
