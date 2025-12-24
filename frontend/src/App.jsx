@@ -41,6 +41,8 @@ import TratamentosUtente from "./pages/TratamentosUtente";
 import TratamentoDetalheUtente from "./pages/TratamentoDetalheUtente";
 import ForgotPin from "./pages/ForgotPin";
 import ResetPin from "./pages/ResetPin";
+import Gestores from "./pages/Gestores";
+import EnviarNotificacao from "./pages/EnviarNotificacao";
 import "./App.css";
 
 const ProtectedRoute = ({ children }) => {
@@ -450,6 +452,26 @@ function App() {
           element={
             <GestorRoute>
               <TratamentosAtuais />
+            </GestorRoute>
+          }
+        />
+
+        {/* Rota para Gestão de Gestores (Gestor only) */}
+        <Route
+          path="/gestao/gestores"
+          element={
+            <GestorRoute>
+              <Gestores />
+            </GestorRoute>
+          }
+        />
+
+        {/* Rota para Enviar Notificações (Gestor only) */}
+        <Route
+          path="/gestao/notificacoes/enviar"
+          element={
+            <GestorRoute>
+              <EnviarNotificacao />
             </GestorRoute>
           }
         />

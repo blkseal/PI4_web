@@ -1,0 +1,231 @@
+.enviar-notificacao-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f1ea;
+    font-family: 'Outfit', sans-serif;
+}
+
+.enviar-notificacao-main {
+    flex: 1;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.page-title {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.enviar-notificacao-card {
+    width: 100%;
+    background-color: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.enviar-notificacao-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+}
+
+.form-group.full-width {
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon input {
+    width: 100%;
+    padding: 12px 15px;
+    padding-right: 45px;
+    border: 1px solid #d3c7b8;
+    border-radius: 10px;
+    background-color: #fdfbf8;
+    font-size: 14px;
+    color: #4a3a28;
+}
+
+.icon-container {
+    position: absolute;
+    right: 15px;
+    color: #8b6e4a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+textarea {
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #d3c7b8;
+    border-radius: 10px;
+    background-color: #fdfbf8;
+    font-size: 16px;
+    resize: none;
+    color: #4a3a28;
+}
+
+.form-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-btn {
+    background-color: #927a5d;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 40px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #7d684f;
+}
+
+.footer-standard {
+    padding: 24px;
+    text-align: center;
+    background: white;
+}
+
+.footer-standard p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.error-message {
+    color: #d32f2f;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Dropdown Styles - Reusing AgendarConsulta pattern */
+.dropdown-results {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #d3c7b8;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.dropdown-item {
+    width: 100%;
+    padding: 12px 15px;
+    text-align: left;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-item:hover {
+    background-color: #f9f7f4;
+}
+
+.patient-name {
+    font-weight: 600;
+    color: #4a3a28;
+}
+
+.patient-details {
+    font-size: 12px;
+    color: #888;
+}
+
+.dropdown-item.empty {
+    padding: 20px;
+    text-align: center;
+    color: #888;
+}
+
+.tipo-envio-select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #d3c7b8;
+    border-radius: 10px;
+    background-color: #fdfbf8;
+    font-size: 16px;
+    font-weight: 500;
+    color: #4a3a28;
+    cursor: pointer;
+    outline: none;
+}
+
+.tipo-envio-select optgroup {
+    font-weight: 700;
+    font-style: normal;
+    background: #f5f1ea;
+}
+
+.form-row-target {
+    margin-bottom: 20px;
+}
+
+.input-with-icon.disabled {
+    opacity: 0.6;
+    background-color: #f0f0f0;
+    pointer-events: none;
+}
+
+.input-with-icon.disabled input {
+    background-color: transparent;
+    cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+    .form-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
