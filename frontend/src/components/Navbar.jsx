@@ -13,9 +13,9 @@ const navItemsByVariant = {
     { label: "CONSULTAS", to: "/consultas" },
   ],
   gestor: [
-    { label: "AGENDA", to: "/agenda" },
-    { label: "PACIENTES", to: "/pacientes" },
-    { label: "CONSULTAS" },
+    { label: 'AGENDA', to: '/agenda' },
+    { label: 'PACIENTES', to: '/pacientes' },
+    { label: 'CONSULTAS', to: '/gestor/consultas' },
     { label: "TRATAMENTOS", to: "/gestao/tratamentos" },
     { label: "GESTORES" },
   ],
