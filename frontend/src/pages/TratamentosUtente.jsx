@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 import profileService from "../services/profile.service";
+import { ArrowLeft } from "lucide-react";
 import "./TratamentosUtente.css";
 
 function TratamentosUtente() {
@@ -60,7 +61,7 @@ function TratamentosUtente() {
         <header className="tratamentos-header">
           <div className="header-row">
             <button className="back-btn" onClick={() => navigate(-1)}>
-              ← Voltar
+              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
             </button>
             <h1 className="page-title">TRATAMENTOS</h1>
           </div>

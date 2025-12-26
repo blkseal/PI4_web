@@ -1,4 +1,15 @@
+.consultas-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000;
+  text-align: center;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+
 .consultas-container {
+
+
   --bg: #f7f5f2;
   --panel-bg: #ede9e4;
   --card-bg: #fbf8f5;
@@ -17,6 +28,7 @@
 .consultas-header {
   text-align: center;
   margin-top: 1.5rem;
+
   .consulta-card {
     /* Make consulta cards visually match patient detail cards */
     background: white;
@@ -29,199 +41,209 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
 
-.consultas-main {
-  flex: 1;
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 2rem 3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
+  .consultas-main {
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
 
   .consulta-date {
     color: var(--accent-1);
     padding: 0;
     display: block;
   }
-.consultations-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 920px;
+
+  .consultations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 920px;
+
+    .date-day {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+  }
+
+  .consulta-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+
+    .date-month {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--muted);
+    }
+  }
+
+  .consulta-date {
+    background: linear-gradient(90deg, var(--accent-1) 0%, var(--accent-2) 100%);
+    color: white;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+  }
+
   .date-day {
-    font-size: 1.25rem;
+    font-size: 2.8rem;
     font-weight: 700;
     line-height: 1;
   }
-}
 
-.consulta-card {
-  background-color: var(--card-bg);
-  border-radius: 12px;
   .date-month {
-    font-size: 0.85rem;
+    font-size: 1rem;
     text-transform: uppercase;
     font-weight: 500;
+  }
+
+  .consulta-info {
+    padding: 1.25rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+  }
+
+  .consulta-type {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .consulta-time {
+    font-size: 1rem;
     color: var(--muted);
   }
-}
 
-.consulta-date {
-  background: linear-gradient(90deg, var(--accent-1) 0%, var(--accent-2) 100%);
-  color: white;
-  padding: 1rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-width: 120px;
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
-}
+  .consultas-status {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
 
-.date-day {
-  font-size: 2.8rem;
-  font-weight: 700;
-  line-height: 1;
-}
+  .consultas-status.error {
+    color: #a54646;
+  }
 
-.date-month {
-  font-size: 1rem;
-  text-transform: uppercase;
-  font-weight: 500;
-}
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    max-width: 920px;
+    margin: 0 auto 1rem auto;
+    padding: 0 1rem 1rem 1rem;
+  }
 
-.consulta-info {
-  padding: 1.25rem 1.75rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: left;
-}
+  .action-card {
+    background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+    border: none;
+    border-radius: 12px;
+    padding: 2rem;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
 
-.consulta-type {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 0.25rem;
-}
+  .action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(139, 110, 74, 0.3);
+  }
 
-.consulta-time {
-  font-size: 1rem;
-  color: var(--muted);
-}
+  .action-title {
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    z-index: 2;
+    line-height: 1.2;
+  }
 
-.consultas-status {
-  color: var(--muted);
-  font-size: 0.95rem;
-}
+  .action-icon-circle {
+    width: 80px;
+    height: 80px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
 
-.consultas-status.error {
-  color: #a54646;
-}
+  .action-icon-circle svg {
+    width: 40px;
+    height: 40px;
+  }
 
-.actions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.25rem;
-  max-width: 920px;
-  margin: 0 auto 1rem auto;
-  padding: 0 1rem 1rem 1rem;
-}
+  .tooth-svg svg {
+    width: 40px;
+    height: 40px;
+  }
 
-.action-card {
-  background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
-  border: none;
-  border-radius: 12px;
-  padding: 2rem;
-  height: 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  position: relative;
-  overflow: hidden;
-}
+  .home-footer {
+    background-color: var(--accent-1);
+    color: #fff;
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.8rem;
+    margin-top: auto;
+  }
 
-.action-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(139, 110, 74, 0.3);
-}
+  /* Override: make all text inside consulta cards white and use warm gradient background */
+  .consulta-card {
+    background: white;
+    color: #000;
+    /* Black text */
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: stretch;
+  }
 
-.action-title {
-  color: white;
-  font-weight: 700;
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  z-index: 2;
-  line-height: 1.2;
-}
+  .consulta-card .consulta-info,
+  .consulta-card .consulta-type,
+  .consulta-card .consulta-time,
+  .consulta-card .consultas-status {
+    color: #000;
+    /* Force black text */
+  }
 
-.action-icon-circle {
-  width: 80px;
-  height: 80px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
-}
-
-.action-icon-circle svg {
-  width: 40px;
-  height: 40px;
-}
-
-.tooth-svg svg {
-  width: 40px;
-  height: 40px;
-}
-
-.home-footer {
-  background-color: var(--accent-1);
-  color: #fff;
-  text-align: center;
-  padding: 2rem;
-  font-size: 0.8rem;
-  margin-top: auto;
-}
-
-/* Override: make all text inside consulta cards white and use warm gradient background */
-.consulta-card {
-  background: white;
-  color: var(--text);
-  border-radius: 12px;
-  padding: 1rem 1.25rem;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
-  display: flex;
-  align-items: stretch;
-}
-
-.consulta-card .consulta-info,
-.consulta-card .consulta-type,
-.consulta-card .consulta-time,
-.consulta-card .consultas-status {
-  color: inherit;
-}
-
-/* Keep the date/header strip brown with white text for contrast */
-.consulta-card .consulta-date {
-  background: linear-gradient(90deg, var(--accent-1) 0%, var(--accent-2) 100%);
-  color: white;
-  padding: 1rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-width: 120px;
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
+  /* Make date strip white with black text */
+  .consulta-card .consulta-date {
+    background: white;
+    /* Changed from brown gradient */
+    color: #000;
+    /* Changed from white */
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    /* Optional: Add a separator or specific styling if date needs distinction on white bg */
+    border-right: 1px solid #eee;
+  }
 }

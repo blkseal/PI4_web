@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navbar } from "../components";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import "./HistoricoDentario.css";
 import profileService from "../services/profile.service";
 
@@ -72,7 +73,7 @@ function HistoricoDentario() {
         <header className="historico-header">
           <div className="header-row">
             <button className="back-btn" onClick={() => navigate(-1)}>
-              ← Voltar
+              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
             </button>
             <h1 className="historico-page-title">HISTÓRICO DENTÁRIO</h1>
           </div>

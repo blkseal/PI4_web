@@ -47,7 +47,7 @@
     padding: 14px 15px 14px 45px;
     border-radius: 8px;
     font-size: 1rem;
-    font-family: var(--font-body, 'Libre Franklin', sans-serif);
+    font-family: var(--font-body, 'Montserrat', sans-serif);
     transition: all 0.3s ease;
 }
 

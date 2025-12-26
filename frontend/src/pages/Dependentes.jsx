@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navbar } from "../components";
 import { useNavigate, useParams } from "react-router-dom";
-import { UserCheck } from "lucide-react";
+import { UserCheck, ArrowLeft } from "lucide-react";
 import "./Dependentes.css";
 import profileService from "../services/profile.service";
 
@@ -111,37 +111,36 @@ function Dependentes() {
 
   // Prepare structure for details view
   const moradaCompleta = selectedDependent?.morada
-    ? `${selectedDependent.morada.rua || ""}, ${
-        selectedDependent.morada.localidade || ""
-      }`
+    ? `${selectedDependent.morada.rua || ""}, ${selectedDependent.morada.localidade || ""
+    }`
     : "N/A";
   const codigoPostal = selectedDependent?.morada?.codigoPostal || "N/A";
 
   const fields = selectedDependent
     ? [
-        {
-          label: "Data de Nascimento",
-          value: formatDate(selectedDependent.dataNascimento),
-        },
-        { label: "Género", value: selectedDependent.genero || "N/A" },
-        { label: "Morada", value: moradaCompleta.replace(/^, /, "") },
-        { label: "Código Postal", value: codigoPostal },
-        {
-          label: "Número de Utente",
-          value:
-            selectedDependent.numeroUtente || selectedDependent.nus || "N/A",
-        },
-        {
-          label: "Número de Identificação Fiscal",
-          value: selectedDependent.nif || "N/A",
-        },
-        {
-          label: "Estado Civil",
-          value: selectedDependent.estadoCivil || "N/A",
-        },
-        { label: "Email", value: selectedDependent.email || "N/A" },
-        { label: "Telemóvel", value: selectedDependent.telefone || "N/A" }, // API uses 'telefone'
-      ]
+      {
+        label: "Data de Nascimento",
+        value: formatDate(selectedDependent.dataNascimento),
+      },
+      { label: "Género", value: selectedDependent.genero || "N/A" },
+      { label: "Morada", value: moradaCompleta.replace(/^, /, "") },
+      { label: "Código Postal", value: codigoPostal },
+      {
+        label: "Número de Utente",
+        value:
+          selectedDependent.numeroUtente || selectedDependent.nus || "N/A",
+      },
+      {
+        label: "Número de Identificação Fiscal",
+        value: selectedDependent.nif || "N/A",
+      },
+      {
+        label: "Estado Civil",
+        value: selectedDependent.estadoCivil || "N/A",
+      },
+      { label: "Email", value: selectedDependent.email || "N/A" },
+      { label: "Telemóvel", value: selectedDependent.telefone || "N/A" }, // API uses 'telefone'
+    ]
     : [];
 
   return (
@@ -152,7 +151,7 @@ function Dependentes() {
         <header className="dependentes-header">
           <div className="header-row">
             <button className="back-btn" onClick={handleBack}>
-              ← Voltar
+              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
             </button>
             <h1 className="dependentes-title">DEPENDENTES</h1>
           </div>

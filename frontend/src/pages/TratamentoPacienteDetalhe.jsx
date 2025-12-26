@@ -8,7 +8,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Edit, Upload } from "lucide-react";
+import { Edit, Upload, ArrowLeft } from "lucide-react";
 import { Navbar } from "../components";
 import api from "../services/api";
 import "./TratamentoPacienteDetalhe.css";
@@ -197,7 +197,7 @@ function TratamentoPacienteDetalhe() {
         <header className="tratamento-detalhe-header">
           <div className="header-row">
             <button className="back-btn" onClick={() => navigate(-1)}>
-              ← Voltar
+              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
             </button>
             <h1 className="page-title">TRATAMENTOS ATUAIS</h1>
           </div>
@@ -227,48 +227,57 @@ function TratamentoPacienteDetalhe() {
             </div>
           </div>
 
-          <div className="detalhe-row two-cols">
-            <div className="detalhe-section">
-              <span className="section-label">Informações Úteis:</span>
-              <p className="section-text">{tipo?.informacoes || "—"}</p>
-            </div>
-            <div className="detalhe-section">
-              <span className="section-label">Observações Adicionais:</span>
-              <p className="section-text">{tratamento?.observacoes || "—"}</p>
-            </div>
-          </div>
+          <div className="detalhe-columns-container">
+            {/* Left Column: Info + Anexos */}
+            <div className="detalhe-col-left">
+              <div className="detalhe-section">
+                <span className="section-label">INFORMAÇÕES ÚTEIS:</span>
+                <p className="section-text">{tipo?.informacoes || "—"}</p>
+              </div>
 
-          <div className="detalhe-anexos">
-            <div className="anexos-header">
-              <span className="section-label">Anexos</span>
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileUpload}
-                style={{ display: "none" }}
-              />
-              <button
-                type="button"
-                className="btn-upload"
-                onClick={handleUploadClick}
-                disabled={uploading}
-              >
-                <Upload size={14} />
-                {uploading ? "A enviar..." : "Anexar ficheiro"}
-              </button>
-            </div>
-            <div className="anexos-list">
-              {anexos.length > 0 ? (
-                anexos.map((anexo) => (
-                  <div key={anexo.id} className="anexo-item">
-                    {anexo.nome}
-                  </div>
-                ))
-              ) : (
-                <div className="anexo-placeholder">
-                  Nenhum anexo disponível.
+              <div className="detalhe-anexos">
+                <div className="anexos-header">
+                  <span className="section-label">ANEXOS</span>
                 </div>
-              )}
+                <div className="anexos-list">
+                  {anexos.length > 0 ? (
+                    anexos.map((anexo) => (
+                      <div key={anexo.id} className="anexo-item">
+                        {anexo.nome}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="anexo-placeholder">
+                      Nenhum anexo disponível.
+                    </div>
+                  )}
+                </div>
+                <div className="anexos-actions">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileUpload}
+                    style={{ display: "none" }}
+                  />
+                  <button
+                    type="button"
+                    className="btn-upload"
+                    onClick={handleUploadClick}
+                    disabled={uploading}
+                  >
+                    <Upload size={14} />
+                    {uploading ? "A enviar..." : "Anexar ficheiro"}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Observações */}
+            <div className="detalhe-col-right">
+              <div className="detalhe-section">
+                <span className="section-label">OBSERVAÇÕES ADICIONAIS:</span>
+                <p className="section-text">{tratamento?.observacoes || "—"}</p>
+              </div>
             </div>
           </div>
 

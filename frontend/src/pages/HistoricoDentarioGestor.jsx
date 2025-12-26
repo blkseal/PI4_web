@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 import api from "../services/api";
-import { Edit, Clock } from "lucide-react";
+import { Edit, Clock, ArrowLeft } from "lucide-react";
 import "./HistoricoDentarioGestor.css";
 
 function HistoricoDentarioGestor() {
@@ -101,7 +101,7 @@ function HistoricoDentarioGestor() {
         <main className="hist-dent-main">
           <div className="error-state">{error}</div>
           <button onClick={() => navigate(-1)} className="back-btn">
-            Voltar
+            <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
           </button>
         </main>
       </div>
@@ -116,7 +116,7 @@ function HistoricoDentarioGestor() {
         <header className="hist-dent-header">
           <div className="header-row">
             <button className="back-btn" onClick={() => navigate(-1)}>
-              ← Voltar
+              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
             </button>
             <h1 className="page-title">HISTÓRICO DENTÁRIO</h1>
           </div>

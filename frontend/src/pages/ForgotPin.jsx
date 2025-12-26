@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 import { Logo, InputField, InfoBox } from "../components";
+import { ArrowLeft } from "lucide-react";
 import emailSvg from "../assets/email.svg?raw";
 import arrowRightSvg from "../assets/arrow-right.svg?raw";
 import "./ForgotPin.css";
@@ -79,7 +80,7 @@ function ForgotPin() {
                 <p>Verifique a sua caixa de entrada e spam.</p>
               </div>
               <Link to="/" className="back-to-login-btn">
-                Voltar ao Login
+                <ArrowLeft size={16} style={{ marginRight: '8px' }} /> Voltar ao Login
               </Link>
             </div>
           ) : (
@@ -105,7 +106,7 @@ function ForgotPin() {
 
                 <div className="action-area">
                   <Link to="/" className="back-link">
-                    ← Voltar ao Login
+                    <ArrowLeft size={16} style={{ marginRight: '8px' }} /> Voltar ao Login
                   </Link>
 
                   <button

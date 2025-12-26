@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
-import { FileText, Download } from "lucide-react";
+import { FileText, Download, ArrowLeft } from "lucide-react";
 import profileService from "../services/profile.service";
 import api from "../services/api";
 import "./TratamentoDetalheUtente.css";
@@ -67,7 +67,7 @@ function TratamentoDetalheUtente() {
         <header className="detalhe-header">
           <div className="header-row">
             <button className="back-btn" onClick={() => navigate(-1)}>
-              ← Voltar
+              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
             </button>
             <h1 className="page-title">TRATAMENTOS</h1>
           </div>

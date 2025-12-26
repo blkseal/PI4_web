@@ -117,7 +117,7 @@ function MeusDados() {
         <header className="meus-dados-header">
           <div className="header-row">
             <button className="back-btn" onClick={() => navigate(-1)}>
-              ← Voltar
+              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
             </button>
             <h1 className="meus-dados-title">
               {isViewingDependent

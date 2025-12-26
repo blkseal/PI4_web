@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import api from "../services/api";
 import { Logo, InputField, InfoBox } from "../components";
+import { ArrowLeft } from "lucide-react";
 import lockSvg from "../assets/lock.svg?raw";
 import arrowRightSvg from "../assets/arrow-right.svg?raw";
 import "./ResetPin.css";
@@ -143,7 +144,7 @@ function ResetPin() {
 
                 <div className="action-area">
                   <Link to="/" className="back-link">
-                    ← Voltar ao Login
+                    <ArrowLeft size={16} style={{ marginRight: '8px' }} /> Voltar ao Login
                   </Link>
 
                   <button

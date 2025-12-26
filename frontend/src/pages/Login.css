@@ -1,7 +1,7 @@
 /* 
  * Login.css - Estilos para a página de login do CLINIMOLELOS
  * Esquema de cores castanho/dourado com design moderno e premium
- * Usa fontes Montserrat (logo) e Libre Franklin (texto)
+ * Usa fontes Montserrat (logo) e Montserrat (texto)
  */
 
 /* ========================================
@@ -74,7 +74,7 @@
 /* Título do formulário */
 .login-title {
   color: var(--text-light, #F6F3EE);
-  font-size: 1.1rem;
+  font-size: 2rem;
   font-weight: 400;
   text-align: center;
   margin-bottom: 30px;

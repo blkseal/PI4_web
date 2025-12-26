@@ -31,7 +31,7 @@
     background: white;
     border-radius: 14px;
     padding: 2.5rem;
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .form-row {
@@ -69,6 +69,14 @@
     font-family: var(--font-logo);
     color: #333;
     background: white;
+    transition: all 0.2s ease;
+}
+
+.input-with-icon input:focus,
+.input-with-icon select:focus {
+    border-color: #a48356;
+    box-shadow: 0 0 0 3px rgba(164, 131, 86, 0.15);
+    outline: none;
 }
 
 .input-with-icon .icon-container {

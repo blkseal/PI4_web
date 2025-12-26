@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components';
 import api from '../services/api';
 import './ResumoConsulta.css';
-import { Edit3 } from 'lucide-react';
+import { Edit3, ArrowLeft } from 'lucide-react';
 
 const ResumoConsulta = () => {
     const { id } = useParams();
@@ -56,7 +56,9 @@ const ResumoConsulta = () => {
                 <main className="resumo-consulta-main">
                     <div className="error-message">
                         <p>{error || 'Ocorreu um erro ao carregar.'}</p>
-                        <button onClick={() => navigate(-1)} className="retry-button">Voltar</button>
+                        <button onClick={() => navigate(-1)} className="retry-button">
+                            <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
+                        </button>
                     </div>
                 </main>
             </div>

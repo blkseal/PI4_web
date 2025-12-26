@@ -6,7 +6,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Navbar, EditHistoricoModal, EditHabitosModal } from "../components";
 import api from "../services/api";
-import { Upload, FileText, Download, Trash2, Edit } from "lucide-react";
+import { Upload, FileText, Download, Trash2, Edit, ArrowLeft } from "lucide-react";
 import "./HistoricoMedico.css";
 
 function HistoricoMedico() {
@@ -189,7 +189,7 @@ function HistoricoMedico() {
         <main className="historico-main">
           <div className="error-state">{error}</div>
           <button onClick={() => navigate(-1)} className="back-btn">
-            Voltar
+            <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
           </button>
         </main>
       </div>
@@ -204,7 +204,7 @@ function HistoricoMedico() {
         <header className="historico-header">
           <div className="header-row">
             <button className="back-btn" onClick={() => navigate(-1)}>
-              ← Voltar
+              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
             </button>
             <h1 className="page-title">HISTÓRICO MÉDICO</h1>
           </div>

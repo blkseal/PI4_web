@@ -31,7 +31,10 @@ const HistoricoConsultas = () => {
             const response = await api.get('/admin/consultas', { params: { pageSize: 1000 } });
             // Format and filter data for display
             const formatted = response.data
-                .filter(c => c.estado === 'concluída' || c.estado === 'cancelada') // Filtro por texto
+                .filter(c => {
+                    const st = (c.estado || '').toLowerCase();
+                    return st.includes('conclu') || st.includes('cancel') || st.includes('anula');
+                })
                 .map(c => ({
                     id: c.id,
                     nUtente: c.paciente?.numeroUtente || '', // Corrigido para numeroUtente

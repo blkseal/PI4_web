@@ -15,55 +15,70 @@ function EditarConsulta() {
         pacienteId: '',
         pacienteNome: '',
         data: '',
-        horario: '09:00',
+        horaInicio: '09:00',
+        horaFim: '10:00',
         medico: '',
         tratamento: '',
         especialidade: '',
         notas: ''
     });
-    const medicos = ['Dr. Silva', 'Dra. Maria', 'Dr. Santos'];
-    const tratamentos = ['Limpeza', 'Extração', 'Canal', 'Aparelho'];
-    const especialidades = ['Ortodontia', 'Cirurgia Oral', 'Odontopediatria', 'Generalista'];
+    const [medicos, setMedicos] = useState([]);
+    const [tratamentos, setTratamentos] = useState([]);
+    const [especialidades, setEspecialidades] = useState([]);
     useEffect(() => {
-        const fetchConsulta = async () => {
+        const fetchData = async () => {
             setLoading(true);
             try {
-                // Buscamos na lista geral porque não existe endpoint individual de detalhe
-                const resp = await api.get('/admin/consultas', { params: { pageSize: 1000 } });
-                const lista = Array.isArray(resp.data) ? resp.data : [];
-                const found = lista.find(c => c.id.toString() === id.toString());
-                if (found) {
-                    // Separar Especialidade e Tratamento das notas (ex: "Ortodontia - Limpeza - Notas extras")
-                    let esp = '';
-                    let trat = '';
-                    let nts = found.notas || found.titulo || '';
-                    if (nts && nts.includes(' - ')) {
-                        const parts = nts.split(' - ');
-                        esp = parts[0] || '';
-                        trat = parts[1] || '';
-                        nts = parts.slice(2).join(' - ') || '';
+                // Fetch Medicos/Entidades Médicas
+                const gResp = await api.get('/medicos');
+                const gData = gResp?.data?.data || gResp?.data || [];
+                setMedicos(Array.isArray(gData) ? gData : []);
+
+                // Fetch Tratamentos
+                const tResp = await api.get('/tratamentos/tipos');
+                const tData = tResp?.data || [];
+                setTratamentos(Array.isArray(tData) ? tData : []);
+
+                // Default Specialties
+                setEspecialidades(["Ortodontia", "Cirurgia Oral", "Odontopediatria", "Generalista", "Implantologia", "Estética"]);
+
+                if (id) {
+                    const resp = await api.get('/admin/consultas', { params: { pageSize: 1000 } });
+                    const lista = Array.isArray(resp.data) ? resp.data : [];
+                    const found = lista.find(c => c.id.toString() === id.toString());
+                    if (found) {
+                        let esp = '';
+                        let trat = '';
+                        let nts = found.notas || found.titulo || '';
+                        if (nts && nts.includes(' - ')) {
+                            const parts = nts.split(' - ');
+                            esp = parts[0] || '';
+                            trat = parts[1] || '';
+                            nts = parts.slice(2).join(' - ') || '';
+                        }
+                        setFormData({
+                            pacienteId: found.paciente?.id || '',
+                            pacienteNome: found.paciente?.nomeCompleto || '—',
+                            data: found.data ? found.data.split('T')[0] : '',
+                            horaInicio: found.horaInicio ? found.horaInicio.slice(0, 5) : '09:00',
+                            horaFim: found.horaFim ? found.horaFim.slice(0, 5) : '10:00',
+                            medico: found.id_entidade_medica || found.medico || '',
+                            tratamento: trat || '',
+                            especialidade: esp || '',
+                            notas: nts || ''
+                        });
+                    } else {
+                        setError('Consulta não encontrada.');
                     }
-                    setFormData({
-                        pacienteId: found.paciente?.id || '',
-                        pacienteNome: found.paciente?.nomeCompleto || '—',
-                        data: found.data ? found.data.split('T')[0] : '',
-                        horario: found.horaInicio ? found.horaInicio.slice(0, 5) : '09:00',
-                        medico: found.medico || '',
-                        tratamento: trat || '',
-                        especialidade: esp || '',
-                        notas: nts || ''
-                    });
-                } else {
-                    setError('Consulta não encontrada.');
                 }
             } catch (err) {
-                console.error('Erro ao carregar consulta:', err);
+                console.error('Erro ao carregar dados:', err);
                 setError('Não foi possível carregar os dados da consulta.');
             } finally {
                 setLoading(false);
             }
         };
-        if (id) fetchConsulta();
+        fetchData();
     }, [id]);
     const handleChange = (field, value) => {
         setFormData(prev => ({ ...prev, [field]: value }));
@@ -73,11 +88,20 @@ function EditarConsulta() {
         setSubmitting(true);
         setError('');
         try {
+            const startMins = (h, m) => h * 60 + m;
+            const parseTime = (t) => t.split(':').map(Number);
+            const [hIni, mIni] = parseTime(formData.horaInicio);
+            const [hFim, mFim] = parseTime(formData.horaFim);
+            const duracao = startMins(hFim, mFim) - startMins(hIni, mIni);
+
             const payload = {
                 id_utente: formData.pacienteId,
-                id_entidade_medica: null,
+                id_entidade_medica: formData.medico,
                 data: formData.data,
-                hora: formData.horario,
+                hora: formData.horaInicio,
+                horaInicio: formData.horaInicio,
+                horaFim: formData.horaFim,
+                duracao: duracao > 0 ? duracao : 30,
                 notas: `${formData.especialidade} - ${formData.tratamento}${formData.notas ? ' - ' + formData.notas : ''}`
             };
             // Lembra-te: Esta rota PUT /admin/consultas/:id tem de ser criada no servidor
@@ -126,9 +150,16 @@ function EditarConsulta() {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label>Horário</label>
+                            <label>Hora Início</label>
                             <div className="input-with-icon">
-                                <input type="time" value={formData.horario} onChange={(e) => handleChange('horario', e.target.value)} required />
+                                <input type="time" value={formData.horaInicio} onChange={(e) => handleChange('horaInicio', e.target.value)} required />
+                                <div className="icon-container"><Clock size={20} /></div>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label>Hora Fim</label>
+                            <div className="input-with-icon">
+                                <input type="time" value={formData.horaFim} onChange={(e) => handleChange('horaFim', e.target.value)} required />
                                 <div className="icon-container"><Clock size={20} /></div>
                             </div>
                         </div>
@@ -139,7 +170,7 @@ function EditarConsulta() {
                             <div className="input-with-icon">
                                 <select value={formData.medico} onChange={(e) => handleChange('medico', e.target.value)} required>
                                     <option value="">Dentista</option>
-                                    {medicos.map(m => <option key={m} value={m}>{m}</option>)}
+                                    {medicos.map(m => <option key={m.id || m.id_entidade_medica} value={m.id || m.id_entidade_medica}>{m.nome || m.nomeCompleto || m.omd || "Médico"}</option>)}
                                 </select>
                                 <div className="icon-container"><Stethoscope size={20} /></div>
                             </div>
@@ -148,8 +179,8 @@ function EditarConsulta() {
                             <label>Tratamento</label>
                             <div className="input-with-icon">
                                 <select value={formData.tratamento} onChange={(e) => handleChange('tratamento', e.target.value)} required>
-                                    <option value="">N/A</option>
-                                    {tratamentos.map(t => <option key={t} value={t}>{t}</option>)}
+                                    <option value="Nenhum">Nenhum</option>
+                                    {tratamentos.map(t => <option key={t.id_t_p_tratamento} value={t.nome}>{t.nome}</option>)}
                                 </select>
                                 <div className="icon-container" dangerouslySetInnerHTML={{ __html: toothSvg }} style={{ width: '20px', height: '20px' }}></div>
                             </div>
