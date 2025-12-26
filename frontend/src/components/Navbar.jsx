@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Bell, User, UserCheck } from "lucide-react";
 import Logo from "./Logo";
+import NotificationsModal from "./NotificationsModal";
 import { clearTokens } from "../services/api";
 import profileService from "../services/profile.service";
 import "./Navbar.css";
@@ -17,7 +18,7 @@ const navItemsByVariant = {
     { label: 'PACIENTES', to: '/pacientes' },
     { label: 'CONSULTAS', to: '/gestor/consultas' },
     { label: "TRATAMENTOS", to: "/gestao/tratamentos" },
-    { label: "GESTORES" },
+    { label: "GESTORES", to: "/gestao/gestores" },
   ],
 };
 
@@ -43,15 +44,53 @@ function Navbar({ variant = "utente" }) {
     getActiveProfileInfo()
   );
   const [switchingBack, setSwitchingBack] = useState(false);
+  const [notifModalOpen, setNotifModalOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [loadingNotifs, setLoadingNotifs] = useState(false);
 
   const navItems = navItemsByVariant[variant] || navItemsByVariant.utente;
   const brandTarget = variant === "gestor" ? "/agenda" : "/home";
+
+  useEffect(() => {
+    if (notifModalOpen) {
+      fetchNotifications();
+    }
+  }, [notifModalOpen]);
+
+  const fetchNotifications = async () => {
+    setLoadingNotifs(true);
+    try {
+      const resp = await api.get("/notificacoes");
+      const data = resp?.data?.data || resp?.data || [];
+      // Assuming data is an array of { id, mensagem, data, hora }
+      // Formatting it for the modal
+      const formatted = data.map(n => ({
+        id: n.id,
+        message: n.mensagem,
+        time: n.hora ? (n.data ? `${n.data} ${n.hora}` : n.hora) : "Nesta data"
+      }));
+      setNotifications(formatted);
+    } catch (err) {
+      console.error("Erro ao carregar notificações:", err);
+    } finally {
+      setLoadingNotifs(false);
+    }
+  };
 
   const handleLogout = () => {
     clearTokens();
     localStorage.removeItem("user");
     setMenuOpen(false);
     navigate("/", { replace: true });
+  };
+
+  const handleDeleteNotification = async (id) => {
+    try {
+      await api.delete(`/notificacoes/${id}`);
+      setNotifications(prev => prev.filter(n => n.id !== id));
+    } catch (err) {
+      console.error("Erro ao apagar notificação:", err);
+    }
   };
 
   const handleReturnToMainProfile = async () => {
@@ -136,6 +175,7 @@ function Navbar({ variant = "utente" }) {
             className="icon-button"
             aria-label="Notificações"
             type="button"
+            onClick={() => setNotifModalOpen(true)}
           >
             <Bell size={22} color="white" />
           </button>
@@ -167,6 +207,15 @@ function Navbar({ variant = "utente" }) {
           </div>
         </div>
       </header>
+
+      <NotificationsModal
+        isOpen={notifModalOpen}
+        onClose={() => setNotifModalOpen(false)}
+        variant={variant}
+        notifications={notifications}
+        onDelete={handleDeleteNotification}
+        loading={loadingNotifs}
+      />
     </>
   );
 }

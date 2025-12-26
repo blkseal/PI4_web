@@ -19,3 +19,4 @@ export { default as PatientCard } from "./PatientCard";
 export { default as ActionCard } from "./ActionCard";
 export { default as EditHistoricoModal } from "./EditHistoricoModal";
 export { default as EditHabitosModal } from "./EditHabitosModal";
+export { default as NotificationsModal } from "./NotificationsModal";
