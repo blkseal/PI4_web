@@ -229,7 +229,7 @@ const Gestores = () => {
                 </section>
             </main>
 
-            <footer className="gestores-footer">
+            <footer className="agenda-footer">
                 <p>Clinimolelos 2025 - Todos os direitos reservados.</p>
             </footer>
         </div>

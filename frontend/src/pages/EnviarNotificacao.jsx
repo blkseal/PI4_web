@@ -245,7 +245,7 @@ const EnviarNotificacao = () => {
                 </div>
             </main>
 
-            <footer className="footer-standard">
+            <footer className="agenda-footer">
                 <p>Clinimolelos 2025 - Todos os direitos reservados.</p>
             </footer>
         </div>
