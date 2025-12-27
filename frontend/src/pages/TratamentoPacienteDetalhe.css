@@ -85,74 +85,72 @@
    CARD DE DETALHE
    ======================================== */
 .tratamento-detalhe-card {
-  background: #e8e4de;
+  background: white;
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .detalhe-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
-  margin-bottom: 1.25rem;
-  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 2rem;
 }
 
-.detalhe-row.two-cols {
+.detalhe-columns-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  gap: 4rem;
+  margin-bottom: 1rem;
 }
 
 .detalhe-field {
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: baseline;
 }
 
 .field-label {
   font-size: 0.85rem;
   font-weight: 700;
   color: #2f2417;
+  white-space: nowrap;
 }
 
-.field-value {
-  font-size: 0.95rem;
-  color: #4a4a4a;
+.detalhe-col-left,
+.detalhe-col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .detalhe-section {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.5rem;
+  align-items: flex-start;
 }
 
 .section-label {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: #2f2417;
-}
-
-.section-text {
-  font-size: 0.9rem;
-  color: #4a4a4a;
-  line-height: 1.6;
-  margin: 0;
-}
-
-/* ========================================
-   ANEXOS
-   ======================================== */
-.detalhe-anexos {
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .anexos-header {
+  margin-bottom: 1rem;
+}
+
+.anexos-actions {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
+  justify-content: flex-start;
+  margin-top: 1rem;
 }
 
 .btn-upload {
@@ -211,7 +209,7 @@
 
 .btn-editar {
   padding: 0.6rem 1.5rem;
-  background: #6b6b6b;
+  background: #8c7867;
   color: white;
   border: none;
   border-radius: 6px;
@@ -226,7 +224,7 @@
 }
 
 .btn-editar:hover {
-  background: #555;
+  background: #6d5d4f;
 }
 
 /* ========================================
@@ -250,7 +248,7 @@
 }
 
 .consulta-card {
-  background: linear-gradient(135deg, #a48356 0%, #8b6e4a 100%);
+  background: linear-gradient(135deg, #ffff);
   border-radius: 10px;
   padding: 1rem 1.25rem;
   color: white;
@@ -280,7 +278,7 @@
   padding: 2rem;
   color: #888;
   font-style: italic;
-  background: #e8e4de;
+  background: white;
   border-radius: 8px;
 }
 

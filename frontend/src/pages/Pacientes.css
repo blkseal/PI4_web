@@ -1,6 +1,9 @@
+/**
+ * Pacientes.css
+ */
 .pacientes-page {
+  background-color: #f2eee9;
   min-height: 100vh;
-  background: #f2eee9;
   display: flex;
   flex-direction: column;
   font-family: var(--font-logo);
@@ -8,46 +11,53 @@
 
 .pacientes-main {
   flex: 1;
+  padding: 2rem;
   max-width: 1200px;
-  width: 100%;
   margin: 0 auto;
-  padding: 2rem 1.5rem 3rem;
+  width: 100%;
+}
+
+.pacientes-title {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #000;
+  letter-spacing: 0.02em;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+
+.pacientes-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+/* List Section */
+.pacientes-list-section {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.pacientes-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #2f2417;
-  text-align: center;
-  margin: 0;
-  letter-spacing: 0.05em;
-}
-
-.pacientes-content {
+.pacientes-search-row {
   display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-}
-
-/* Lista de Pacientes */
-.pacientes-list-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 1rem;
 }
+
+
 
 .pacientes-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   background: #e8e2db;
+  /* Gray/Beige background like Consultas */
   border-radius: 12px;
-  padding: 1rem;
-  min-height: 400px;
+  padding: 1.5rem;
+  min-height: 200px;
+  /* Ensure some height */
 }
 
 .pacientes-loading,
@@ -55,88 +65,96 @@
 .pacientes-empty {
   text-align: center;
   padding: 2rem;
-  color: #6b563d;
-  font-size: 0.95rem;
+  color: #a48356;
 }
 
 .pacientes-error {
-  color: #c44;
+  color: #dc3545;
 }
 
 .load-more-btn {
-  align-self: center;
   background: none;
   border: none;
   color: #a48356;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  padding: 0.5rem 1rem;
-  transition: color 0.2s;
-  font-family: var(--font-logo);
-}
-
-.load-more-btn:hover {
-  color: #8b6e4a;
+  padding: 0.5rem;
   text-decoration: underline;
+  align-self: center;
 }
 
-/* Sidebar de Ações */
+/* Sidebar */
 .pacientes-sidebar {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  width: 240px;
-  flex-shrink: 0;
+}
+
+
+
+/* Override for specific size if needed, based on user request "original size" implies undoing big size. 
+   If ActionCard.css has min-height: 180px, that IS the big size.
+   If "original size" meant smaller, I should reduce it. 
+   Let's assume "original" means the standard small card size if they have a comparison.
+   Actually, the user said "they are to big in the moment". 
+   So I will force them smaller.
+*/
+/* Override to match ConsultasGestor action-btn style */
+.pacientes-action-card {
+  min-height: 100px !important;
+  padding: 1rem !important;
+  border-radius: 12px !important;
+  gap: 1rem !important;
+  /* increased gap for row layout */
+  height: 100px !important;
+  width: 250px !important;
+  flex-direction: row !important;
+  /* Horizontal layout */
+  justify-content: space-evenly !important;
+  /* Distributed spacing */
+  align-items: center !important;
+  top: 66px;
+}
+
+.pacientes-action-card .action-title {
+  font-size: 0.9rem !important;
+  text-align: left !important;
+  /* better for row layout */
+  flex: 1;
+  /* allow text to take available space */
+}
+
+.pacientes-action-card .action-icon svg {
+  width: 50px !important;
+  height: 50px !important;
 }
 
 /* Footer */
 .pacientes-footer {
   text-align: center;
-  padding: 1.5rem;
-  color: #6b563d;
+  padding: 2rem;
+  color: #8c7867;
   font-size: 0.85rem;
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
-  .pacientes-main {
-    max-width: 100%;
-    padding: 2rem 1rem 3rem;
-  }
-
+@media (max-width: 900px) {
   .pacientes-content {
-    flex-direction: column;
-  }
-
-  .pacientes-list-section {
-    width: 100%;
+    grid-template-columns: 1fr;
   }
 
   .pacientes-sidebar {
-    width: 100%;
-    flex-direction: row;
-    justify-content: center;
-  }
-
-  .pacientes-sidebar .action-card {
-    flex: 1;
-    max-width: 200px;
+    order: -1;
+    /* Move sidebar to top on mobile?? or bottom? let's keep standard */
+    order: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (max-width: 600px) {
-  .pacientes-main {
-    padding: 1.5rem 1rem 2rem;
-  }
-
   .pacientes-sidebar {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .pacientes-sidebar .action-card {
-    max-width: 100%;
-    width: 100%;
+    grid-template-columns: 1fr;
   }
 }

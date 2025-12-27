@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 import api from "../services/api";
+import { ArrowLeft } from "lucide-react";
 import "./CriarTratamento.css";
 
 function CriarTratamento() {
@@ -72,7 +73,7 @@ function CriarTratamento() {
         <header className="criar-tratamento-header">
           <div className="header-row">
             <button className="back-btn" onClick={() => navigate(-1)}>
-              ← Voltar
+              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
             </button>
             <h1 className="page-title">CRIAR TRATAMENTO</h1>
           </div>

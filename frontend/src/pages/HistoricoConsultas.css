@@ -16,7 +16,7 @@
 
 .page-title {
     text-align: center;
-    font-size: 1.75rem;
+    font-size: 2rem;
     margin-bottom: 2rem;
     font-weight: 700;
     color: #2f2417;
@@ -86,7 +86,7 @@
 .history-list-container {
     background: #e8e2db;
     border-radius: 12px;
-    padding: 1rem 0;
+    padding: 1.5rem;
     /* Reduced horizontal padding to 0 */
     min-height: 400px;
     display: flex;
@@ -98,26 +98,34 @@
 
 /* Overwriting ConsultaCard styles for this page */
 .history-list-container .consulta-card {
-    background: #a48356;
-    color: white;
-    width: 95%;
-    /* Make it take most of the container width */
+    background: white;
+    color: #333;
+    width: 100%;
     max-width: 900px;
-    /* Increased to fill more space */
     border: none;
-    padding: 1rem 1.5rem;
+    border-left: 5px solid #a48356;
+    /* Gold accent */
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+    border-radius: 8px;
+}
+
+.history-list-container .consulta-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
 .history-list-container .consulta-card-name {
-    color: white;
+    color: #2f2417;
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .history-list-container .consulta-card-details {
-    color: #f1ebd8;
-    font-size: 0.85rem;
+    color: #666;
+    font-size: 0.9rem;
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;

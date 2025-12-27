@@ -10,7 +10,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Upload } from "lucide-react";
+import { Upload, ArrowLeft } from "lucide-react";
 import { Navbar } from "../components";
 import api from "../services/api";
 import "./NovoTratamentoPaciente.css";
@@ -160,7 +160,7 @@ function NovoTratamentoPaciente() {
         <header className="novo-tratamento-header">
           <div className="header-row">
             <button className="back-btn" onClick={() => navigate(-1)}>
-              ← Voltar
+              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
             </button>
             <h1 className="page-title">NOVO TRATAMENTO</h1>
           </div>

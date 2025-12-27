@@ -7,7 +7,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, ArrowLeft } from "lucide-react";
 import { Navbar } from "../components";
 import api from "../services/api";
 import "./TratamentoDetalhe.css";
@@ -94,7 +94,7 @@ function TratamentoDetalhe() {
         <header className="tratamento-detalhe-header">
           <div className="header-row">
             <button className="back-btn" onClick={() => navigate(-1)}>
-              ← Voltar
+              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
             </button>
             <h1 className="page-title">TRATAMENTO</h1>
           </div>

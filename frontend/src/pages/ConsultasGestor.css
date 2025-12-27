@@ -18,7 +18,7 @@
 
 .page-title {
     text-align: center;
-    font-size: 1.75rem;
+    font-size: 2rem;
     margin-bottom: 2.5rem;
     font-weight: 700;
     color: #2f2417;
@@ -70,13 +70,15 @@
 
 .consultas-list-container {
     background: #e8e2db;
-    /* Same background as Pacientes list */
+    /* Gray/Beige background like Pacientes */
     border-radius: 12px;
-    padding: 1rem;
+    padding: 1.5rem;
     min-height: 400px;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
+    box-shadow: none;
+    /* Removed shadow to match flat look or keep subtle if needed, usually gray bg implies container */
 }
 
 .ver-mais-container {
@@ -145,7 +147,7 @@
     gap: 0.75rem;
     width: 260px;
     flex-shrink: 0;
-    margin-top: 3rem;
+    margin-top: 3.5rem;
     /* Align with list container (section-header height + gap) */
 }
 

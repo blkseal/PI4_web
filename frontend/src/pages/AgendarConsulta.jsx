@@ -16,60 +16,50 @@ function AgendarConsulta() {
     pacienteNome: "",
     pacienteNumero: "",
     data: "",
-    horario: "09:00", // Definido um valor padrão seguro para o picker
+    horaInicio: "09:00",
+    horaFim: "10:00",
     medico: "",
     tratamento: "",
-    especialidade: "",
+
     notas: "",
   });
   // Dropdown state
   const [pacienteSearch, setPacienteSearch] = useState("");
   const [showPacienteDropdown, setShowPacienteDropdown] = useState(false);
   const dropdownRef = useRef(null);
-  // Placeholder data for dropdowns
-  const medicos = ["Dr. Silva", "Dra. Maria", "Dr. Santos"];
-  const tratamentos = ["Limpeza", "Extração", "Canal", "Aparelho"];
-  const especialidades = [
-    "Ortodontia",
-    "Cirurgia Oral",
-    "Odontopediatria",
-    "Generalista",
-  ];
+  // Data states
+  const [medicos, setMedicos] = useState([]);
+  const [tratamentos, setTratamentos] = useState([]);
+
   useEffect(() => {
-    const fetchPacientes = async () => {
+    const fetchData = async () => {
       try {
-        const resp = await api.get("/pacientes", { params: { pageSize: 100 } });
-        const data = resp?.data?.data || resp?.data || [];
-        let lista = Array.isArray(data) ? data : [];
-        // Enrich entries missing numeroUtente/nus by fetching details
-        const need = lista.filter((p) => !(p?.numeroUtente || p?.nus) && p?.id);
-        if (need.length > 0) {
-          try {
-            const details = await Promise.all(
-              need.map((p) =>
-                api
-                  .get(`/pacientes/${p.id}`)
-                  .then((r) => r?.data?.data || r?.data)
-                  .catch(() => null)
-              )
-            );
-            const byId = {};
-            details.forEach((d) => {
-              if (d && d.id) byId[d.id] = d;
-            });
-            lista = lista.map((p) =>
-              p.id && byId[p.id] ? { ...p, ...byId[p.id] } : p
-            );
-          } catch (e) {
-            // ignore
-          }
-        }
-        setPacientes(lista);
+        setLoading(true);
+        // Fetch Pacientes
+        const pResp = await api.get("/pacientes", { params: { pageSize: 100 } });
+        const pData = pResp?.data?.data || pResp?.data || [];
+        setPacientes(Array.isArray(pData) ? pData : []);
+
+        // Fetch Medicos/Entidades Médicas
+        const gResp = await api.get("/medicos");
+        const gData = gResp?.data?.data || gResp?.data || [];
+        setMedicos(Array.isArray(gData) ? gData : []);
+
+        // Fetch Tratamentos
+        const tResp = await api.get("/tratamentos/tipos");
+        const tData = tResp?.data || [];
+        setTratamentos(Array.isArray(tData) ? tData : []);
+
+
+
       } catch (err) {
-        console.error("Erro ao carregar pacientes:", err);
+        console.error("Erro ao carregar dados:", err);
+        setError("Erro ao carregar dados necessários.");
+      } finally {
+        setLoading(false);
       }
     };
-    fetchPacientes();
+    fetchData();
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowPacienteDropdown(false);
@@ -97,8 +87,7 @@ function AgendarConsulta() {
       pacienteNumero: p.nus || p.numeroUtente || "",
     }));
     setPacienteSearch(
-      `${p.nomeCompleto}${
-        p.nus || p.numeroUtente ? " - " + (p.nus || p.numeroUtente) : ""
+      `${p.nomeCompleto}${p.nus || p.numeroUtente ? " - " + (p.nus || p.numeroUtente) : ""
       }`
     );
     setShowPacienteDropdown(false);
@@ -108,14 +97,21 @@ function AgendarConsulta() {
     setLoading(true);
     setError("");
     try {
+      const startMins = (h, m) => h * 60 + m;
+      const parseTime = (t) => t.split(":").map(Number);
+      const [hIni, mIni] = parseTime(formData.horaInicio);
+      const [hFim, mFim] = parseTime(formData.horaFim);
+      const duracao = startMins(hFim, mFim) - startMins(hIni, mIni);
+
       const payload = {
         id_utente: formData.pacienteId,
-        id_entidade_medica: null, // Pode ser expandido futuramente
+        id_entidade_medica: formData.medico,
         data: formData.data,
-        hora: formData.horario, // O input[type="time"] já devolve "HH:MM"
-        notas: `${formData.especialidade} - ${formData.tratamento}${
-          formData.notas ? " - " + formData.notas : ""
-        }`,
+        hora: formData.horaInicio,
+        horaInicio: formData.horaInicio,
+        horaFim: formData.horaFim,
+        duracao: duracao > 0 ? duracao : 30,
+        notas: `${formData.tratamento}${formData.notas ? " - " + formData.notas : ""}`,
       };
       // Endpoint correto para gestão administrativa
       await api.post("/admin/consultas", payload);
@@ -125,7 +121,7 @@ function AgendarConsulta() {
       console.error("Erro ao agendar consulta:", err);
       setError(
         err.response?.data?.mensagem ||
-          "Erro ao agendar consulta. Verifique os dados."
+        "Erro ao agendar consulta. Verifique os dados."
       );
     } finally {
       setLoading(false);
@@ -213,14 +209,30 @@ function AgendarConsulta() {
                 </div>
               </div>
             </div>
-            {/* Horário (Time Picker) */}
+            {/* Horário Início */}
             <div className="form-group">
-              <label>Horário</label>
+              <label>Hora Início</label>
               <div className="input-with-icon">
                 <input
                   type="time"
-                  value={formData.horario}
-                  onChange={(e) => handleChange("horario", e.target.value)}
+                  value={formData.horaInicio}
+                  onChange={(e) => handleChange("horaInicio", e.target.value)}
+                  required
+                  style={{ minHeight: "45px" }}
+                />
+                <div className="icon-container">
+                  <Clock size={20} />
+                </div>
+              </div>
+            </div>
+            {/* Horário Fim */}
+            <div className="form-group">
+              <label>Hora Fim</label>
+              <div className="input-with-icon">
+                <input
+                  type="time"
+                  value={formData.horaFim}
+                  onChange={(e) => handleChange("horaFim", e.target.value)}
                   required
                   style={{ minHeight: "45px" }}
                 />
@@ -241,8 +253,8 @@ function AgendarConsulta() {
                 >
                   <option value="">Dentista</option>
                   {medicos.map((m) => (
-                    <option key={m} value={m}>
-                      {m}
+                    <option key={m.id || m.id_entidade_medica} value={m.id || m.id_entidade_medica}>
+                      {m.nome || m.nomeCompleto || m.omd || "Médico"}
                     </option>
                   ))}
                 </select>
@@ -259,10 +271,10 @@ function AgendarConsulta() {
                   onChange={(e) => handleChange("tratamento", e.target.value)}
                   required
                 >
-                  <option value="">N/A</option>
+                  <option value="Nenhum">Nenhum</option>
                   {tratamentos.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
+                    <option key={t.id_t_p_tratamento} value={t.nome}>
+                      {t.nome}
                     </option>
                   ))}
                 </select>
@@ -273,28 +285,7 @@ function AgendarConsulta() {
                 ></div>
               </div>
             </div>
-            <div className="form-group">
-              <label>Especialidade</label>
-              <div className="input-with-icon">
-                <select
-                  value={formData.especialidade}
-                  onChange={(e) =>
-                    handleChange("especialidade", e.target.value)
-                  }
-                  required
-                >
-                  <option value="">Especialidade</option>
-                  {especialidades.map((esp) => (
-                    <option key={esp} value={esp}>
-                      {esp}
-                    </option>
-                  ))}
-                </select>
-                <div className="icon-container">
-                  <ChevronDown size={20} />
-                </div>
-              </div>
-            </div>
+
           </div>
           <div className="form-group" style={{ marginBottom: "2rem" }}>
             <label>Notas</label>

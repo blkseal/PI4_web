@@ -6,10 +6,11 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Navbar, SearchBar, PatientCard, ActionCard } from "../components";
+import { Navbar, SearchBar, PatientCard, ActionCard, FilterModal } from "../components";
 import api from "../services/api";
 import qrSvg from "../assets/qr.svg?raw";
 import personPlusSvg from "../assets/mdi_person-plus.svg?raw";
+import { Filter } from "lucide-react";
 import "./Pacientes.css";
 
 function Pacientes() {
@@ -21,9 +22,18 @@ function Pacientes() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Filters State
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    order: 'az', // 'az' or 'za'
+    creationDate: '', // 'newest' or 'oldest' or empty
+    dependente: '' // 'sim', 'nao', or empty
+  });
+  const [tempFilters, setTempFilters] = useState(filters);
+
   const pageSize = 7;
 
-  const fetchPacientes = useCallback(async (searchQuery, pageNum) => {
+  const fetchPacientes = useCallback(async (searchQuery, pageNum, currentFilters) => {
     setLoading(true);
     setError("");
     try {
@@ -65,23 +75,58 @@ function Pacientes() {
           // ignore extra detail failures
         }
       }
-      // Sort alphabetically by nomeCompleto (case-insensitive)
-      normalize.sort((a, b) =>
-        (a?.nomeCompleto || "").localeCompare(b?.nomeCompleto || "", "pt", {
-          sensitivity: "base",
-        })
-      );
+
+      // Apply Filter: Dependente
+      if (currentFilters?.dependente) {
+        normalize = normalize.filter(p => {
+          if (currentFilters.dependente === 'sim') {
+            // Check if dependente is explicitly true or has responsavelId
+            return p.dependente === true || !!p.responsavelId;
+          } else if (currentFilters.dependente === 'nao') {
+            return p.dependente === false || !p.responsavelId;
+          }
+          return true;
+        });
+      }
+
+      // Apply Sorting
+      normalize.sort((a, b) => {
+        // 1. Creation Date Priority (if selected)
+        if (currentFilters?.creationDate) {
+          const dateA = new Date(a.createdAt || 0);
+          const dateB = new Date(b.createdAt || 0);
+          return currentFilters.creationDate === 'newest' ? dateB - dateA : dateA - dateB;
+        }
+
+        // 2. Default Alphabetical
+        const nameA = (a?.nomeCompleto || "").toLowerCase();
+        const nameB = (b?.nomeCompleto || "").toLowerCase();
+        return currentFilters?.order === 'za'
+          ? nameB.localeCompare(nameA, "pt", { sensitivity: "base" })
+          : nameA.localeCompare(nameB, "pt", { sensitivity: "base" });
+      });
+
 
       if (pageNum === 1) {
         setPacientes(normalize);
       } else {
         setPacientes((prev) => {
+          // Re-sort and re-filter combined list if needed (mostly just sort)
+          // Since we filter the fetched page, we append filtered results. 
+          // Note: if user changes filter, page resets to 1, so prev is empty.
           const combined = [...prev, ...normalize];
-          combined.sort((a, b) =>
-            (a?.nomeCompleto || "").localeCompare(b?.nomeCompleto || "", "pt", {
-              sensitivity: "base",
-            })
-          );
+          combined.sort((a, b) => {
+            if (currentFilters?.creationDate) {
+              const dateA = new Date(a.createdAt || 0);
+              const dateB = new Date(b.createdAt || 0);
+              return currentFilters.creationDate === 'newest' ? dateB - dateA : dateA - dateB;
+            }
+            const nameA = (a?.nomeCompleto || "").toLowerCase();
+            const nameB = (b?.nomeCompleto || "").toLowerCase();
+            return currentFilters?.order === 'za'
+              ? nameB.localeCompare(nameA, "pt", { sensitivity: "base" })
+              : nameA.localeCompare(nameB, "pt", { sensitivity: "base" });
+          });
           return combined;
         });
       }
@@ -96,17 +141,17 @@ function Pacientes() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, []); // Removed specific filter dependcy to rely on args
 
   useEffect(() => {
-    fetchPacientes(search, 1);
+    fetchPacientes(search, 1, filters);
     setPage(1);
-  }, [search, fetchPacientes]);
+  }, [search, filters, fetchPacientes]);
 
   const handleLoadMore = () => {
     const nextPage = page + 1;
     setPage(nextPage);
-    fetchPacientes(search, nextPage);
+    fetchPacientes(search, nextPage, filters);
   };
 
   const handlePatientClick = (patient) => {
@@ -122,6 +167,20 @@ function Pacientes() {
     navigate("/pacientes/novo");
   };
 
+  const openFilterModal = () => {
+    setTempFilters({ ...filters });
+    setIsFilterModalOpen(true);
+  };
+
+  const applyFilters = () => {
+    setFilters({ ...tempFilters });
+    setIsFilterModalOpen(false);
+  };
+
+  const handleFilterChange = (field, value) => {
+    setTempFilters(prev => ({ ...prev, [field]: value }));
+  };
+
   return (
     <div className="pacientes-page">
       <Navbar variant="gestor" />
@@ -132,11 +191,17 @@ function Pacientes() {
         <div className="pacientes-content">
           {/* Lista de Pacientes */}
           <div className="pacientes-list-section">
-            <SearchBar
-              placeholder="Pesquisar..."
-              value={search}
-              onChange={setSearch}
-            />
+
+            <div className="pacientes-search-row">
+              <div style={{ flex: 1 }}>
+                <SearchBar
+                  placeholder="Pesquisar..."
+                  value={search}
+                  onChange={setSearch}
+                  onFilter={openFilterModal}
+                />
+              </div>
+            </div>
 
             <div className="pacientes-list">
               {error && <div className="pacientes-error">{error}</div>}
@@ -178,11 +243,13 @@ function Pacientes() {
               title="FAZER SCAN DE UMA<br/>FICHA"
               icon={<div dangerouslySetInnerHTML={{ __html: qrSvg }} />}
               onClick={handleScanQR}
+              className="pacientes-action-card"
             />
             <ActionCard
               title="CRIAR UM NOVO<br/>REGISTO"
               icon={<div dangerouslySetInnerHTML={{ __html: personPlusSvg }} />}
               onClick={handleNewPatient}
+              className="pacientes-action-card"
             />
           </aside>
         </div>
@@ -191,6 +258,51 @@ function Pacientes() {
       <footer className="pacientes-footer">
         <p>Clinimolelos 2025 - Todos os direitos reservados.</p>
       </footer>
+
+      <FilterModal
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+        onApply={applyFilters}
+        title="FILTRAR PACIENTES"
+      >
+        <div className="filter-group">
+          <label className="filter-label">Dependente?</label>
+          <select
+            className="filter-select-modal"
+            value={tempFilters.dependente}
+            onChange={(e) => handleFilterChange('dependente', e.target.value)}
+          >
+            <option value="">Todos</option>
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+          </select>
+        </div>
+
+        <div className="filter-group">
+          <label className="filter-label">Ordem Alfabética</label>
+          <select
+            className="filter-select-modal"
+            value={tempFilters.order}
+            onChange={(e) => handleFilterChange('order', e.target.value)}
+          >
+            <option value="az">A - Z</option>
+            <option value="za">Z - A</option>
+          </select>
+        </div>
+
+        <div className="filter-group">
+          <label className="filter-label">Data de Criação</label>
+          <select
+            className="filter-select-modal"
+            value={tempFilters.creationDate}
+            onChange={(e) => handleFilterChange('creationDate', e.target.value)}
+          >
+            <option value="">Padrão</option>
+            <option value="newest">Mais Recentes Primeiro</option>
+            <option value="oldest">Mais Antigos Primeiro</option>
+          </select>
+        </div>
+      </FilterModal>
     </div>
   );
 }

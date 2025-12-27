@@ -171,10 +171,10 @@ function AgendaGestor() {
       );
       const consultaDoctorName = String(
         c.medico ||
-          c.medicoNome ||
-          c.entidade_medica?.nome ||
-          c.entidade_medica?.omd ||
-          ""
+        c.medicoNome ||
+        c.entidade_medica?.nome ||
+        c.entidade_medica?.omd ||
+        ""
       );
       if (selectedDoctor !== "all") {
         if (
@@ -191,7 +191,15 @@ function AgendaGestor() {
         c.hora_agendada ||
         ""
       ).slice(0, 5);
-      const duration = c.duracao || c.duracaoMin || c.duracao_min || 30;
+      const endStr = (c.horaFim || "").slice(0, 5);
+
+      let duration = c.duracao || c.duracaoMin || c.duracao_min;
+      if (!duration && startStr && endStr) {
+        const [h1, m1] = startStr.split(":").map(Number);
+        const [h2, m2] = endStr.split(":").map(Number);
+        duration = (h2 * 60 + m2) - (h1 * 60 + m1);
+      }
+      if (!duration) duration = 30;
       if (!startStr) continue;
       const startIdx = timeToIndex(startStr);
       const span = Math.max(1, Math.round(duration / 30));
@@ -401,9 +409,8 @@ function AgendaGestor() {
                           <div
                             className="event-chip"
                             style={{ background: ev.color || "#8b6b4a" }}
-                            aria-label={`${ev.doctorName || "Médico"} — ${
-                              ev.patientName || "Utente"
-                            }`}
+                            aria-label={`${ev.doctorName || "Médico"} — ${ev.patientName || "Utente"
+                              }`}
                           />
                         </div>
                       );

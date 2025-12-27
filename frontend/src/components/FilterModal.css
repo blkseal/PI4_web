@@ -1,0 +1,141 @@
+.filter-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(2px);
+}
+
+.filter-modal-overlay.open {
+    opacity: 1;
+}
+
+.filter-modal-container {
+    background-color: #f2eee9;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+}
+
+.filter-modal-container.open {
+    transform: scale(1);
+}
+
+.filter-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.filter-modal-header h2 {
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin: 0;
+    font-family: var(--font-logo);
+}
+
+.filter-close-btn {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.filter-close-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.filter-modal-content {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 2rem;
+    padding-right: 0.5rem;
+}
+
+.filter-modal-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.filter-apply-btn {
+    background-color: #8c7867;
+    color: white;
+    border: none;
+    padding: 0.8rem 3rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    letter-spacing: 0.05em;
+}
+
+.filter-apply-btn:hover {
+    background-color: #6d5d4f;
+}
+
+/* Common form styles for children */
+.filter-group {
+    margin-bottom: 1.5rem;
+}
+
+.filter-label {
+    display: block;
+    color: #555;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.filter-input-modal,
+.filter-select-modal {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #c8b9a6;
+    border-radius: 8px;
+    background-color: white;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: #333;
+    transition: border-color 0.2s;
+}
+
+.filter-input-modal:focus,
+.filter-select-modal:focus {
+    outline: none;
+    border-color: #a48356;
+    box-shadow: 0 0 0 3px rgba(164, 131, 86, 0.1);
+}
+
+.filter-date-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.filter-date-col {
+    flex: 1;
+}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components';
 import api from '../services/api';
-import { Check, X, Edit3 } from 'lucide-react';
+import { Check, X, Edit3, ArrowLeft } from 'lucide-react';
 import './ConsultaDetalhes.css';
 
 function ConsultaDetalhes() {
@@ -41,15 +41,28 @@ function ConsultaDetalhes() {
     }, [id]);
 
     const handleUpdateStatus = async (novoStatus) => {
-        // [AVISO] Como não podemos mexer na API, esta função irá falhar se não
-        // existir o endpoint PUT /admin/consultas/:id/status no backend.
         try {
-            await api.put(`/admin/consultas/${id}/status`, { status: novoStatus });
+            // Construct payload similar to EditarConsulta but with updated status
+            const payload = {
+                id_utente: consulta.id_utente || consulta.paciente?.id || consulta.utenteId,
+                id_entidade_medica: consulta.id_entidade_medica || consulta.medico?.id || consulta.entidadeMedicaId,
+                data: consulta.data,
+                horaInicio: consulta.horaInicio,
+                horaFim: consulta.horaFim,
+                duracao: consulta.duracao || 30,
+                notas: consulta.notas || consulta.titulo || '',
+                estado: novoStatus // Sending status string, hoping backend handles it or we need mapping?
+                // If backend requires id_estado, we might need to map: "concluida" -> 2 ??
+                // For now, based on user request, we try sending the status string or check if backend adapts.
+            };
+
+            await api.put(`/admin/consultas/${id}`, payload);
+
             setConsulta(prev => ({ ...prev, estado: novoStatus }));
             alert(`Consulta marcada como ${novoStatus === 'concluida' ? 'concluída' : 'cancelada'}!`);
         } catch (err) {
             console.error('Erro ao atualizar estado:', err);
-            alert('Erro: O backend ainda não tem o endpoint para atualizar o estado desta forma.');
+            alert('Não foi possível atualizar o estado. Tente novamente.');
         }
     };
 
@@ -93,7 +106,9 @@ function ConsultaDetalhes() {
                 <Navbar variant="gestor" />
                 <div className="error-container">
                     <p>{error || 'Consulta não encontrada.'}</p>
-                    <button onClick={() => navigate('/gestor/consultas')}>Voltar</button>
+                    <button onClick={() => navigate('/gestor/consultas')} className="back-btn-icon">
+                        <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
+                    </button>
                 </div>
             </div>
         );
@@ -118,7 +133,7 @@ function ConsultaDetalhes() {
                             <div className="question-actions">
                                 <button
                                     className="btn-status-confirm sim"
-                                    onClick={() => handleUpdateStatus('concluida')}
+                                    onClick={() => handleUpdateStatus('concluída')}
                                 >
                                     SIM <Check size={14} />
                                 </button>

@@ -270,17 +270,18 @@ function EditarPaciente() {
           <div className="form-actions">
             <button
               type="button"
-              className="cancel-btn"
+              className="submit-btn"
               onClick={() => navigate(`/pacientes/${id}`)}
               style={{
                 marginRight: "1rem",
                 background: "#ccc",
                 border: "none",
                 padding: "0.75rem 1.5rem",
-                borderRadius: "8px",
+                borderRadius: "10px",
                 cursor: "pointer",
                 fontWeight: 600,
                 color: "#333",
+                height: "44px",
               }}
             >
               Cancelar
