@@ -39,7 +39,7 @@ function Tratamentos() {
       title: "COMEÇAR<br/>TRATAMENTO",
       icon: <InlineSvg svg={tratamentoSvg} className="tratamentos-heart-svg" />,
       variant: "brown",
-      onClick: () => navigate("/gestao/tratamentos/comecar"),
+      onClick: () => navigate("/pacientes"),
     },
     {
       title: "TRATAMENTOS<br/>ATUAIS",

@@ -299,7 +299,7 @@ function TratamentoPacienteDetalhe() {
                   <div className="consulta-info">
                     <span>Dia: {consulta.data}</span>
                     <span>Horário: {consulta.horario}</span>
-                    <span>Especialidade: {consulta.especialidade}</span>
+
                   </div>
                 </div>
               ))

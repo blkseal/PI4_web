@@ -9,7 +9,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 import api from "../services/api";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Stethoscope, Hash, User } from "lucide-react";
 import "./TratamentosAtuais.css";
 
 function TratamentosAtuais() {
@@ -121,27 +121,44 @@ function TratamentosAtuais() {
         <section className="tratamentos-atuais-filtros">
           <h2 className="filtros-title">FILTROS</h2>
           <div className="filtros-row">
-            <input
-              type="text"
-              placeholder="Nome do Tratamento"
-              value={filtroNomeTratamento}
-              onChange={(e) => setFiltroNomeTratamento(e.target.value)}
-              className="filtro-input"
-            />
-            <input
-              type="text"
-              placeholder="Nº de Utente..."
-              value={filtroNumeroUtente}
-              onChange={(e) => setFiltroNumeroUtente(e.target.value)}
-              className="filtro-input"
-            />
-            <input
-              type="text"
-              placeholder="Nome do Paciente"
-              value={filtroNomePaciente}
-              onChange={(e) => setFiltroNomePaciente(e.target.value)}
-              className="filtro-input"
-            />
+            <div className="filtro-input-wrapper">
+              <input
+                type="text"
+                placeholder="Nome do Tratamento"
+                value={filtroNomeTratamento}
+                onChange={(e) => setFiltroNomeTratamento(e.target.value)}
+                className="filtro-input"
+              />
+              <div className="filtro-icon">
+                <Stethoscope size={18} />
+              </div>
+            </div>
+
+            <div className="filtro-input-wrapper">
+              <input
+                type="text"
+                placeholder="Nº de Utente..."
+                value={filtroNumeroUtente}
+                onChange={(e) => setFiltroNumeroUtente(e.target.value)}
+                className="filtro-input"
+              />
+              <div className="filtro-icon">
+                <Hash size={18} />
+              </div>
+            </div>
+
+            <div className="filtro-input-wrapper">
+              <input
+                type="text"
+                placeholder="Nome do Paciente"
+                value={filtroNomePaciente}
+                onChange={(e) => setFiltroNomePaciente(e.target.value)}
+                className="filtro-input"
+              />
+              <div className="filtro-icon">
+                <User size={18} />
+              </div>
+            </div>
           </div>
         </section>
 
@@ -149,57 +166,68 @@ function TratamentosAtuais() {
         <section className="tratamentos-atuais-lista-section">
           <h2 className="lista-title">LISTA</h2>
 
-          {loading && (
-            <div className="tratamentos-atuais-loading">A carregar...</div>
-          )}
+          <div className="tratamentos-lista-container">
+            {loading && (
+              <div className="tratamentos-atuais-loading">A carregar...</div>
+            )}
 
-          {error && <div className="tratamentos-atuais-error">{error}</div>}
+            {error && <div className="tratamentos-atuais-error">{error}</div>}
 
-          {!loading && !error && filteredTratamentos.length === 0 && (
-            <div className="tratamentos-atuais-empty">
-              Nenhum tratamento encontrado.
-            </div>
-          )}
+            {!loading && !error && filteredTratamentos.length === 0 && (
+              <div className="tratamentos-atuais-empty">
+                Nenhum tratamento encontrado.
+              </div>
+            )}
 
-          {!loading && !error && filteredTratamentos.length > 0 && (
-            <div className="tratamentos-atuais-lista">
-              {paginatedTratamentos.map((t) => (
-                <div
-                  key={t.id_p_tratamento}
-                  className="tratamento-atual-row"
-                  onClick={() => handleRowClick(t)}
-                >
-                  <div className="tratamento-atual-paciente">
-                    <span className="paciente-nome">
-                      {t.id_utente_utente?.nome_completo || "—"}
-                    </span>
-                    <span className="paciente-numero">
-                      Nº Utente:{" "}
-                      {t.id_utente_utente?.numeroUtente ||
-                        t.id_utente_utente?.nus ||
-                        "—"}
-                    </span>
+            {!loading && !error && filteredTratamentos.length > 0 && (
+              <>
+                {paginatedTratamentos.map((t) => (
+                  <div
+                    key={t.id_p_tratamento}
+                    className="tratamento-card"
+                    onClick={() => handleRowClick(t)}
+                  >
+                    {/* Group 1: Patient */}
+                    <div className="tratamento-info-group patient">
+                      <div className="tratamento-patient-name">
+                        {t.id_utente_utente?.nome_completo || "—"}
+                      </div>
+                      <div className="tratamento-patient-num">
+                        Nº Utente: {
+                          t.id_utente_utente?.numeroUtente ||
+                          t.id_utente_utente?.nus ||
+                          "—"
+                        }
+                      </div>
+                    </div>
+
+                    {/* Group 2: Treatment */}
+                    <div className="tratamento-info-group treatment">
+                      {t.id_t_p_tratamento_tipos_planos_tratamento?.nome ||
+                        "Tratamento"}
+                    </div>
+
+                    {/* Group 3: Date */}
+                    <div className="tratamento-info-group date">
+                      Data de Inicio: {formatDate(t.data_inicio)}
+                    </div>
                   </div>
-                  <div className="tratamento-atual-nome">
-                    {t.id_t_p_tratamento_tipos_planos_tratamento?.nome || "—"}
-                  </div>
-                  <div className="tratamento-atual-data">
-                    Data de Início: {formatDate(t.data_inicio)}
-                  </div>
-                </div>
-              ))}
+                ))}
 
-              {hasMore && (
-                <button
-                  type="button"
-                  className="ver-mais-btn"
-                  onClick={handleVerMais}
-                >
-                  Ver Mais
-                </button>
-              )}
-            </div>
-          )}
+                {hasMore && (
+                  <div className="ver-mais-btn-container">
+                    <button
+                      type="button"
+                      className="ver-mais-btn"
+                      onClick={handleVerMais}
+                    >
+                      Ver Mais
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </section>
       </main>
 

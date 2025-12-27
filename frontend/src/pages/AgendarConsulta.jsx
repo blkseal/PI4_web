@@ -20,7 +20,7 @@ function AgendarConsulta() {
     horaFim: "10:00",
     medico: "",
     tratamento: "",
-    especialidade: "",
+
     notas: "",
   });
   // Dropdown state
@@ -30,7 +30,7 @@ function AgendarConsulta() {
   // Data states
   const [medicos, setMedicos] = useState([]);
   const [tratamentos, setTratamentos] = useState([]);
-  const [especialidades, setEspecialidades] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -50,12 +50,7 @@ function AgendarConsulta() {
         const tData = tResp?.data || [];
         setTratamentos(Array.isArray(tData) ? tData : []);
 
-        // Derive Specialties (if not provided by a separate endpoint, we can extract from doctors or use a default list if needed, 
-        // but the user asked to remove mock and put real. If there's no endpoint, I'll use a set of unique specialties from doctors if available)
-        // For now, let's see if doctors have it. If not, I'll keep a more realistic "real" list or try to find where they are.
-        // Based on previous files, they seem to be strings.
-        const defaultSpecialties = ["Ortodontia", "Cirurgia Oral", "Odontopediatria", "Generalista", "Implantologia", "Estética"];
-        setEspecialidades(defaultSpecialties);
+
 
       } catch (err) {
         console.error("Erro ao carregar dados:", err);
@@ -116,8 +111,7 @@ function AgendarConsulta() {
         horaInicio: formData.horaInicio,
         horaFim: formData.horaFim,
         duracao: duracao > 0 ? duracao : 30,
-        notas: `${formData.especialidade} - ${formData.tratamento}${formData.notas ? " - " + formData.notas : ""
-          }`,
+        notas: `${formData.tratamento}${formData.notas ? " - " + formData.notas : ""}`,
       };
       // Endpoint correto para gestão administrativa
       await api.post("/admin/consultas", payload);
@@ -291,28 +285,7 @@ function AgendarConsulta() {
                 ></div>
               </div>
             </div>
-            <div className="form-group">
-              <label>Especialidade</label>
-              <div className="input-with-icon">
-                <select
-                  value={formData.especialidade}
-                  onChange={(e) =>
-                    handleChange("especialidade", e.target.value)
-                  }
-                  required
-                >
-                  <option value="">Especialidade</option>
-                  {especialidades.map((esp) => (
-                    <option key={esp} value={esp}>
-                      {esp}
-                    </option>
-                  ))}
-                </select>
-                <div className="icon-container">
-                  <ChevronDown size={20} />
-                </div>
-              </div>
-            </div>
+
           </div>
           <div className="form-group" style={{ marginBottom: "2rem" }}>
             <label>Notas</label>

@@ -1,36 +1,82 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from '../components';
 import ConsultaCard from '../components/ConsultaCard';
+import { FilterModal } from '../components';
 import './ConsultasGestor.css';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+
 const ConsultasGestor = () => {
     const navigate = useNavigate();
     const [consultas, setConsultas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [displayLimit, setDisplayLimit] = useState(6);
+
+    // Filter State
+    const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+    const [filters, setFilters] = useState({
+        dataInicio: '',
+        dataFim: '',
+        medico: '',
+        paciente: ''
+    });
+    const [tempFilters, setTempFilters] = useState(filters);
+
     // Fetch consultas from backend
     useEffect(() => {
         fetchConsultas();
-    }, []);
+    }, [filters]); // Re-fetch/filter when filters change
+
     const fetchConsultas = async () => {
         try {
             setLoading(true);
             setError(null);
             // UPDATED: Changed endpoint to /admin/consultas which lists all consultations
             const response = await api.get('/admin/consultas');
+
             // Transform and filter data
             const formattedConsultas = response.data
-                .filter(consulta => (consulta.estado || '').toLowerCase() === 'pendente')
+                .filter(consulta => {
+                    // 1. Hardcoded Status: Pendente only
+                    if ((consulta.estado || '').toLowerCase() !== 'pendente') return false;
+
+                    // 2. Filter by Medico (loose match)
+                    const medicoMatch = !filters.medico ||
+                        (consulta.medico || '').toLowerCase().includes(filters.medico.toLowerCase());
+
+                    // 3. Filter by Paciente (loose match)
+                    const pacienteMatch = !filters.paciente ||
+                        (consulta.paciente?.nomeCompleto || '').toLowerCase().includes(filters.paciente.toLowerCase());
+
+                    // 4. Filter by Date Range
+                    let dateMatch = true;
+                    if (filters.dataInicio || filters.dataFim) {
+                        const consultaDate = new Date(consulta.data);
+                        consultaDate.setHours(0, 0, 0, 0);
+
+                        if (filters.dataInicio) {
+                            const startDate = new Date(filters.dataInicio);
+                            startDate.setHours(0, 0, 0, 0);
+                            if (consultaDate < startDate) dateMatch = false;
+                        }
+                        if (filters.dataFim && dateMatch) {
+                            const endDate = new Date(filters.dataFim);
+                            endDate.setHours(0, 0, 0, 0);
+                            if (consultaDate > endDate) dateMatch = false;
+                        }
+                    }
+
+                    return medicoMatch && pacienteMatch && dateMatch;
+                })
                 .map(consulta => ({
                     id: consulta.id,
                     nome: consulta.paciente?.nomeCompleto || 'Nome não disponível',
                     data: formatDate(consulta.data),
                     horario: `${(consulta.horaInicio || '').slice(0, 5)} - ${(consulta.horaFim || '').slice(0, 5)}`,
-                    especialidade: consulta.especialidade || 'Não especificada',
                     estado: consulta.estado
                 }));
+
             setConsultas(formattedConsultas);
         } catch (err) {
             console.error('Erro ao buscar consultas:', err);
@@ -39,6 +85,7 @@ const ConsultasGestor = () => {
             setLoading(false);
         }
     };
+
     // Format date from YYYY-MM-DD or ISO string to DD/MM/YYYY
     const formatDate = (dateString) => {
         if (!dateString) return 'Data não disponível';
@@ -51,9 +98,27 @@ const ConsultasGestor = () => {
             year: 'numeric'
         });
     };
+
     const handleVerMais = () => {
         setDisplayLimit(prev => prev + 6);
     };
+
+    const openFilterModal = () => {
+        setTempFilters({ ...filters });
+        setIsFilterModalOpen(true);
+    };
+
+    const applyFilters = () => {
+        setFilters({ ...tempFilters });
+        setIsFilterModalOpen(false);
+        // Reset display limit when filtering
+        setDisplayLimit(6);
+    };
+
+    const handleFilterChange = (field, value) => {
+        setTempFilters(prev => ({ ...prev, [field]: value }));
+    };
+
     return (
         <div className="consultas-gestor-page">
             <Navbar variant="gestor" />
@@ -64,7 +129,11 @@ const ConsultasGestor = () => {
                     <section className="consultas-list-section">
                         <div className="section-header">
                             <h2>CONSULTAS</h2>
-                            <button className="filter-button" aria-label="Filter">
+                            <button
+                                className="filter-button"
+                                aria-label="Filter"
+                                onClick={openFilterModal}
+                            >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
                                 </svg>
@@ -78,7 +147,7 @@ const ConsultasGestor = () => {
                             ) : error ? (
                                 <div className="error-state">
                                     <p>{error}</p>
-                                    <button onClick={fetchConsultas} className="retry-button">Tentar novamente</button>
+                                    <button onClick={() => fetchConsultas()} className="retry-button">Tentar novamente</button>
                                 </div>
                             ) : consultas.length === 0 ? (
                                 <div className="empty-state">
@@ -155,6 +224,59 @@ const ConsultasGestor = () => {
             <footer className="consultas-footer">
                 <p>Clinimolelos 2025 - Todos os direitos reservados.</p>
             </footer>
+
+            <FilterModal
+                isOpen={isFilterModalOpen}
+                onClose={() => setIsFilterModalOpen(false)}
+                onApply={applyFilters}
+                title="FILTRAR CONSULTAS"
+            >
+                <div className="filter-group">
+                    <label className="filter-label">Intervalo de Datas</label>
+                    <div className="filter-date-row">
+                        <div className="filter-date-col">
+                            <input
+                                type="date"
+                                className="filter-input-modal"
+                                value={tempFilters.dataInicio}
+                                onChange={(e) => handleFilterChange('dataInicio', e.target.value)}
+                                placeholder="De"
+                            />
+                        </div>
+                        <div className="filter-date-col">
+                            <input
+                                type="date"
+                                className="filter-input-modal"
+                                value={tempFilters.dataFim}
+                                onChange={(e) => handleFilterChange('dataFim', e.target.value)}
+                                placeholder="Até"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="filter-group">
+                    <label className="filter-label">Paciente</label>
+                    <input
+                        type="text"
+                        className="filter-input-modal"
+                        value={tempFilters.paciente}
+                        onChange={(e) => handleFilterChange('paciente', e.target.value)}
+                        placeholder="Nome do paciente..."
+                    />
+                </div>
+
+                <div className="filter-group">
+                    <label className="filter-label">Dentista</label>
+                    <input
+                        type="text"
+                        className="filter-input-modal"
+                        value={tempFilters.medico}
+                        onChange={(e) => handleFilterChange('medico', e.target.value)}
+                        placeholder="Nome do dentista..."
+                    />
+                </div>
+            </FilterModal>
         </div>
     );
 };

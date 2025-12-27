@@ -8,11 +8,11 @@
 import React from 'react';
 import './ActionCard.css';
 
-function ActionCard({ title, icon, onClick }) {
+function ActionCard({ title, icon, onClick, className }) {
     return (
         <button
             type="button"
-            className="action-card"
+            className={`action-card ${className || ''}`}
             onClick={onClick}
         >
             <div

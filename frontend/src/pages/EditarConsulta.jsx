@@ -19,12 +19,12 @@ function EditarConsulta() {
         horaFim: '10:00',
         medico: '',
         tratamento: '',
-        especialidade: '',
+
         notas: ''
     });
     const [medicos, setMedicos] = useState([]);
     const [tratamentos, setTratamentos] = useState([]);
-    const [especialidades, setEspecialidades] = useState([]);
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -40,22 +40,20 @@ function EditarConsulta() {
                 setTratamentos(Array.isArray(tData) ? tData : []);
 
                 // Default Specialties
-                setEspecialidades(["Ortodontia", "Cirurgia Oral", "Odontopediatria", "Generalista", "Implantologia", "Estética"]);
+
 
                 if (id) {
                     const resp = await api.get('/admin/consultas', { params: { pageSize: 1000 } });
                     const lista = Array.isArray(resp.data) ? resp.data : [];
                     const found = lista.find(c => c.id.toString() === id.toString());
                     if (found) {
-                        let esp = '';
+
                         let trat = '';
                         let nts = found.notas || found.titulo || '';
-                        if (nts && nts.includes(' - ')) {
-                            const parts = nts.split(' - ');
-                            esp = parts[0] || '';
-                            trat = parts[1] || '';
-                            nts = parts.slice(2).join(' - ') || '';
-                        }
+                        const parts = nts.split(' - ');
+                        trat = parts[0] || '';
+                        nts = parts.slice(1).join(' - ') || '';
+
                         setFormData({
                             pacienteId: found.paciente?.id || '',
                             pacienteNome: found.paciente?.nomeCompleto || '—',
@@ -64,7 +62,7 @@ function EditarConsulta() {
                             horaFim: found.horaFim ? found.horaFim.slice(0, 5) : '10:00',
                             medico: found.id_entidade_medica || found.medico || '',
                             tratamento: trat || '',
-                            especialidade: esp || '',
+
                             notas: nts || ''
                         });
                     } else {
@@ -102,7 +100,7 @@ function EditarConsulta() {
                 horaInicio: formData.horaInicio,
                 horaFim: formData.horaFim,
                 duracao: duracao > 0 ? duracao : 30,
-                notas: `${formData.especialidade} - ${formData.tratamento}${formData.notas ? ' - ' + formData.notas : ''}`
+                notas: `${formData.tratamento}${formData.notas ? ' - ' + formData.notas : ''}`
             };
             // Lembra-te: Esta rota PUT /admin/consultas/:id tem de ser criada no servidor
             await api.put(`/admin/consultas/${id}`, payload);
@@ -185,23 +183,29 @@ function EditarConsulta() {
                                 <div className="icon-container" dangerouslySetInnerHTML={{ __html: toothSvg }} style={{ width: '20px', height: '20px' }}></div>
                             </div>
                         </div>
-                        <div className="form-group">
-                            <label>Especialidade</label>
-                            <div className="input-with-icon">
-                                <select value={formData.especialidade} onChange={(e) => handleChange('especialidade', e.target.value)} required>
-                                    <option value="">Especialidade</option>
-                                    {especialidades.map(esp => <option key={esp} value={esp}>{esp}</option>)}
-                                </select>
-                                <div className="icon-container"><ChevronDown size={20} /></div>
-                            </div>
-                        </div>
+
                     </div>
                     <div className="form-group" style={{ marginBottom: '2rem' }}>
                         <label>Notas Extra</label>
                         <textarea placeholder="Escrever..." value={formData.notas} onChange={(e) => handleChange('notas', e.target.value)} />
                     </div>
                     <div className="form-actions">
-                        <button type="button" className="cancel-btn" onClick={() => navigate(`/gestor/consultas/${id}`)}>Cancelar</button>
+                        <button
+                            type="button"
+                            className="submit-btn"
+                            onClick={() => navigate(`/gestor/consultas/${id}`)}
+                            style={{
+                                marginRight: "1rem",
+                                background: "#ccc",
+                                border: "none",
+                                padding: "0.75rem 1.5rem",
+                                borderRadius: "10px",
+                                cursor: "pointer",
+                                fontWeight: 600,
+                                color: "#333",
+                                height: "44px",
+                            }}
+                        >Cancelar</button>
                         <button type="submit" className="submit-btn" disabled={submitting}>
                             {submitting ? 'A guardar...' : 'Guardar Alterações'}
                         </button>
