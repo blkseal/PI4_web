@@ -1,14 +1,26 @@
-import axios from 'axios';
+import axios from "axios";
 
-const ACCESS_TOKEN_KEY = 'accessToken';
-const REFRESH_TOKEN_KEY = 'refreshToken';
+const ACCESS_TOKEN_KEY = "accessToken";
+const REFRESH_TOKEN_KEY = "refreshToken";
 
 // Criar instância do axios configurada para a API
+// Allow overriding the API base URL at build time via Vite env var `VITE_API_URL`.
+// In development we keep the local proxy (`/v1`) from vite.config.js so don't set the env var.
+const defaultBase = "/v1";
+const envBase =
+  typeof import.meta !== "undefined" &&
+  import.meta.env &&
+  import.meta.env.VITE_API_URL
+    ? import.meta.env.VITE_API_URL
+    : null;
+
 const api = axios.create({
-  baseURL: '/v1',
+  baseURL: envBase || defaultBase,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
+  // Allow sending cookies/credentials to the backend (for cookie-based sessions)
+  withCredentials: true,
 });
 
 // Helper para obter tokens armazenados
@@ -50,7 +62,7 @@ const refreshAccessToken = async () => {
     if (!refreshToken) return null;
 
     refreshPromise = axios
-      .post('/v1/auth/refresh', { refreshToken })
+      .post("/v1/auth/refresh", { refreshToken })
       .then((resp) => {
         const newAccessToken = resp?.data?.accessToken;
         if (newAccessToken) {

@@ -1,0 +1,201 @@
+.agendar-consulta-page {
+    min-height: 100vh;
+    background: #f2eee9;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-logo);
+}
+
+.agendar-consulta-main {
+    flex: 1;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.agendar-consulta-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+    text-align: center;
+    margin: 0 0 1rem 0;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.agendar-consulta-form {
+    background: white;
+    border-radius: 14px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    /* Softer shadow */
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #000;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon input,
+.input-with-icon select,
+.input-with-icon .searchable-input {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border: 1px solid #d1c0aa;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: var(--font-logo);
+    color: #333;
+    background: white;
+    transition: all 0.2sease;
+}
+
+.input-with-icon input:focus,
+.input-with-icon select:focus,
+.input-with-icon .searchable-input:focus {
+    border-color: #a48356;
+    box-shadow: 0 0 0 3px rgba(164, 131, 86, 0.15);
+    outline: none;
+}
+
+.input-with-icon .icon-container {
+    position: absolute;
+    right: 0.75rem;
+    color: #a48356;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #d1c0aa;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: var(--font-logo);
+    color: #333;
+    background: #f9f7f5;
+    resize: none;
+    min-height: 150px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.submit-btn {
+    padding: 0.8rem 2.5rem;
+    background-color: #8b6e4a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background-color: #725a3c;
+    transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Searchable dropdown custom styles */
+.searchable-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #d1c0aa;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    font-family: var(--font-logo);
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background: #f5f0eb;
+}
+
+.dropdown-item .patient-name {
+    display: block;
+    font-weight: 600;
+    color: #2f2417;
+}
+
+.dropdown-item .patient-details {
+    display: block;
+    font-size: 0.8rem;
+    color: #6b563d;
+}
+
+@media (max-width: 900px) {
+    .form-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .agendar-consulta-form {
+        padding: 1.5rem;
+    }
+}

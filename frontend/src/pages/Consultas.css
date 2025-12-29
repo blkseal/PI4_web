@@ -1,20 +1,31 @@
+.consultas-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000;
+  text-align: center;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+
 .consultas-container {
+  --bg: #f7f5f2;
+  --panel-bg: #ede9e4;
+  --card-bg: #fbf8f5;
+  --accent-1: #6b4a2a;
+  --accent-2: #a07a4e;
+  --text: #2b2b2b;
+  --muted: #6b6b6b;
+
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #F0EEE9;
+  background-color: var(--bg);
   font-family: var(--font-logo);
 }
 
 .consultas-header {
   text-align: center;
-  margin-top: 2rem;
-}
-
-.consultas-title {
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: 1px;
+  margin-top: 1.5rem;
 }
 
 .consultas-main {
@@ -25,102 +36,27 @@
   padding: 0 2rem 3rem;
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 4.5rem;
+  /* Increased gap between List and Grid */
 }
 
-.consultations-section {
-  text-align: center;
-}
-
-.section-title {
-  color: black;
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  text-transform: uppercase;
-}
-
-.consultations-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.consulta-card {
-  background-color: #EBEBEB;
-  border-radius: 8px;
-  padding: 0;
-  display: flex;
-  align-items: stretch;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.consulta-date {
-  background-color: #8B6E4A;
-  color: white;
-  padding: 0.8rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-width: 80px;
-}
-
-.date-day {
-  font-size: 1.8rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.date-month {
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  font-weight: 400;
-}
-
-.consulta-info {
-  padding: 0.8rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: left;
-}
-
-.consulta-type {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.2rem;
-}
-
-.consulta-time {
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.consultas-status {
-  color: #666;
-  font-size: 0.95rem;
-}
-
-.consultas-status.error {
-  color: #a54646;
-}
+/* Reuse Home styles for the horizontal consultations list if applicable, 
+   but since this page uses ConsultationsList component we apply padding here if needed */
 
 .actions-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  max-width: 700px;
-  margin: 0 auto 1rem auto;
+  grid-template-columns: repeat(2, minmax(200px, 280px));
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 4rem auto;
 }
 
 .action-card {
-  background: linear-gradient(135deg, #8B6E4A 0%, #A48356 100%);
+  background-color: #8B6E4A;
   border: none;
+
   border-radius: 12px;
   padding: 2rem;
   height: 200px;
@@ -132,11 +68,12 @@
   transition: transform 0.2s, box-shadow 0.2s;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .action-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(139, 110, 74, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .action-title {
@@ -172,11 +109,4 @@
   height: 40px;
 }
 
-.home-footer {
-  background-color: #8B6E4A;
-  color: #DDD;
-  text-align: center;
-  padding: 2rem;
-  font-size: 0.8rem;
-  margin-top: auto;
-}
+/* FOOTER - handled by global index.css */

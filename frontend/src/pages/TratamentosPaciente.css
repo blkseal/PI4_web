@@ -1,0 +1,218 @@
+/**
+ * TratamentosPaciente.css - Estilos para lista de tratamentos do paciente
+ */
+
+.tratamentos-paciente-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #efece9;
+  font-family: var(--font-body);
+}
+
+.tratamentos-paciente-main {
+  flex: 1;
+  padding: 2rem 4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===== HEADER ===== */
+.tratamentos-paciente-header {
+  margin-bottom: 3rem;
+}
+
+.tratamentos-paciente-header .header-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.tratamentos-paciente-header .header-row .back-btn {
+  position: absolute;
+  left: 0;
+}
+
+.tratamentos-paciente-header .page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.tratamentos-paciente-header .patient-name {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #444;
+  text-align: center;
+}
+
+/* Back button */
+.tratamentos-paciente-page .back-btn {
+  background-color: #8c7867;
+  color: white;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.tratamentos-paciente-page .back-btn:hover {
+  background-color: #6d5d4f;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 2rem;
+  color: #6b563d;
+}
+
+.tratamentos-error {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.tratamentos-empty {
+  text-align: center;
+  padding: 2rem;
+  color: #6b563d;
+  font-size: 0.95rem;
+}
+
+/* ========================================
+   LISTA DE TRATAMENTOS
+   ======================================== */
+.tratamentos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ========================================
+   CARD DE TRATAMENTO
+   ======================================== */
+.tratamento-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tratamento-card-content {
+  display: flex;
+  gap: 2rem;
+}
+
+.tratamento-card-left {
+  flex: 0 0 auto;
+  min-width: 220px;
+}
+
+.tratamento-card-right {
+  flex: 1;
+}
+
+.tratamento-nome {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2f2417;
+  margin: 0 0 0.75rem 0;
+}
+
+.tratamento-info {
+  font-size: 0.9rem;
+  color: #4a4a4a;
+  margin: 0.3rem 0;
+}
+
+.tratamento-info strong {
+  color: #2f2417;
+}
+
+.tratamento-informacoes {
+  font-size: 0.9rem;
+  color: #4a4a4a;
+}
+
+.tratamento-informacoes strong {
+  color: #2f2417;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.tratamento-informacoes p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ========================================
+   BOTÃO VER TRATAMENTO
+   ======================================== */
+.ver-tratamento-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background: #a48356;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-family: var(--font-logo);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ver-tratamento-btn:hover {
+  background: #8b6e4a;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.tratamentos-paciente-footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: #6b563d;
+  font-size: 0.85rem;
+  margin-top: auto;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+  .tratamentos-paciente-main {
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .tratamento-card-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .tratamento-card-left {
+    min-width: auto;
+  }
+
+  .ver-tratamento-btn {
+    position: static;
+    margin-top: 1rem;
+    width: 100%;
+  }
+}

@@ -1,0 +1,307 @@
+/**
+ * HistoricoMedico.css - Estilos para página de Histórico Médico
+ */
+
+.historico-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #efece9;
+  font-family: var(--font-body);
+}
+
+.historico-main {
+  flex: 1;
+  padding: 2rem 4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===== HEADER ===== */
+.historico-header {
+  margin-bottom: 3rem;
+}
+
+.historico-header .header-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.historico-header .header-row .back-btn {
+  position: absolute;
+  left: 0;
+}
+
+.historico-header .page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.historico-header .patient-name {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #444;
+  text-align: center;
+}
+
+/* Back button */
+.historico-page .back-btn {
+  background-color: #8c7867;
+  color: white;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.historico-page .back-btn:hover {
+  background-color: #6d5d4f;
+}
+
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 2rem;
+  color: #6b563d;
+}
+
+.error-state {
+  color: #c44;
+}
+
+/* ========================================
+   CONTENT GRID
+   ======================================== */
+.historico-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.historico-content .exames-section {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1024px) {
+  .historico-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================
+   CARTÕES DE INFORMAÇÃO
+   ======================================== */
+.info-card {
+  background: #e8e4de;
+  border-radius: 12px;
+  padding: 1.5rem;
+  padding-bottom: 4rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
+  min-height: 280px;
+}
+
+.card-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #2f2417;
+  text-transform: uppercase;
+}
+
+.grid-2-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 2rem;
+}
+
+.info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.info-group label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #2f2417;
+}
+
+.info-group p {
+  font-size: 0.95rem;
+  color: #4a4a4a;
+  margin: 0;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.card-actions {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+}
+
+.edit-btn {
+  padding: 0.6rem 1.5rem;
+  background: #6b6b6b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background-color 0.2s;
+}
+
+.edit-btn:hover {
+  background: #555;
+}
+
+/* ========================================
+   SECÇÃO DE EXAMES
+   ======================================== */
+.exames-section {
+  background: #463935;
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: white;
+  position: relative;
+}
+
+.exames-header h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.exames-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.exame-item {
+  background: #5a5a5a;
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.exame-icon {
+  color: #ccc;
+}
+
+.exame-name {
+  flex: 1;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+.download-link {
+  color: #fff;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.download-link:hover {
+  opacity: 1;
+}
+
+.no-exames {
+  font-style: italic;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* ========================================
+   UPLOAD DE EXAMES
+   ======================================== */
+.exames-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  margin-top: 1rem;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.exames-section.drag-active {
+  border: 3px dashed rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.exames-section.drag-active .exames-upload {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.upload-drop-zone {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.anexar-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: #8c7867;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.anexar-btn:hover {
+  background: #6d5d4f;
+}
+
+.anexar-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.simple-footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: #888;
+  font-size: 0.85rem;
+  margin-top: auto;
+}

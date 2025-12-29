@@ -27,7 +27,7 @@
 }
 
 .user-name {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
 }
@@ -47,12 +47,11 @@
   width: 100%;
   margin: 0 auto;
   padding: 0 2rem;
-  /* Puxa o conteúdo para cima para sobrepor o banner se desejado, 
-     mas a imagem mostra separação clara. Vamos manter fluxo normal. */
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 4.5rem;
+  /* Increased from 3rem for more breathing room */
 }
 
 /* PRÓXIMAS CONSULTAS */
@@ -68,82 +67,99 @@
   text-transform: uppercase;
 }
 
-.consultations-list {
+.consultations-group-container {
+  background-color: #D6D6D6;
+  /* Grey border/container background */
+  border-radius: 16px;
+  padding: 12px;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.consultations-list-horizontal {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  max-width: 600px;
-  margin: 0 auto;
+  gap: 12px;
 }
 
-.consulta-card {
-  background-color: #EBEBEB;
-  /* Cor de fundo acinzentada dos cards */
-  border-radius: 8px;
-  /* Bordas ligeiramente arredondadas */
-  padding: 0;
+.consulta-card-horizontal {
+  background-color: #F0EEE9;
+  /* Match page background or use light grey */
+  border-radius: 12px;
   display: flex;
-  align-items: stretch;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  align-items: center;
+  padding: 10px;
+  gap: 15px;
+  transition: transform 0.2s;
 }
 
-.consulta-date {
+.consulta-card-horizontal:hover {
+  transform: translateX(5px);
+}
+
+.consulta-date-badge {
   background-color: #8B6E4A;
-  /* Castanho escuro para a data */
+  /* Primary brown */
   color: white;
-  padding: 0.8rem 1.5rem;
+  min-width: 65px;
+  height: 65px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 80px;
+  line-height: 1.1;
 }
 
-.date-day {
-  font-size: 1.8rem;
+.consulta-date-badge .date-day {
+  font-size: 1.6rem;
   font-weight: 700;
-  line-height: 1;
 }
 
-.date-month {
-  font-size: 0.9rem;
-  text-transform: uppercase;
+.consulta-date-badge .date-month {
+  font-size: 0.8rem;
+  text-transform: capitalize;
   font-weight: 400;
 }
 
-.consulta-info {
-  padding: 0.8rem 1.5rem;
+.consulta-details-content {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: left;
 }
 
-.consulta-type {
-  font-size: 1.2rem;
+.consulta-title {
+  font-size: 1.4rem;
   font-weight: 600;
   color: #333;
-  margin-bottom: 0.2rem;
+  margin: 0;
 }
 
-.consulta-time {
-  font-size: 0.9rem;
-  color: #666;
+.consulta-time-range {
+  font-size: 1rem;
+  color: #555;
+  margin-top: 2px;
 }
 
 /* ACTIONS GRID */
 .actions-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  /* 2 colunas */
-  gap: 1.5rem;
-  max-width: 600px;
-  margin: 0 auto 3rem auto;
+  grid-template-columns: repeat(2, minmax(200px, 280px));
+  /* Enforces 2 columns */
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 4rem auto;
 }
 
 .action-card {
-  background: linear-gradient(135deg, #8B6E4A 0%, #A48356 100%);
+  background-color: #8B6E4A;
+  /* Solid brown matching reference image */
+
   border: none;
   border-radius: 12px;
   padding: 2rem;
@@ -156,11 +172,12 @@
   transition: transform 0.2s, box-shadow 0.2s;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .action-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(139, 110, 74, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .action-title {
@@ -236,15 +253,4 @@
   border-radius: 2px;
 }
 
-/* ========================================
-   FOOTER
-   ======================================== */
-.home-footer {
-  background-color: #8B6E4A;
-  color: #DDD;
-  text-align: center;
-  padding: 2rem;
-  font-size: 0.8rem;
-  margin-top: auto;
-  /* Garante que fica no fundo se houver espaço */
-}
+/* FOOTER - handled by global index.css */

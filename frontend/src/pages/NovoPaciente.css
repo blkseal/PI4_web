@@ -1,0 +1,295 @@
+.novo-paciente-page {
+    min-height: 100vh;
+    background: #f2eee9;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-logo);
+}
+
+.novo-paciente-main {
+    flex: 1;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.novo-paciente-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2f2417;
+    text-align: center;
+    margin: 0;
+    letter-spacing: 0.05em;
+}
+
+/* Form container */
+.novo-paciente-form {
+    background: white;
+    border-radius: 14px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.form-error {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Form rows */
+.form-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.form-row.full-width .form-group {
+    flex: 1;
+}
+
+.form-row.three-cols .form-group {
+    flex: 1;
+}
+
+/* Form group */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-group.stacked {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group.stacked .form-group {
+    margin-bottom: 0;
+}
+
+/* Labels */
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2f2417;
+}
+
+/* Inputs and selects */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1c0aa;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: var(--font-logo);
+    color: #333;
+    background: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #999;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #a48356;
+    box-shadow: 0 0 0 3px rgba(164, 131, 86, 0.12);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b563d' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+/* Toggle buttons */
+.toggle-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.toggle-btn {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    border: 1px solid #d1c0aa;
+    border-radius: 8px;
+    background: white;
+    color: #6b563d;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-logo);
+}
+
+.toggle-btn:hover {
+    border-color: #a48356;
+}
+
+.toggle-btn.active {
+    background: linear-gradient(135deg, #a48356 0%, #8b6e4a 100%);
+    color: white;
+    border-color: transparent;
+}
+
+.toggle-btn.blue.active {
+    background: linear-gradient(135deg, #4a5d8a 0%, #3d4f75 100%);
+}
+
+/* Conditional fields */
+.conditional-field {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e8e2db;
+}
+
+.conditional-field label {
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+/* Form actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+}
+
+.submit-btn {
+    padding: 0.75rem 2rem;
+    background: linear-gradient(135deg, #a48356 0%, #8b6e4a 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: var(--font-logo);
+}
+
+.submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(139, 110, 74, 0.3);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Footer */
+.novo-paciente-footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: #6b563d;
+    font-size: 0.85rem;
+}
+
+/* Searchable dropdown */
+.searchable-dropdown {
+    position: relative;
+}
+
+.searchable-dropdown input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1c0aa;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: var(--font-logo);
+    color: #333;
+    background: white;
+}
+
+.searchable-dropdown input:focus {
+    outline: none;
+    border-color: #a48356;
+    box-shadow: 0 0 0 3px rgba(164, 131, 86, 0.12);
+}
+
+.dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #d1c0aa;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: none;
+    background: white;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font-logo);
+    transition: background 0.15s;
+}
+
+.dropdown-item:hover {
+    background: #f5f0eb;
+}
+
+.dropdown-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2f2417;
+}
+
+.dropdown-nus {
+    font-size: 0.8rem;
+    color: #6b563d;
+}
+
+.dropdown-empty {
+    padding: 1rem;
+    text-align: center;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-row.three-cols {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .novo-paciente-form {
+        padding: 1.5rem;
+    }
+}

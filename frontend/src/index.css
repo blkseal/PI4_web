@@ -9,11 +9,8 @@
    IMPORTAÇÃO DE FONTES GOOGLE
    ======================================== */
 
-/* Montserrat - usada no logo CLINIMOLELOS */
+/* Montserrat - usada em toda a aplicação */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
-
-/* Libre Franklin - usada no resto da aplicação */
-@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400;500;600;700&display=swap');
 
 /* ========================================
    VARIÁVEIS CSS (DESIGN TOKENS)
@@ -83,4 +80,18 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+/* ========================================
+   GLOBAL FOOTER
+   ======================================== */
+.home-footer {
+  background-color: #8B6E4A;
+  /* Standard brown used in the app */
+  color: #FFFFFF;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-size: 0.85rem;
+  width: 100%;
+  margin-top: auto;
 }

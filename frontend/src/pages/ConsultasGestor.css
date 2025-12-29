@@ -1,0 +1,233 @@
+.consultas-gestor-page {
+    background-color: #f2eee9;
+    /* Same background as Pacientes page */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-logo);
+}
+
+.consultas-gestor-content {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    flex: 1;
+    /* Add flex 1 for footer push */
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+    font-weight: 700;
+    color: #2f2417;
+    letter-spacing: 0.05em;
+}
+
+.consultas-gestor-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    /* Left column flexible, right column auto-sized */
+    gap: 3rem;
+    justify-content: center;
+    align-items: start;
+}
+
+/* Left Column */
+.consultas-list-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.section-header h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+    font-weight: normal;
+}
+
+.filter-button {
+    background: #a68b6c;
+    /* Brownish gold */
+    border: none;
+    border-radius: 4px;
+    color: white;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.consultas-list-container {
+    background: #e8e2db;
+    /* Gray/Beige background like Pacientes */
+    border-radius: 12px;
+    padding: 1.5rem;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: none;
+    /* Removed shadow to match flat look or keep subtle if needed, usually gray bg implies container */
+}
+
+.ver-mais-container {
+    text-align: center;
+    padding: 1rem;
+}
+
+.ver-mais-button {
+    background: none;
+    border: none;
+    color: #a48356;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s;
+    font-family: var(--font-logo);
+}
+
+.ver-mais-button:hover {
+    color: #8b6e4a;
+    text-decoration: underline;
+}
+
+/* Loading, Error, and Empty States */
+.loading-state,
+.error-state,
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #6b563d;
+    font-size: 0.95rem;
+}
+
+.loading-state p,
+.error-state p,
+.empty-state p {
+    font-size: 0.95rem;
+    margin: 0 0 1rem 0;
+}
+
+.error-state,
+.error-state p {
+    color: #c44;
+}
+
+.retry-button {
+    background: #a68b6c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.6rem 1.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.retry-button:hover {
+    background: #8b6f52;
+}
+
+/* Right Column - Actions */
+.consultas-actions-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 260px;
+    flex-shrink: 0;
+    margin-top: 3.5rem;
+    /* Align with list container (section-header height + gap) */
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    min-height: 100px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    font-family: var(--font-logo);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.action-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.action-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.9;
+}
+
+.action-btn.brown {
+    background: linear-gradient(145deg, #a48356 0%, #8b6e4a 100%);
+    color: white;
+}
+
+.action-btn.bronze {
+    background: linear-gradient(145deg, #9a6b4a 0%, #7d5638 100%);
+    color: white;
+}
+
+.action-btn.dark {
+    background: linear-gradient(145deg, #5c4a3d 0%, #3d3029 100%);
+    color: white;
+}
+
+.action-text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.action-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.action-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Footer (Matching Pacientes) */
+.consultas-footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: #6b563d;
+    font-size: 0.85rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .consultas-gestor-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .consultas-actions-section {
+        width: 100%;
+    }
+
+    .consultas-gestor-content {
+        padding: 1.5rem;
+    }
+}

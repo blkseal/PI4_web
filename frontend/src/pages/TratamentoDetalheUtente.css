@@ -1,0 +1,169 @@
+/**
+ * TratamentoDetalheUtente.css - Estilos para detalhe de tratamento do utente
+ * Segue o padrão exato das páginas de gestão (TratamentoDetalhe)
+ */
+
+.tratamento-detalhe-utente-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #efece9;
+  font-family: var(--font-body);
+}
+
+.tratamento-detalhe-main {
+  flex: 1;
+  padding: 2rem 4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===== HEADER ===== */
+.detalhe-header {
+  margin-bottom: 3rem;
+}
+
+.tratamento-detalhe-utente-page .detalhe-header .header-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.tratamento-detalhe-utente-page .detalhe-header .header-row .back-btn {
+  position: absolute;
+  left: 0;
+}
+
+.tratamento-detalhe-utente-page .detalhe-header .page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+  text-transform: uppercase;
+}
+
+/* Back button */
+.tratamento-detalhe-utente-page .back-btn {
+  background-color: #8c7867;
+  color: white;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.tratamento-detalhe-utente-page .back-btn:hover {
+  background-color: #6d5d4f;
+}
+
+/* Loading/Error states */
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 2rem;
+  color: #6b563d;
+  font-size: 0.95rem;
+}
+
+.error-state {
+  color: #c44;
+}
+
+/* ========================================
+   CARD DE TRATAMENTO
+   ======================================== */
+.tratamento-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tratamento-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #2f2417;
+}
+
+.field-value {
+  font-size: 1rem;
+  color: #4a4a4a;
+}
+
+.tratamento-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.section-text {
+  font-size: 0.95rem;
+  color: #4a4a4a;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ========================================
+   ANEXOS
+   ======================================== */
+.anexos-section {
+  margin-top: 1rem;
+}
+
+.anexos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.anexo-item {
+  background: #5a5a5a;
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 300px;
+}
+
+.anexo-nome {
+  flex: 1;
+}
+
+.download-link {
+  color: white;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.download-link:hover {
+  opacity: 1;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+  .tratamento-detalhe-main {
+    padding: 1.5rem 1rem;
+  }
+}

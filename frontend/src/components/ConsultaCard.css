@@ -1,0 +1,50 @@
+.consulta-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* Soft shadow like reference */
+  margin-bottom: 0.8rem;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border: none;
+}
+
+.consulta-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.consulta-card-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #000;
+  /* Pure black */
+  /* Dark text */
+  margin: 0;
+  width: 100%;
+  display: block;
+  padding: 0;
+  background: none;
+  /* Remove gradient */
+  border-radius: 0;
+}
+
+.consulta-card-details {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  color: #000;
+  /* Pure black */
+  /* Dark gray text */
+  flex-wrap: wrap;
+  padding-top: 0;
+  align-items: center;
+}
+
+.consulta-card-details span {
+  white-space: nowrap;
+}

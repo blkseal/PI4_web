@@ -1,0 +1,176 @@
+.historico-consultas-page {
+    background-color: #f2eee9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-logo);
+}
+
+.historico-consultas-content {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    flex: 1;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    color: #2f2417;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.section-label {
+    text-align: center;
+    font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+/* Filters Section */
+.filters-section {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.filter-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.filter-input {
+    padding: 0.6rem 2.5rem 0.6rem 1rem;
+    border: 1px solid #c8b9a6;
+    border-radius: 8px;
+    background-color: #f2eee9;
+    color: #555;
+    font-family: inherit;
+    font-size: 0.9rem;
+    min-width: 180px;
+}
+
+.filter-input::placeholder {
+    color: #a48356;
+}
+
+.filter-icon {
+    position: absolute;
+    right: 10px;
+    color: #a48356;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+}
+
+/* Date input reset */
+.filter-input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    position: absolute;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* List Section */
+.history-list-container {
+    background: #e8e2db;
+    border-radius: 12px;
+    padding: 1.5rem;
+    /* Reduced horizontal padding to 0 */
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    width: 100%;
+}
+
+/* Overwriting ConsultaCard styles for this page */
+.history-list-container .consulta-card {
+    background: white;
+    color: #333;
+    width: 100%;
+    max-width: 900px;
+    border: none;
+    border-left: 5px solid #a48356;
+    /* Gold accent */
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+    border-radius: 8px;
+}
+
+.history-list-container .consulta-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.history-list-container .consulta-card-name {
+    color: #2f2417;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.history-list-container .consulta-card-details {
+    color: #666;
+    font-size: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.ver-mais-btn-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.ver-mais-link {
+    background: none;
+    border: none;
+    color: #a48356;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.loading-state,
+.error-state,
+.empty-state {
+    padding: 3rem;
+    text-align: center;
+    color: #a48356;
+}
+
+.consultas-footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: #6b563d;
+    font-size: 0.85rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .filters-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .filter-input {
+        width: 100%;
+        max-width: 300px;
+    }
+}

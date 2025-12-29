@@ -66,9 +66,46 @@ const response = await api.post('/endpoint', { data: 'value' });
 
 3. Open your browser at `http://localhost:3000`
 
+## Pages & API Calls
+
+Documentation of which API endpoints each page/component calls.
+
+### Utente Pages
+
+| Page | API Calls |
+|------|-----------|
+| `Login.jsx` | `POST /auth/login` |
+| `Home.jsx` | `GET /home` |
+| `Documentacao.jsx` | `GET /documentacao/exames`, `GET /documentacao/justificacoes`, `GET /documentacao/tratamentos` |
+| `Consultas.jsx` | `GET /consultas` |
+| `Profile.jsx` | `GET /perfil` |
+| `MeusDados.jsx` | `GET /perfil/dados`, `PUT /perfil/dados` |
+| `HistoricoDentario.jsx` | `GET /perfil/historico-dentario` |
+| `Dependentes.jsx` | `GET /perfil/dependentes` |
+| `EditarCredenciais.jsx` | `PUT /perfil/credenciais` |
+
+### Gestor Pages
+
+| Page | API Calls |
+|------|-----------|
+| `AgendaGestor.jsx` | `GET /agenda` (not yet implemented) |
+| `Pacientes.jsx` | `GET /pacientes?q={search}&page={page}&pageSize={pageSize}` |
+| `NovoPaciente.jsx` | `GET /pacientes` (for responsável dropdown), `POST /pacientes` |
+| `FichaPaciente.jsx` | `GET /pacientes/{id}`, `GET /pacientes/{id}/dependentes`, `POST /pacientes/{id}/enviar-credenciais` |
+
+### Components
+
+| Component | API Calls |
+|-----------|-----------|
+| `Navbar.jsx` | None (UI only) |
+| `SearchBar.jsx` | None (UI only) |
+| `PatientCard.jsx` | None (UI only) |
+| `ActionCard.jsx` | None (UI only) |
+
 ## Technologies
 
 - **React** - UI library
 - **Vite** - Build tool and dev server
 - **Axios** - HTTP client for API requests
 - **ESLint** - Code linting
+
