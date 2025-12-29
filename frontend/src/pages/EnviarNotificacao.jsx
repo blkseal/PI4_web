@@ -14,23 +14,22 @@ const EnviarNotificacao = () => {
     const [error, setError] = useState("");
 
     const [formData, setFormData] = useState({
-        tipoDestinatario: "individual_utente", // "individual_utente", "individual_gestor", "todos_utentes", "todos_gestores", "todos"
+        tipoDestinatario: "individual_utente",
         pacienteId: "",
         pacienteNome: "",
         data: new Date().toISOString().split('T')[0],
-        horario: "15:00",
+        horario: new Date().toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit', hour12: false }),
         mensagem: ""
     });
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch Utentes
+                // Mantive as tuas rotas originais
                 const respPac = await api.get("/pacientes", { params: { pageSize: 200 } });
                 const dataPac = respPac?.data?.data || respPac?.data || [];
                 setPacientes(Array.isArray(dataPac) ? dataPac : []);
 
-                // Fetch Gestores/Medicos
                 const respGest = await api.get("/admin/gestores");
                 const dataGest = respGest?.data?.data || respGest?.data || [];
                 setGestores(Array.isArray(dataGest) ? dataGest : []);
@@ -51,8 +50,6 @@ const EnviarNotificacao = () => {
 
     const handleChange = (field, value) => {
         setFormData(prev => ({ ...prev, [field]: value }));
-
-        // Clear specific selection when type changes
         if (field === "tipoDestinatario") {
             setPacienteSearch("");
             setFormData(prev => ({ ...prev, [field]: value, pacienteId: "", pacienteNome: "" }));
@@ -63,10 +60,10 @@ const EnviarNotificacao = () => {
         const list = formData.tipoDestinatario === "individual_utente" ? pacientes : gestores;
         return list.filter((p) => {
             const name = (p.nomeCompleto || p.nome || "").toLowerCase();
-            const nus = String(p.nus || p.numeroUtente || p.omd || "").toLowerCase();
+            const identifier = String(p.nus || p.numeroUtente || p.omd || "").toLowerCase();
             return (
                 name.includes(pacienteSearch.toLowerCase()) ||
-                nus.includes(pacienteSearch.toLowerCase())
+                identifier.includes(pacienteSearch.toLowerCase())
             );
         });
     };
@@ -74,7 +71,7 @@ const EnviarNotificacao = () => {
     const selectItem = (p) => {
         setFormData(prev => ({
             ...prev,
-            pacienteId: p.id,
+            pacienteId: p.id, // Mantém o ID original (id_utente ou id_gestor)
             pacienteNome: p.nomeCompleto || p.nome
         }));
         setPacienteSearch(p.nomeCompleto || p.nome);
@@ -83,20 +80,18 @@ const EnviarNotificacao = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const isIndividual = formData.tipoDestinatario.startsWith("individual");
         if (isIndividual && !formData.pacienteId) {
             setError("Por favor selecione um destinatário.");
             return;
         }
-        if (!formData.mensagem) {
+        if (!formData.mensagem.trim()) {
             setError("Por favor escreva uma mensagem.");
             return;
         }
 
         setLoading(true);
         setError("");
-
         try {
             const payload = {
                 tipoDestinatario: formData.tipoDestinatario,
@@ -106,12 +101,15 @@ const EnviarNotificacao = () => {
                 mensagem: formData.mensagem
             };
 
+            // Rota ajustada para o que o servidor espera agora
             await api.post('/admin/notificacoes', payload);
+
             alert('Notificação enviada com sucesso!');
-            setFormData(prev => ({ ...prev, mensagem: "" }));
+            setFormData(prev => ({ ...prev, mensagem: "" })); // Limpa apenas a mensagem
+            setPacienteSearch("");
         } catch (err) {
             console.error('Erro ao enviar notificação:', err);
-            setError('Erro ao enviar notificação. Tente novamente.');
+            setError(err.response?.data?.mensagem || 'Erro ao enviar. Verifique se o utilizador tem conta ativa.');
         } finally {
             setLoading(false);
         }
@@ -123,14 +121,11 @@ const EnviarNotificacao = () => {
     return (
         <div className="enviar-notificacao-page">
             <Navbar variant="gestor" />
-
             <main className="enviar-notificacao-main">
                 <h1 className="page-title">Enviar Notificação</h1>
-
                 <div className="enviar-notificacao-card">
                     <form className="enviar-notificacao-form" onSubmit={handleSubmit}>
-                        {error && <div className="error-message">{error}</div>}
-
+                        {error && <div className="error-message" style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
                         <div className="form-row-target">
                             <div className="form-group full-width">
                                 <label>Enviar para:</label>
@@ -151,7 +146,6 @@ const EnviarNotificacao = () => {
                                 </select>
                             </div>
                         </div>
-
                         <div className="form-row">
                             <div className="form-group" ref={dropdownRef}>
                                 <label>Destinatário</label>
@@ -186,45 +180,25 @@ const EnviarNotificacao = () => {
                                                     </span>
                                                 </button>
                                             ))}
-                                            {filteredItems.length === 0 && (
-                                                <div className="dropdown-item empty">Nenhum resultado encontrado</div>
-                                            )}
                                         </div>
                                     )}
                                 </div>
                             </div>
-
                             <div className="form-group">
                                 <label>Data</label>
                                 <div className="input-with-icon">
-                                    <input
-                                        type="date"
-                                        value={formData.data}
-                                        onChange={(e) => handleChange('data', e.target.value)}
-                                        required
-                                    />
-                                    <div className="icon-container">
-                                        <Calendar size={20} />
-                                    </div>
+                                    <input type="date" value={formData.data} onChange={(e) => handleChange('data', e.target.value)} required />
+                                    <div className="icon-container"><Calendar size={20} /></div>
                                 </div>
                             </div>
-
                             <div className="form-group">
                                 <label>Horário</label>
                                 <div className="input-with-icon">
-                                    <input
-                                        type="time"
-                                        value={formData.horario}
-                                        onChange={(e) => handleChange('horario', e.target.value)}
-                                        required
-                                    />
-                                    <div className="icon-container">
-                                        <Clock size={20} />
-                                    </div>
+                                    <input type="time" value={formData.horario} onChange={(e) => handleChange('horario', e.target.value)} required />
+                                    <div className="icon-container"><Clock size={20} /></div>
                                 </div>
                             </div>
                         </div>
-
                         <div className="form-group full-width">
                             <label>Mensagem</label>
                             <textarea
@@ -235,7 +209,6 @@ const EnviarNotificacao = () => {
                                 required
                             />
                         </div>
-
                         <div className="form-footer">
                             <button type="submit" className="submit-btn" disabled={loading}>
                                 {loading ? 'A Submeter...' : 'Submeter'}
@@ -244,7 +217,6 @@ const EnviarNotificacao = () => {
                     </form>
                 </div>
             </main>
-
             <footer className="agenda-footer">
                 <p>Clinimolelos 2025 - Todos os direitos reservados.</p>
             </footer>

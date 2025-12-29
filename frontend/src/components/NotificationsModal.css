@@ -102,8 +102,29 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
-    min-width: 40px;
+    justify-content: center;
+    gap: 6px;
+    min-width: 85px;
+    padding-right: 12px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.notif-bell-icon {
+    color: white;
+    opacity: 0.9;
+}
+
+.notif-time-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.2;
+}
+
+.notif-date {
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
 .notif-time {
