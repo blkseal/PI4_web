@@ -9,6 +9,9 @@ import {
 import api from "../services/api";
 import toothSvg from "../assets/tooth.svg?raw";
 import historicoSvg from "../assets/historico_consultas.svg?raw";
+import documentSvg from "../assets/document.svg?raw";
+import { MessageSquare, Plus } from "lucide-react";
+
 import "./Consultas.css";
 
 function Consultas() {
@@ -32,7 +35,15 @@ function Consultas() {
       try {
         const resp = await api.get("/home");
         if (cancelled) return;
-        setConsultas(resp?.data?.proximasConsultas || []);
+        const proximasRaw = resp?.data?.proximasConsultas || [];
+        const filtered = proximasRaw.filter(c => {
+          const st = (c.valor_estado || c.estado || '').toLowerCase();
+          return st === 'pendente' || st === 'por acontecer';
+        });
+
+
+        setConsultas(filtered);
+
       } catch (err) {
         if (cancelled) return;
         if (err.response?.status === 401) {
@@ -53,15 +64,30 @@ function Consultas() {
 
   const actionItems = [
     {
+      title: "SOLICITAR UMA<br/>CONSULTA",
+      icon: (
+        <div className="tooth-icon-wrapper">
+          <InlineSvg svg={toothSvg} className="tooth-svg" />
+          <Plus size={12} className="plus-badge" />
+        </div>
+      ),
+      onClick: () => navigate("/pedidos"),
+    },
+    {
       title: "HISTÓRICO DE<br/>CONSULTAS",
       icon: <InlineSvg svg={historicoSvg} />,
-      onClick: () => navigate("/historico-dentario"),
+      onClick: () => navigate("/historico"),
     },
     {
       title: "TRATAMENTOS",
       icon: <InlineSvg svg={toothSvg} className="tooth-svg" />,
       onClick: () => navigate("/tratamentos"),
     },
+    {
+      title: "CONTACTOS",
+      icon: <MessageSquare size={40} color="white" fill="white" />,
+    },
+
   ];
 
   return (
@@ -77,7 +103,9 @@ function Consultas() {
           consultas={consultas}
           loading={loading}
           error={error}
+          onClick={(id) => navigate(`/consultas/${id}`)}
         />
+
 
         <ActionGrid items={actionItems} />
       </main>

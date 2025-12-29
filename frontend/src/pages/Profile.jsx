@@ -148,7 +148,7 @@ function Profile() {
         <div className="profile-actions-grid">
           {/* Card 1: Os Meus Dados */}
           <button
-            className="profile-card"
+            className="profile-card brown"
             type="button"
             onClick={() => navigate("/perfil/dados")}
           >
@@ -158,9 +158,10 @@ function Profile() {
             </div>
           </button>
 
+
           {/* Card 2: Histórico Dentário */}
           <button
-            className="profile-card"
+            className="profile-card bronze"
             type="button"
             onClick={() => navigate("/perfil/historico")}
           >
@@ -174,15 +175,16 @@ function Profile() {
             </div>
           </button>
 
+
           {/* Card 3: Dependentes */}
           <button
-            className="profile-card"
+            className="profile-card dark"
             type="button"
             onClick={() => navigate("/perfil/dependentes")}
           >
             <span className="card-title">DEPENDENTES</span>
             <div className="card-icon-circle">
-              <Users size={48} color="white" />
+              <Users size={64} color="white" />
             </div>
           </button>
         </div>

@@ -2,21 +2,23 @@ import React, { useState, useEffect } from "react";
 import { Navbar } from "../components";
 import api from "../services/api";
 import "./PedidosConsulta.css";
+
 const PedidosConsulta = () => {
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const fetchPedidos = async () => {
     try {
       setLoading(true);
       const response = await api.get("/admin/pedidos-consulta");
-      const data = Array.isArray(response.data)
-        ? response.data
-        : response.data?.data || [];
 
-      // If backend returns only id_utente, fetch patient details to show NUS
-      const formattedPedidos = await Promise.all(
-        data.map(async (pedido) => {
+      const data = response.data || { utilizadores: [], nao_utilizadores: [] };
+      const listUtilizadores = data.utilizadores || [];
+      const listVisitantes = data.nao_utilizadores || [];
+
+      const formattedUtilizadores = await Promise.all(
+        listUtilizadores.map(async (pedido) => {
           let nUtente = "N/A";
           if (pedido.id_utente) {
             try {
@@ -28,26 +30,32 @@ const PedidosConsulta = () => {
             }
           }
           return {
-            id: pedido.id,
-            nome: pedido.nome,
-            dia: pedido.data_pedido
-              ? new Date(pedido.data_pedido).toLocaleDateString("pt-PT")
-              : "A definir",
-            horario: pedido.horario,
-            especialidade: pedido.especialidade || "",
+            id: pedido.id_pedido,
+            nome: pedido.id_utente_utente?.nome_completo || "Utente Registado",
+            horario: pedido.horario || "A definir",
             nUtente,
-            contacto: pedido.contacto || "N/A",
+            contacto: pedido.id_utente_utente?.telemovel || pedido.id_utente_utente?.email || "N/A",
             motivo: pedido.motivo,
-            status: "CONCLUÍDO",
-            tipo: pedido.tipo,
+            tipo: "registado",
           };
         })
       );
-      setPedidos(formattedPedidos);
+
+      const formattedVisitantes = listVisitantes.map((pedido) => ({
+        id: pedido.id_pedido_contacto,
+        nome: pedido.nome || "Visitante",
+        horario: "A definir",
+        nUtente: `V-${pedido.id_pedido_contacto}`,
+        contacto: pedido.telemovel || "N/A",
+        motivo: pedido.motivo,
+        tipo: "nao_utilizador",
+      }));
+
+      setPedidos([...formattedUtilizadores, ...formattedVisitantes]);
     } catch (err) {
       console.error("Erro ao buscar pedidos:", err);
       setError(
-        "Não foi possível carregar os pedidos de consulta. Verifica se o servidor está ligado."
+        "Não foi possível carregar os pedidos de consulta."
       );
     } finally {
       setLoading(false);
@@ -58,7 +66,9 @@ const PedidosConsulta = () => {
     if (!window.confirm("Tem a certeza que deseja eliminar este pedido?"))
       return;
     try {
-      await api.delete(`/admin/pedidos-consulta/${id}`, { params: { tipo } });
+      // O backend espera 'utilizador' em vez de 'registado'
+      const apiTipo = tipo === "registado" ? "utilizador" : tipo;
+      await api.delete(`/admin/pedidos-consulta/${apiTipo}/${id}`);
       setPedidos((prev) =>
         prev.filter((p) => !(p.id === id && p.tipo === tipo))
       );
@@ -67,9 +77,11 @@ const PedidosConsulta = () => {
       alert("Não foi possível eliminar o pedido.");
     }
   };
+
   useEffect(() => {
     fetchPedidos();
   }, []);
+
   return (
     <div className="pedidos-consulta-page">
       <Navbar variant="gestor" />
@@ -139,10 +151,6 @@ const PedidosConsulta = () => {
                       <span>{pedido.horario}</span>
                     </div>
                     <div className="info-row">
-                      <span className="info-label">Especialidade:</span>
-                      <span>{pedido.especialidade}</span>
-                    </div>
-                    <div className="info-row">
                       <span className="info-label">
                         {pedido.tipo === "registado" ? "NºUtente:" : "ID:"}
                       </span>
@@ -169,4 +177,5 @@ const PedidosConsulta = () => {
     </div>
   );
 };
+
 export default PedidosConsulta;

@@ -48,7 +48,11 @@ import ForgotPin from "./pages/ForgotPin";
 import ResetPin from "./pages/ResetPin";
 import Gestores from "./pages/Gestores";
 import EnviarNotificacao from "./pages/EnviarNotificacao";
+import ConsultaDetalheUtente from "./pages/ConsultaDetalheUtente";
+import HistoricoConsultasUtente from "./pages/HistoricoConsultasUtente";
+import PedidosConsultaUtente from "./pages/PedidosConsultaUtente";
 import "./App.css";
+
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("accessToken");
@@ -195,6 +199,30 @@ function App() {
           element={
             <UtenteRoute>
               <Consultas />
+            </UtenteRoute>
+          }
+        />
+        <Route
+          path="/consultas/:id"
+          element={
+            <UtenteRoute>
+              <ConsultaDetalheUtente />
+            </UtenteRoute>
+          }
+        />
+        <Route
+          path="/historico"
+          element={
+            <UtenteRoute>
+              <HistoricoConsultasUtente />
+            </UtenteRoute>
+          }
+        />
+        <Route
+          path="/pedidos"
+          element={
+            <UtenteRoute>
+              <PedidosConsultaUtente />
             </UtenteRoute>
           }
         />

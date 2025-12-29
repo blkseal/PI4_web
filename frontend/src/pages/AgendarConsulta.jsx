@@ -111,7 +111,9 @@ function AgendarConsulta() {
         horaInicio: formData.horaInicio,
         horaFim: formData.horaFim,
         duracao: duracao > 0 ? duracao : 30,
+        id_estado: 1, // 1 = Pendente
         notas: `${formData.tratamento}${formData.notas ? " - " + formData.notas : ""}`,
+
       };
       // Endpoint correto para gestão administrativa
       await api.post("/admin/consultas", payload);

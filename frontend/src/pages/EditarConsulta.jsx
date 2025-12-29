@@ -100,8 +100,10 @@ function EditarConsulta() {
                 horaInicio: formData.horaInicio,
                 horaFim: formData.horaFim,
                 duracao: duracao > 0 ? duracao : 30,
+                id_estado: 1, // Defaulting to 1 for edits unless status field is added
                 notas: `${formData.tratamento}${formData.notas ? ' - ' + formData.notas : ''}`
             };
+
             // Lembra-te: Esta rota PUT /admin/consultas/:id tem de ser criada no servidor
             await api.put(`/admin/consultas/${id}`, payload);
 

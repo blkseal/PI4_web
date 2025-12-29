@@ -1,0 +1,213 @@
+.consulta-detalhe-utente-page {
+    min-height: 100vh;
+    background: #f2eee9;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.consulta-detalhe-main {
+    flex: 1;
+    max-width: 850px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: center;
+}
+
+.back-btn-classic {
+    position: absolute;
+    left: 0;
+    background: #8b6e4a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.back-btn-classic:hover {
+    background: #725a3c;
+    transform: translateX(-3px);
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2b2b2b;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.detalhe-card {
+    background: white;
+    border-radius: 16px;
+    padding: 3.5rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    border: 1px solid rgba(139, 110, 74, 0.1);
+}
+
+.detalhe-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.detalhe-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.detalhe-item .label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #8b6e4a;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.detalhe-item .value {
+    font-size: 1.25rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    width: fit-content;
+    background: #eee;
+    color: #666;
+}
+
+.status-badge[data-status="concluída"] {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-badge[data-status="pendente"],
+.status-badge[data-status="por acontecer"] {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.status-badge[data-status="cancelada"] {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.notas-container {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 2rem;
+}
+
+.section-subtitle {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #8b6e4a;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+}
+
+.notas-text {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+    background: #fdfcfb;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #8b6e4a;
+}
+
+.anexos-container {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 2rem;
+    margin-top: 1rem;
+}
+
+.anexos-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.anexo-item {
+    background: #f8f8f8;
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: #8b6e4a;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid #eee;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.anexo-item:hover {
+    background: #f0f0f0;
+}
+
+.no-anexos {
+    color: #888;
+    font-size: 1rem;
+    font-style: italic;
+}
+
+
+.loading-container,
+.error-container {
+    padding: 10rem 2rem;
+    text-align: center;
+    flex: 1;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .detalhe-section {
+        grid-template-columns: 1fr;
+    }
+
+    .detalhe-card {
+        padding: 2rem;
+    }
+
+    .page-header {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .back-btn-classic {
+        position: static;
+        width: 100%;
+        justify-content: center;
+    }
+}

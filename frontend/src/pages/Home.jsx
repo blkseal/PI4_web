@@ -47,7 +47,15 @@ function Home() {
         const resp = await api.get("/home");
         if (cancelled) return;
         setUtilizador(resp?.data?.utilizador || null);
-        setConsultas(resp?.data?.proximasConsultas || []);
+        const proximasRaw = resp?.data?.proximasConsultas || [];
+        const filtered = proximasRaw.filter(c => {
+          const st = (c.valor_estado || c.estado || '').toLowerCase();
+          return st === 'pendente' || st === 'por acontecer';
+        });
+
+
+        setConsultas(filtered);
+
       } catch (err) {
         if (cancelled) return;
         if (err.response?.status === 401) {
@@ -75,7 +83,9 @@ function Home() {
           <Plus size={12} className="plus-badge" />
         </div>
       ),
+      onClick: () => navigate("/pedidos"),
     },
+
     {
       title: "CONSULTAS",
       icon: <InlineSvg svg={toothSvg} className="tooth-svg" />,
@@ -111,7 +121,9 @@ function Home() {
           consultas={consultas}
           loading={loading}
           error={error}
+          onClick={(id) => navigate(`/consultas/${id}`)}
         />
+
 
         {/* Grelha de Ações Rápidas */}
         <ActionGrid items={actionItems} />
