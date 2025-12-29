@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Navbar } from "../components";
 import "./Profile.css";
 import { Info, History, Users } from "lucide-react";
+import QRCode from "qrcode";
 import { useNavigate } from "react-router-dom";
 import profileService from "../services/profile.service";
+import api from "../services/api";
 
 function Profile() {
   const navigate = useNavigate();
   const [utilizador, setUtilizador] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [qrDataUrl, setQrDataUrl] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -65,6 +68,27 @@ function Profile() {
     fetchProfile();
   }, []);
 
+  useEffect(() => {
+    const buildQr = async () => {
+      if (!utilizador) return;
+      // prefer an existing url from backend
+      if (utilizador.qrCodeUrl) return;
+      const code = utilizador.numeroUtente || utilizador.nus;
+      if (!code) return;
+      try {
+        const dataUrl = await QRCode.toDataURL(String(code), {
+          width: 300,
+          margin: 1,
+        });
+        setQrDataUrl(dataUrl);
+      } catch (e) {
+        setQrDataUrl(null);
+      }
+    };
+
+    buildQr();
+  }, [utilizador]);
+
   if (loading)
     return (
       <div className="profile-container">
@@ -110,9 +134,9 @@ function Profile() {
 
         {/* QR Code */}
         <div className="qr-code-container">
-          {utilizador?.qrCodeUrl ? (
+          {utilizador?.qrCodeUrl || qrDataUrl ? (
             <img
-              src={utilizador.qrCodeUrl}
+              src={utilizador?.qrCodeUrl || qrDataUrl}
               alt="QR Code do Utente"
               className="qr-code-img"
             />

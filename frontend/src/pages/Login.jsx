@@ -73,15 +73,60 @@ function Login() {
       // Enviar pedido de login para o backend
       const response = await api.post("/auth/login", { email, pin });
 
-      // Extrair dados da resposta
-      const { accessToken, refreshToken, utilizador } = response.data;
+      // Alguns backends retornam payload dentro de `data.data`.
+      const payload = response?.data?.data || response?.data || {};
 
-      // Guardar tokens de forma consistente
-      storeTokens({ accessToken, refreshToken });
-      localStorage.setItem("user", JSON.stringify(utilizador));
+      // Dev-time logging para diagnosticar problemas de formato
+      if (process.env.NODE_ENV !== "production") {
+        // eslint-disable-next-line no-console
+        console.log("login response payload:", payload);
+      }
 
-      // Redirecionar conforme o tipo de utilizador
-      if (utilizador?.tipo === "gestor") {
+      // Extrair dados da resposta de forma resiliente
+      const accessToken =
+        payload.accessToken || payload.token || payload.access_token;
+      const refreshToken = payload.refreshToken || payload.refresh_token;
+      const utilizador =
+        payload.utilizador || payload.user || payload.usuario || payload.data;
+
+      // Guardar tokens de forma consistente (se existirem)
+      if (accessToken || refreshToken) {
+        storeTokens({ accessToken, refreshToken });
+      }
+
+      // Se o backend usa sessão por cookie (HttpOnly), tokens podem não estar presentes.
+      // Verificar autorização tentando obter o perfil autenticado.
+      let authOk = false;
+      let finalUser = utilizador || {};
+      try {
+        const profileResp = await api.get("/perfil");
+        const profilePayload =
+          profileResp?.data?.data || profileResp?.data || {};
+        finalUser =
+          finalUser && Object.keys(finalUser).length
+            ? finalUser
+            : profilePayload;
+        authOk = true;
+      } catch (e) {
+        authOk = false;
+      }
+
+      if (!authOk && !(accessToken || refreshToken)) {
+        // No tokens and profile check failed — provide actionable message
+        setError(
+          "Login falhou: não foram recebidos tokens e a sessão por cookie não foi estabelecida. Verifique CORS/credentials do backend."
+        );
+        clearTokens();
+        setLoading(false);
+        return;
+      }
+
+      // Persistir utilizador resolvido e redirecionar
+      localStorage.setItem("user", JSON.stringify(finalUser || {}));
+      if (
+        (finalUser && finalUser.tipo === "gestor") ||
+        (utilizador && utilizador.tipo === "gestor")
+      ) {
         navigate("/agenda");
       } else {
         navigate("/home");
