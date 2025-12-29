@@ -43,7 +43,7 @@ function Contactos() {
           linkedin: "Clinimolelos",
           morada: "Av. Dr. Adriano Figueiredo 158, 3460-009 Tondela",
           linkGoogleMaps:
-            "https://www.google.com/maps/embed?pb=..."
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3032.551676646542!2d-8.086380423420808!3d40.52939954877133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd2339433e506997%3A0xc3f8e586119f9f9e!2sAv.%20Dr.%20Adriano%20Figueiredo%20158%2C%203460-009%20Tondela!5e0!3m2!1spt-PT!2spt!4v1710000000000!5m2!1spt-PT!2spt"
         });
       } catch (err) {
         if (!cancelled) {

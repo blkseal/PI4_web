@@ -287,16 +287,16 @@ function App() {
             </GestorRoute>
           }
         />
-            
-  {/* Rota para contactos (protegida) */}
-  <Route
-    path="/contactos"
-    element={
-      <ProtectedRoute>
-        <Contactos />
-      </ProtectedRoute>
-    }
-  />
+
+        {/* Rota para contactos (protegida) */}
+        <Route
+          path="/contactos"
+          element={
+            <ProtectedRoute>
+              <Contactos />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Rota para consultas do gestor (gestor only) */}
         <Route
@@ -565,9 +565,11 @@ function App() {
             </GestorRoute>
           }
         />
-        
-     </Routes>
-      </Router>
+
+      </Routes>
+    </Router>
   );
 }
+
+export default App;
 

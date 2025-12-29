@@ -2,6 +2,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: #F0EEE9;
 }
 
 .contactos-main {
@@ -18,13 +19,13 @@
 }
 
 .contactos-title {
-  font-size: 24px;
+  font-size: 2rem;
 }
 
 .contactos-card {
   display: flex;
   gap: 40px;
-  background-color: #f4efe9;
+  background-color: #e8e2db;
   padding: 30px;
   border-radius: 12px;
   max-width: 1000px;
@@ -40,7 +41,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 8px 0;
+  margin: 0;
+  padding: 8px 10px;
 }
 
 .contactos-icon {

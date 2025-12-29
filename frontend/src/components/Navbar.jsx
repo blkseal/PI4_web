@@ -12,6 +12,7 @@ const navItemsByVariant = {
     { label: "INÍCIO", to: "/home" },
     { label: "DOCUMENTAÇÃO", to: "/documentacao" },
     { label: "CONSULTAS", to: "/consultas" },
+    { label: "CONTACTOS", to: "/contactos" },
   ],
   gestor: [
     { label: 'AGENDA', to: '/agenda' },

@@ -30,7 +30,7 @@ function Home() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-     //Se for gestor, redireciona para a agenda
+    //Se for gestor, redireciona para a agenda
     const storedUser = localStorage.getItem('user');
     const parsed = storedUser ? JSON.parse(storedUser) : null;
     if (parsed?.tipo === 'gestor') {
@@ -99,6 +99,7 @@ function Home() {
     {
       title: "CONTACTOS",
       icon: <MessageSquare size={40} color="white" fill="white" />,
+      onClick: () => navigate("/contactos"),
     },
   ];
 

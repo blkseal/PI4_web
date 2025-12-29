@@ -24,7 +24,7 @@ function Consultas() {
     const storedUser = localStorage.getItem('user');
     const parsed = storedUser ? JSON.parse(storedUser) : null;
     if (parsed?.tipo === 'gestor') {
-    window.location.replace('/agenda');
+      window.location.replace('/agenda');
       return;
     }
 
@@ -86,6 +86,7 @@ function Consultas() {
     {
       title: "CONTACTOS",
       icon: <MessageSquare size={40} color="white" fill="white" />,
+      onClick: () => navigate("/contactos"),
     },
 
   ];
