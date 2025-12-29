@@ -42,30 +42,8 @@ function ConsultaDetalhes() {
 
     const handleUpdateStatus = async (novoStatus) => {
         try {
-            // Mapping status name to ID
-            const statusMap = {
-                'pendente': 1,
-                'por acontecer': 1,
-                'concluida': 2,
-                'concluída': 2,
-                'cancelada': 3,
-                'anulada': 4
-            };
-
-            const payload = {
-                id_utente: consulta.id_utente || consulta.paciente?.id || consulta.utenteId,
-                id_entidade_medica: consulta.id_entidade_medica || consulta.medico?.id || consulta.entidadeMedicaId,
-                data: consulta.data,
-                horaInicio: consulta.horaInicio,
-                horaFim: consulta.horaFim,
-                duracao: consulta.duracao || 30,
-                notas: consulta.notas || consulta.titulo || '',
-                id_estado: statusMap[novoStatus.toLowerCase()] || 1,
-                estado: novoStatus
-            };
-
-
-            await api.put(`/admin/consultas/${id}`, payload);
+            // Usar o endpoint correto para atualizar apenas o estado
+            await api.put(`/admin/consultas/${id}/status`, { status: novoStatus });
 
             setConsulta(prev => ({ ...prev, estado: novoStatus }));
             alert(`Consulta marcada como ${novoStatus === 'concluida' ? 'concluída' : 'cancelada'}!`);
@@ -142,7 +120,7 @@ function ConsultaDetalhes() {
                             <div className="question-actions">
                                 <button
                                     className="btn-status-confirm sim"
-                                    onClick={() => handleUpdateStatus('concluída')}
+                                    onClick={() => handleUpdateStatus('concluida')}
                                 >
                                     SIM <Check size={14} />
                                 </button>
@@ -182,7 +160,7 @@ function ConsultaDetalhes() {
                         <div className="info-item">
                             <span className="label">Estado:</span>
                             <span className="value" style={{ textTransform: 'capitalize' }}>
-                                {estadoAtual === 'pendente' ? 'Por Acontecer' : estadoAtual}
+                                {(estadoAtual || '').toLowerCase() === 'pendente' ? 'por acontecer' : estadoAtual}
                             </span>
                         </div>
 

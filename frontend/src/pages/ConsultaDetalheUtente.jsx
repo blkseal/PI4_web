@@ -122,8 +122,8 @@ function ConsultaDetalheUtente() {
                         </div>
                         <div className="detalhe-item">
                             <span className="label"><Info size={20} /> Estado:</span>
-                            <span className="status-badge" data-status={consulta.estado?.toLowerCase()}>
-                                {consulta.estado || 'pendente'}
+                            <span className="value">
+                                {consulta.estado?.toLowerCase() === 'pendente' ? 'Por Acontecer' : (consulta.estado || 'Por Acontecer')}
                             </span>
                         </div>
                     </div>

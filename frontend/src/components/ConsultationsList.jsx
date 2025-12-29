@@ -20,7 +20,8 @@ function ConsultationsList({ consultas = [], loading = false, error = '', emptyM
         dia,
         mes,
         tipo,
-        horario
+        horario,
+        estado: c.estado || 'por acontecer'
       };
     });
   }, [consultas]);

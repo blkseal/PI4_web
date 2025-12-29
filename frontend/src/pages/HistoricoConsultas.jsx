@@ -168,6 +168,7 @@ const HistoricoConsultas = () => {
                                         data={formatDateForCard(c.data)}
                                         horario={formatTimeForCard(c.horaInicio, c.horaFim)}
                                         especialidade={c.especialidade}
+                                        estado={c.estado}
                                         onClick={() => navigate(`/gestor/consultas/${c.id}/resumo`)}
                                     />
                                 ))}

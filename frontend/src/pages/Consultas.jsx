@@ -38,7 +38,9 @@ function Consultas() {
         const proximasRaw = resp?.data?.proximasConsultas || [];
         const filtered = proximasRaw.filter(c => {
           const st = (c.valor_estado || c.estado || '').toLowerCase();
-          return st === 'pendente' || st === 'por acontecer';
+          const idEstado = c.id_estado;
+          // Accept if id_estado is 2 (Pendente) OR if estado text matches
+          return idEstado === 2 || st === 'pendente' || st === 'por acontecer';
         });
 
 

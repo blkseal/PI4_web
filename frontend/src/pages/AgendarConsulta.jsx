@@ -5,11 +5,13 @@ import api from "../services/api";
 import { User, Calendar, Clock, ChevronDown, Stethoscope } from "lucide-react";
 import toothSvg from "../assets/tooth.svg?raw";
 import "./AgendarConsulta.css";
+
 function AgendarConsulta() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pacientes, setPacientes] = useState([]);
+
   // Form state
   const [formData, setFormData] = useState({
     pacienteId: "",
@@ -20,13 +22,14 @@ function AgendarConsulta() {
     horaFim: "10:00",
     medico: "",
     tratamento: "",
-
     notas: "",
   });
+
   // Dropdown state
   const [pacienteSearch, setPacienteSearch] = useState("");
   const [showPacienteDropdown, setShowPacienteDropdown] = useState(false);
   const dropdownRef = useRef(null);
+
   // Data states
   const [medicos, setMedicos] = useState([]);
   const [tratamentos, setTratamentos] = useState([]);
@@ -50,8 +53,6 @@ function AgendarConsulta() {
         const tData = tResp?.data || [];
         setTratamentos(Array.isArray(tData) ? tData : []);
 
-
-
       } catch (err) {
         console.error("Erro ao carregar dados:", err);
         setError("Erro ao carregar dados necessários.");
@@ -60,6 +61,7 @@ function AgendarConsulta() {
       }
     };
     fetchData();
+
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowPacienteDropdown(false);
@@ -68,9 +70,11 @@ function AgendarConsulta() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
+
   const filteredPacientes = pacientes.filter((p) => {
     const name = p.nomeCompleto?.toLowerCase() || "";
     const nus = String(p.nus || p.numeroUtente || "").toLowerCase();
@@ -79,6 +83,7 @@ function AgendarConsulta() {
       nus.includes(pacienteSearch.toLowerCase())
     );
   });
+
   const selectPaciente = (p) => {
     setFormData((prev) => ({
       ...prev,
@@ -87,11 +92,11 @@ function AgendarConsulta() {
       pacienteNumero: p.nus || p.numeroUtente || "",
     }));
     setPacienteSearch(
-      `${p.nomeCompleto}${p.nus || p.numeroUtente ? " - " + (p.nus || p.numeroUtente) : ""
-      }`
+      `${p.nomeCompleto}${p.nus || p.numeroUtente ? " - " + (p.nus || p.numeroUtente) : ""}`
     );
     setShowPacienteDropdown(false);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -111,10 +116,10 @@ function AgendarConsulta() {
         horaInicio: formData.horaInicio,
         horaFim: formData.horaFim,
         duracao: duracao > 0 ? duracao : 30,
-        id_estado: 1, // 1 = Pendente
+        id_estado: 2, // 2 = Pendente (conforme imagem da BD)
         notas: `${formData.tratamento}${formData.notas ? " - " + formData.notas : ""}`,
-
       };
+
       // Endpoint correto para gestão administrativa
       await api.post("/admin/consultas", payload);
       alert("Consulta agendada com sucesso!");
@@ -129,6 +134,7 @@ function AgendarConsulta() {
       setLoading(false);
     }
   };
+
   return (
     <div className="agendar-consulta-page">
       <Navbar variant="gestor" />
@@ -287,7 +293,6 @@ function AgendarConsulta() {
                 ></div>
               </div>
             </div>
-
           </div>
           <div className="form-group" style={{ marginBottom: "2rem" }}>
             <label>Notas</label>
@@ -310,4 +315,5 @@ function AgendarConsulta() {
     </div>
   );
 }
+
 export default AgendarConsulta;

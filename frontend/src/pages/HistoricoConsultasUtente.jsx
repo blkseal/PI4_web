@@ -120,11 +120,6 @@ const HistoricoConsultasUtente = () => {
                                             <span className="consulta-medico">Dr. {c.medico}</span>
                                         </div>
                                     </div>
-                                    <div className="card-right">
-                                        <span className="status-badge-small" data-status={c.estado.toLowerCase()}>
-                                            {c.estado}
-                                        </span>
-                                    </div>
                                 </div>
                             ))}
 
