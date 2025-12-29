@@ -25,6 +25,7 @@
 }
 
 .pedidos-list {
+    padding-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -64,7 +65,7 @@
 .status-badge {
     background-color: #8B6E4A;
     /* Brown color */
-    color: white;
+    color: white !important;
     padding: 0.4rem 1rem;
     border-radius: 4px;
     font-size: 0.8rem;

@@ -8,7 +8,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/v1": {
-        target: "https://pi4-api-k4r4.onrender.com",
+        target: "https://localhost:3000",
         changeOrigin: true,
       },
     },

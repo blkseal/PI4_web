@@ -42,7 +42,16 @@ function ConsultaDetalhes() {
 
     const handleUpdateStatus = async (novoStatus) => {
         try {
-            // Construct payload similar to EditarConsulta but with updated status
+            // Mapping status name to ID
+            const statusMap = {
+                'pendente': 1,
+                'por acontecer': 1,
+                'concluida': 2,
+                'concluída': 2,
+                'cancelada': 3,
+                'anulada': 4
+            };
+
             const payload = {
                 id_utente: consulta.id_utente || consulta.paciente?.id || consulta.utenteId,
                 id_entidade_medica: consulta.id_entidade_medica || consulta.medico?.id || consulta.entidadeMedicaId,
@@ -51,10 +60,10 @@ function ConsultaDetalhes() {
                 horaFim: consulta.horaFim,
                 duracao: consulta.duracao || 30,
                 notas: consulta.notas || consulta.titulo || '',
-                estado: novoStatus // Sending status string, hoping backend handles it or we need mapping?
-                // If backend requires id_estado, we might need to map: "concluida" -> 2 ??
-                // For now, based on user request, we try sending the status string or check if backend adapts.
+                id_estado: statusMap[novoStatus.toLowerCase()] || 1,
+                estado: novoStatus
             };
+
 
             await api.put(`/admin/consultas/${id}`, payload);
 

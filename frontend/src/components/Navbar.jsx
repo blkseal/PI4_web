@@ -45,37 +45,10 @@ function Navbar({ variant = "utente" }) {
   );
   const [switchingBack, setSwitchingBack] = useState(false);
   const [notifModalOpen, setNotifModalOpen] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const [loadingNotifs, setLoadingNotifs] = useState(false);
 
   const navItems = navItemsByVariant[variant] || navItemsByVariant.utente;
   const brandTarget = variant === "gestor" ? "/agenda" : "/home";
 
-  useEffect(() => {
-    if (notifModalOpen) {
-      fetchNotifications();
-    }
-  }, [notifModalOpen]);
-
-  const fetchNotifications = async () => {
-    setLoadingNotifs(true);
-    try {
-      const resp = await api.get("/notificacoes");
-      const data = resp?.data?.data || resp?.data || [];
-      // Assuming data is an array of { id, mensagem, data, hora }
-      // Formatting it for the modal
-      const formatted = data.map(n => ({
-        id: n.id,
-        message: n.mensagem,
-        time: n.hora ? (n.data ? `${n.data} ${n.hora}` : n.hora) : "Nesta data"
-      }));
-      setNotifications(formatted);
-    } catch (err) {
-      console.error("Erro ao carregar notificações:", err);
-    } finally {
-      setLoadingNotifs(false);
-    }
-  };
 
   const handleLogout = () => {
     clearTokens();
@@ -83,16 +56,6 @@ function Navbar({ variant = "utente" }) {
     setMenuOpen(false);
     navigate("/", { replace: true });
   };
-
-  const handleDeleteNotification = async (id) => {
-    try {
-      await api.delete(`/notificacoes/${id}`);
-      setNotifications(prev => prev.filter(n => n.id !== id));
-    } catch (err) {
-      console.error("Erro ao apagar notificação:", err);
-    }
-  };
-
   const handleReturnToMainProfile = async () => {
     setSwitchingBack(true);
     try {
@@ -212,9 +175,6 @@ function Navbar({ variant = "utente" }) {
         isOpen={notifModalOpen}
         onClose={() => setNotifModalOpen(false)}
         variant={variant}
-        notifications={notifications}
-        onDelete={handleDeleteNotification}
-        loading={loadingNotifs}
       />
     </>
   );

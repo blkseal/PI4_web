@@ -111,7 +111,7 @@ function Documentacao() {
       <Navbar variant={isGestorView ? "gestor" : "utente"} />
 
       <main className="doc-main">
-        <h1 className="doc-title">Documentação</h1>
+        <h1 className="doc-title">DOCUMENTAÇÃO</h1>
 
         <div className="doc-content">
           <div className="doc-cards">

@@ -81,3 +81,17 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+/* ========================================
+   GLOBAL FOOTER
+   ======================================== */
+.home-footer {
+  background-color: #8B6E4A;
+  /* Standard brown used in the app */
+  color: #FFFFFF;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-size: 0.85rem;
+  width: 100%;
+  margin-top: auto;
+}
