@@ -30,13 +30,13 @@ function Home() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Se for gestor, redireciona para a agenda
-    // const storedUser = localStorage.getItem('user');
-    // const parsed = storedUser ? JSON.parse(storedUser) : null;
-    // if (parsed?.tipo === 'gestor') {
-    //   navigate('/agenda', { replace: true });
-    //   return;
-    // }
+     //Se for gestor, redireciona para a agenda
+    const storedUser = localStorage.getItem('user');
+    const parsed = storedUser ? JSON.parse(storedUser) : null;
+    if (parsed?.tipo === 'gestor') {
+      navigate('/agenda', { replace: true });
+      return;
+    }
 
     let cancelled = false;
 

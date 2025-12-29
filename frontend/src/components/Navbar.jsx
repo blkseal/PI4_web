@@ -39,6 +39,7 @@ const getActiveProfileInfo = () => {
 function Navbar({ variant = "utente" }) {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeProfileId, setActiveProfileId] = useState(
     getActiveProfileInfo()

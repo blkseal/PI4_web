@@ -51,6 +51,7 @@ import EnviarNotificacao from "./pages/EnviarNotificacao";
 import ConsultaDetalheUtente from "./pages/ConsultaDetalheUtente";
 import HistoricoConsultasUtente from "./pages/HistoricoConsultasUtente";
 import PedidosConsultaUtente from "./pages/PedidosConsultaUtente";
+import Contactos from './pages/Contactos';
 import "./App.css";
 
 
@@ -286,6 +287,16 @@ function App() {
             </GestorRoute>
           }
         />
+            
+  {/* Rota para contactos (protegida) */}
+  <Route
+    path="/contactos"
+    element={
+      <ProtectedRoute>
+        <Contactos />
+      </ProtectedRoute>
+    }
+  />
 
         {/* Rota para consultas do gestor (gestor only) */}
         <Route
@@ -554,12 +565,9 @@ function App() {
             </GestorRoute>
           }
         />
-
-        {/* Redirecionar rotas desconhecidas para o login */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+        
+     </Routes>
+      </Router>
   );
 }
 
-export default App;
