@@ -8,7 +8,6 @@ const ConsultaCard = ({ nome, data, horario, onClick }) => {
             <div className="consulta-card-details">
                 <span>Dia: {data}</span>
                 <span>Horário: {horario}</span>
-
             </div>
         </div>
     );

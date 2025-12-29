@@ -51,6 +51,7 @@ import EnviarNotificacao from "./pages/EnviarNotificacao";
 import ConsultaDetalheUtente from "./pages/ConsultaDetalheUtente";
 import HistoricoConsultasUtente from "./pages/HistoricoConsultasUtente";
 import PedidosConsultaUtente from "./pages/PedidosConsultaUtente";
+import Contactos from './pages/Contactos';
 import "./App.css";
 
 
@@ -284,6 +285,16 @@ function App() {
             <GestorRoute>
               <EditarPaciente />
             </GestorRoute>
+          }
+        />
+
+        {/* Rota para contactos (protegida) */}
+        <Route
+          path="/contactos"
+          element={
+            <ProtectedRoute>
+              <Contactos />
+            </ProtectedRoute>
           }
         />
 
@@ -555,11 +566,10 @@ function App() {
           }
         />
 
-        {/* Redirecionar rotas desconhecidas para o login */}
-        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
+

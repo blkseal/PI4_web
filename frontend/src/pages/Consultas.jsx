@@ -21,12 +21,12 @@ function Consultas() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // const storedUser = localStorage.getItem('user');
-    // const parsed = storedUser ? JSON.parse(storedUser) : null;
-    // if (parsed?.tipo === 'gestor') {
-    //   window.location.replace('/agenda');
-    //   return;
-    // }
+    const storedUser = localStorage.getItem('user');
+    const parsed = storedUser ? JSON.parse(storedUser) : null;
+    if (parsed?.tipo === 'gestor') {
+      window.location.replace('/agenda');
+      return;
+    }
 
     let cancelled = false;
     const fetchConsultas = async () => {
@@ -38,7 +38,9 @@ function Consultas() {
         const proximasRaw = resp?.data?.proximasConsultas || [];
         const filtered = proximasRaw.filter(c => {
           const st = (c.valor_estado || c.estado || '').toLowerCase();
-          return st === 'pendente' || st === 'por acontecer';
+          const idEstado = c.id_estado;
+          // Accept if id_estado is 2 (Pendente) OR if estado text matches
+          return idEstado === 2 || st === 'pendente' || st === 'por acontecer';
         });
 
 
@@ -86,6 +88,7 @@ function Consultas() {
     {
       title: "CONTACTOS",
       icon: <MessageSquare size={40} color="white" fill="white" />,
+      onClick: () => navigate("/contactos"),
     },
 
   ];

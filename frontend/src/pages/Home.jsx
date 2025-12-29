@@ -30,13 +30,13 @@ function Home() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Se for gestor, redireciona para a agenda
-    // const storedUser = localStorage.getItem('user');
-    // const parsed = storedUser ? JSON.parse(storedUser) : null;
-    // if (parsed?.tipo === 'gestor') {
-    //   navigate('/agenda', { replace: true });
-    //   return;
-    // }
+    //Se for gestor, redireciona para a agenda
+    const storedUser = localStorage.getItem('user');
+    const parsed = storedUser ? JSON.parse(storedUser) : null;
+    if (parsed?.tipo === 'gestor') {
+      navigate('/agenda', { replace: true });
+      return;
+    }
 
     let cancelled = false;
 
@@ -50,10 +50,10 @@ function Home() {
         const proximasRaw = resp?.data?.proximasConsultas || [];
         const filtered = proximasRaw.filter(c => {
           const st = (c.valor_estado || c.estado || '').toLowerCase();
-          return st === 'pendente' || st === 'por acontecer';
+          const idEstado = c.id_estado;
+          // Accept if id_estado is 2 (Pendente) OR if estado text matches
+          return idEstado === 2 || st === 'pendente' || st === 'por acontecer';
         });
-
-
         setConsultas(filtered);
 
       } catch (err) {
@@ -99,6 +99,7 @@ function Home() {
     {
       title: "CONTACTOS",
       icon: <MessageSquare size={40} color="white" fill="white" />,
+      onClick: () => navigate("/contactos"),
     },
   ];
 

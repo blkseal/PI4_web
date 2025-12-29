@@ -12,6 +12,7 @@ const navItemsByVariant = {
     { label: "INÍCIO", to: "/home" },
     { label: "DOCUMENTAÇÃO", to: "/documentacao" },
     { label: "CONSULTAS", to: "/consultas" },
+    { label: "CONTACTOS", to: "/contactos" },
   ],
   gestor: [
     { label: 'AGENDA', to: '/agenda' },
@@ -39,6 +40,7 @@ const getActiveProfileInfo = () => {
 function Navbar({ variant = "utente" }) {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeProfileId, setActiveProfileId] = useState(
     getActiveProfileInfo()

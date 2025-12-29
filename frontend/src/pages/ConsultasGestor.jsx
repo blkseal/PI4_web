@@ -38,8 +38,9 @@ const ConsultasGestor = () => {
             // Transform and filter data
             const formattedConsultas = response.data
                 .filter(consulta => {
-                    // 1. Hardcoded Status: Pendente only
-                    if ((consulta.estado || '').toLowerCase() !== 'pendente') return false;
+                    // 1. Filter: Pendente or Por Acontecer only
+                    const st = (consulta.estado || '').toLowerCase();
+                    if (st !== 'pendente' && st !== 'por acontecer') return false;
 
                     // 2. Filter by Medico (loose match)
                     const medicoMatch = !filters.medico ||
@@ -52,18 +53,18 @@ const ConsultasGestor = () => {
                     // 4. Filter by Date Range
                     let dateMatch = true;
                     if (filters.dataInicio || filters.dataFim) {
-                        const consultaDate = new Date(consulta.data);
-                        consultaDate.setHours(0, 0, 0, 0);
+                        const consultaDateVal = new Date(consulta.data);
+                        consultaDateVal.setHours(0, 0, 0, 0);
 
                         if (filters.dataInicio) {
                             const startDate = new Date(filters.dataInicio);
                             startDate.setHours(0, 0, 0, 0);
-                            if (consultaDate < startDate) dateMatch = false;
+                            if (consultaDateVal < startDate) dateMatch = false;
                         }
                         if (filters.dataFim && dateMatch) {
                             const endDate = new Date(filters.dataFim);
                             endDate.setHours(0, 0, 0, 0);
-                            if (consultaDate > endDate) dateMatch = false;
+                            if (consultaDateVal > endDate) dateMatch = false;
                         }
                     }
 
@@ -74,7 +75,7 @@ const ConsultasGestor = () => {
                     nome: consulta.paciente?.nomeCompleto || 'Nome não disponível',
                     data: formatDate(consulta.data),
                     horario: `${(consulta.horaInicio || '').slice(0, 5)} - ${(consulta.horaFim || '').slice(0, 5)}`,
-                    estado: consulta.estado
+                    estado: consulta.estado || 'pendente'
                 }));
 
             setConsultas(formattedConsultas);
