@@ -9,8 +9,8 @@ const REFRESH_TOKEN_KEY = "refreshToken";
 const defaultBase = "/v1";
 const envBase =
   typeof import.meta !== "undefined" &&
-  import.meta.env &&
-  import.meta.env.VITE_API_URL
+    import.meta.env &&
+    import.meta.env.VITE_API_URL
     ? import.meta.env.VITE_API_URL
     : null;
 
@@ -75,8 +75,16 @@ const refreshAccessToken = async () => {
     const { refreshToken } = getStoredTokens();
     if (!refreshToken) return null;
 
+    const baseURL = api.defaults.baseURL;
+    // Remove trailing slash if present to avoid double slash with /auth
+    const cleanBase = baseURL.endsWith("/") ? baseURL.slice(0, -1) : baseURL;
+    // If cleanBase ends with /v1, we append /auth/refresh. 
+    // Wait, the hardcoded was /v1/auth/refresh.
+    // If baseURL IS /v1 (default), then cleanBase is /v1. url -> /v1/auth/refresh. Correct.
+    // If baseURL is https://.../v1, url -> https://.../v1/auth/refresh. Correct.
+
     refreshPromise = axios
-      .post("/v1/auth/refresh", { refreshToken })
+      .post(`${cleanBase}/auth/refresh`, { refreshToken })
       .then((resp) => {
         const newAccessToken = resp?.data?.accessToken;
         if (newAccessToken) {
