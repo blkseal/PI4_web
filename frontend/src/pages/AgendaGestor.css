@@ -32,6 +32,7 @@
   margin-top: 8px;
   align-items: center;
 }
+
 .legend-item {
   display: flex;
   align-items: center;
@@ -40,12 +41,14 @@
   padding: 2px 6px;
   border-radius: 6px;
 }
+
 .legend-color {
   width: 12px;
   height: 12px;
   border-radius: 3px;
   display: inline-block;
 }
+
 .legend-label {
   font-size: 12px;
   color: #5b4736;
@@ -58,6 +61,7 @@
   background: white;
   cursor: pointer;
 }
+
 .btn.active {
   background: #5b482f;
   color: #fff;
@@ -80,17 +84,32 @@
   width: 80px;
   background: transparent;
 }
+
 .time-header {
   height: 48px;
 }
+
+/* New container for time slots that matches day-body grid exactly */
+.time-body {
+  display: grid;
+  grid-template-rows: repeat(31, 56px);
+  gap: 6px;
+  margin-top: 8px;
+  /* Matches day-body margin-top */
+}
+
 .time-slot {
-  height: 48px;
+  /* Remove fixed height, let grid control it */
   display: flex;
   align-items: center;
+  /* or flex-start to align with top line */
   justify-content: flex-end;
   padding-right: 8px;
   color: #6b6b6b;
   font-size: 13px;
+  /* Visual alignment: if we want the label "08:00" to be at the top of the block */
+  align-items: flex-start;
+  padding-top: 4px;
 }
 
 .days-grid {
@@ -99,6 +118,7 @@
   gap: 8px;
   flex: 1 1 0;
 }
+
 .days-grid.single {
   grid-template-columns: 1fr;
 }
@@ -108,6 +128,7 @@
   flex-direction: column;
   background: transparent;
 }
+
 .day-header {
   height: 48px;
   display: flex;
@@ -119,13 +140,16 @@
   color: #fff;
   cursor: pointer;
 }
+
 .day-header:hover {
   opacity: 0.95;
   transform: translateY(-1px);
 }
+
 .day-body {
   display: grid;
-  grid-template-rows: repeat(24, 56px);
+  grid-template-rows: repeat(31, 56px);
+  /* 31 slots for 08:00 to 23:00 */
   gap: 6px;
   margin-top: 8px;
   position: relative;
@@ -188,26 +212,30 @@
     pointer-events: auto;
   }
 }
+
 .event-content {
   display: none;
   flex-direction: column;
   color: #fff;
 }
+
 .event-title {
   font-weight: 700;
   font-size: 13px;
 }
+
 .event-meta {
   font-size: 12px;
   opacity: 0.95;
 }
 
 /* Expand on hover */
-.day-body > .event-card.compact:hover {
+.day-body>.event-card.compact:hover {
   /* smooth hover - subtle lift and brightness for all colors */
   transform: translateY(-2px);
 }
-.day-body > .event-card.compact .event-content {
+
+.day-body>.event-card.compact .event-content {
   display: none;
 }
 
@@ -222,28 +250,33 @@
   background: #fff;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
+
 .event-pill {
   display: flex;
   align-items: center;
   gap: 8px;
   width: 100%;
 }
+
 .pill-color {
   width: 12px;
   height: 12px;
   border-radius: 3px;
   flex: 0 0 auto;
 }
+
 .pill-text {
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
+
 .pill-title {
   font-weight: 700;
   font-size: 13px;
   color: #2f2417;
 }
+
 .pill-meta {
   font-size: 12px;
   color: #6b6b6b;
@@ -256,6 +289,7 @@
 .day-column {
   border-left: 1px solid rgba(0, 0, 0, 0.04);
 }
+
 .day-column:first-child {
   border-left: none;
 }
@@ -279,10 +313,12 @@
   .days-grid {
     grid-template-columns: 1fr;
   }
+
   .time-column {
     display: none;
   }
 }
+
 .agenda-page {
   min-height: 100vh;
   background: #f2eee9;
@@ -412,6 +448,7 @@
 }
 
 @media (max-width: 1100px) {
+
   .grid-head,
   .time-row {
     grid-template-columns: 80px repeat(5, 1fr);

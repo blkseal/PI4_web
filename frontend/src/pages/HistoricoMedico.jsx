@@ -6,7 +6,14 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Navbar, EditHistoricoModal, EditHabitosModal } from "../components";
 import api from "../services/api";
-import { Upload, FileText, Download, Trash2, Edit, ArrowLeft } from "lucide-react";
+import {
+  Upload,
+  FileText,
+  Download,
+  Trash2,
+  Edit,
+  ArrowLeft,
+} from "lucide-react";
 import "./HistoricoMedico.css";
 
 function HistoricoMedico() {
@@ -33,6 +40,9 @@ function HistoricoMedico() {
   const [isDragging, setIsDragging] = useState(false);
 
   const fileInputRef = useRef(null);
+  const [showExameModal, setShowExameModal] = useState(false);
+  const [selectedExame, setSelectedExame] = useState(null);
+  const [uploadType, setUploadType] = useState("exame"); // "exame" | "justificacao"
 
   useEffect(() => {
     loadData();
@@ -74,22 +84,43 @@ function HistoricoMedico() {
 
   const uploadFile = async (file) => {
     const formData = new FormData();
-    formData.append("ficheiro", file);
+
+    // Choose endpoint and field name based on type
+    let endpoint = "";
+    let fieldName = "";
+
+    if (uploadType === "exame") {
+      endpoint = `/pacientes/${id}/exames`;
+      fieldName = "ficheiro";
+    } else {
+      endpoint = `/pacientes/${id}/justificacoes`;
+      fieldName = "anexo";
+    }
+
+    formData.append(fieldName, file);
 
     setUploading(true);
     try {
-      await api.post(`/pacientes/${id}/exames`, formData, {
+      await api.post(endpoint, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      // Recarregar lista
-      const examRes = await api.get(`/pacientes/${id}/exames`);
-      setExames(examRes.data || []);
-      alert("Exame anexado com sucesso!");
+
+      // Reload logic
+      if (uploadType === "exame") {
+        const examRes = await api.get(`/pacientes/${id}/exames`);
+        setExames(examRes.data || []);
+        alert("Exame anexado com sucesso!");
+      } else {
+        alert("Justificação anexada com sucesso!");
+        // We are currently not displaying Justificacoes in HistoricoMedico, so no list to update.
+        // User can view it in the dedicated Justificacoes page.
+      }
+
     } catch (err) {
-      console.error("Erro ao enviar exame:", err);
-      alert("Erro ao enviar ficheiro.");
+      console.error("Erro ao enviar ficheiro:", err);
+      alert(err.response?.data?.mensagem || "Erro ao enviar ficheiro.");
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -189,7 +220,7 @@ function HistoricoMedico() {
         <main className="historico-main">
           <div className="error-state">{error}</div>
           <button onClick={() => navigate(-1)} className="back-btn">
-            <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
+            <ArrowLeft size={20} style={{ marginRight: "8px" }} /> Voltar
           </button>
         </main>
       </div>
@@ -204,7 +235,7 @@ function HistoricoMedico() {
         <header className="historico-header">
           <div className="header-row">
             <button className="back-btn" onClick={() => navigate(-1)}>
-              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
+              <ArrowLeft size={20} style={{ marginRight: "8px" }} /> Voltar
             </button>
             <h1 className="page-title">HISTÓRICO MÉDICO</h1>
           </div>
@@ -305,21 +336,75 @@ function HistoricoMedico() {
                     <div className="exame-icon">
                       <FileText size={24} />
                     </div>
-                    <span className="exame-name">{exame.anexo}</span>
-                    <a
-                      href={`${api.defaults.baseURL}${exame.url}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="download-link"
+                    <button
+                      type="button"
+                      className="exame-name"
+                      onClick={() => {
+                        setSelectedExame(exame);
+                        setShowExameModal(true);
+                      }}
                     >
-                      <Download size={18} />
-                    </a>
+                      {exame.anexo}
+                    </button>
+                    <div className="exame-actions">
+                      <a
+                        href={`${api.defaults.baseURL}${exame.url}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="download-link"
+                        title="Download"
+                      >
+                        <Download size={18} />
+                      </a>
+                      <button
+                        type="button"
+                        className="delete-btn"
+                        title="Eliminar"
+                        onClick={async () => {
+                          if (!confirm("Eliminar exame?")) return;
+                          try {
+                            await api.delete(
+                              `/pacientes/${id}/exames/${exame.id}`
+                            );
+                            const resp = await api.get(
+                              `/pacientes/${id}/exames`
+                            );
+                            setExames(resp.data || []);
+                            alert("Exame eliminado com sucesso.");
+                          } catch (err) {
+                            console.error(err);
+                            alert("Erro ao eliminar exame.");
+                          }
+                        }}
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
                   </div>
                 ))
               )}
             </div>
 
             <div className="exames-upload">
+              <div style={{ marginBottom: "1rem", display: "flex", gap: "10px", alignItems: "center", justifyContent: "center" }}>
+                <label style={{ fontSize: "0.9rem", color: "#ddd" }}>Tipo de Documento:</label>
+                <select
+                  value={uploadType}
+                  onChange={(e) => setUploadType(e.target.value)}
+                  style={{
+                    padding: "6px 10px",
+                    borderRadius: "6px",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    background: "rgba(255,255,255,0.1)",
+                    color: "white",
+                    cursor: "pointer"
+                  }}
+                >
+                  <option value="exame" style={{ color: "#333" }}>Exame</option>
+                  <option value="justificacao" style={{ color: "#333" }}>Justificação</option>
+                </select>
+              </div>
+
               <div className="upload-drop-zone">
                 <Upload size={24} />
                 <span>Arraste ficheiros aqui ou</span>
@@ -336,7 +421,7 @@ function HistoricoMedico() {
                 onClick={() => fileInputRef.current.click()}
                 disabled={uploading}
               >
-                {uploading ? "A enviar..." : "Anexar Exame"}
+                {uploading ? "A enviar..." : `Anexar ${uploadType === "exame" ? "Exame" : "Justificação"}`}
                 <Upload size={16} style={{ marginLeft: 8 }} />
               </button>
             </div>
@@ -360,6 +445,61 @@ function HistoricoMedico() {
         data={habitos}
         loading={saving}
       />
+
+      {/* Exame detail modal */}
+      {showExameModal && selectedExame && (
+        <div className="modal-overlay" onClick={() => setShowExameModal(false)}>
+          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title">{selectedExame.anexo}</h3>
+            <p>
+              Data:{" "}
+              {new Date(
+                selectedExame.createdAt ||
+                selectedExame.data ||
+                selectedExame.data_criacao ||
+                selectedExame.created_at ||
+                Date.now()
+              ).toLocaleString()}
+            </p>
+            <div className="modal-actions">
+              <a
+                className="action-btn"
+                href={`${api.defaults.baseURL}${selectedExame.url}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Download size={14} /> Baixar
+              </a>
+              <button
+                className="action-btn danger"
+                onClick={async () => {
+                  if (!confirm("Eliminar exame?")) return;
+                  try {
+                    await api.delete(
+                      `/pacientes/${id}/exames/${selectedExame.id}`
+                    );
+                    const resp = await api.get(`/pacientes/${id}/exames`);
+                    setExames(resp.data || []);
+                    setShowExameModal(false);
+                    alert("Exame eliminado com sucesso.");
+                  } catch (err) {
+                    console.error(err);
+                    alert("Erro ao eliminar exame.");
+                  }
+                }}
+              >
+                <Trash2 size={14} /> Eliminar
+              </button>
+              <button
+                className="action-btn close"
+                onClick={() => setShowExameModal(false)}
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer className="simple-footer">
         <p>Clinimolelos 2025 - Todos os direitos reservados.</p>

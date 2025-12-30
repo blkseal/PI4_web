@@ -15,6 +15,8 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Documentacao from "./pages/Documentacao";
 import Consultas from "./pages/Consultas";
+import Exames from "./pages/Exames";
+import Justificacoes from "./pages/Justificacoes";
 import AgendaGestor from "./pages/AgendaGestor";
 import Pacientes from "./pages/Pacientes";
 import NovoPaciente from "./pages/NovoPaciente";
@@ -153,7 +155,7 @@ function App() {
           path="/documentacao/exames"
           element={
             <UtenteRoute>
-              <Documentacao />
+              <Exames />
             </UtenteRoute>
           }
         />
@@ -161,7 +163,7 @@ function App() {
           path="/documentacao/justificacoes"
           element={
             <UtenteRoute>
-              <Documentacao />
+              <Justificacoes />
             </UtenteRoute>
           }
         />
@@ -171,7 +173,7 @@ function App() {
           path="/pacientes/:id/documentacao/exames"
           element={
             <GestorRoute>
-              <Documentacao />
+              <Exames />
             </GestorRoute>
           }
         />
@@ -179,7 +181,7 @@ function App() {
           path="/pacientes/:id/documentacao/justificacoes"
           element={
             <GestorRoute>
-              <Documentacao />
+              <Justificacoes />
             </GestorRoute>
           }
         />

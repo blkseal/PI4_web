@@ -206,3 +206,30 @@
   background: #ccc;
   cursor: not-allowed;
 }
+
+/* Style for action buttons used inside modals (download / eliminar) */
+.modal-container .action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #2e7d32; /* Baixar: green */
+  color: #fff;
+}
+
+.modal-container .action-btn.danger {
+  background: #8b0000; /* Eliminar: red */
+  color: #fff;
+}
+
+.modal-container .action-btn.close {
+  background: #e0e0e0; /* Fechar: gray */
+  color: #333;
+}
+
+.modal-container .action-btn + .action-btn {
+  margin-left: 0.5rem;
+}

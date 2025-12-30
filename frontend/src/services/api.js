@@ -48,6 +48,20 @@ api.interceptors.request.use(
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
+    // If sending FormData, let the browser set the multipart Content-Type
+    // including the boundary. The instance default header forces
+    // application/json which breaks multipart uploads.
+    try {
+      if (typeof FormData !== "undefined" && config.data instanceof FormData) {
+        if (config.headers) {
+          delete config.headers["Content-Type"];
+          delete config.headers["content-type"];
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
     return config;
   },
   (error) => Promise.reject(error)

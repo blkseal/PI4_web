@@ -66,7 +66,7 @@ function generateTimes(startHour = 8, endHour = 19, stepMins = 30) {
   return times;
 }
 
-const TIMES = generateTimes(8, 19, 30);
+const TIMES = generateTimes(8, 23, 30);
 
 function timeToIndex(timeStr) {
   const [hh, mm] = timeStr.split(":").map((x) => parseInt(x, 10));
@@ -307,11 +307,13 @@ function AgendaGestor() {
         <section className="agenda-grid-wrap">
           <div className="time-column">
             <div className="time-header" />
-            {TIMES.map((t) => (
-              <div key={t} className="time-slot">
-                {t}
-              </div>
-            ))}
+            <div className="time-body">
+              {TIMES.map((t) => (
+                <div key={t} className="time-slot">
+                  {t}
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className={`days-grid ${viewMode === "day" ? "single" : ""}`}>

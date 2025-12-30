@@ -147,6 +147,41 @@
   color: #555;
 }
 
+/* Actions alignment for list items */
+.doc-item-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.doc-item-label {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.doc-item-actions a,
+.doc-item-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #555;
+  cursor: pointer;
+}
+
+.doc-item-actions button.delete-btn {
+  color: #8b0000;
+}
+
 .doc-footer {
   background: #8b6e4a;
   color: #ddd;

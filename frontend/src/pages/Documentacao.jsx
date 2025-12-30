@@ -119,7 +119,13 @@ function Documentacao() {
               icon={<InlineSvg svg={examSvg} className="doc-inline-svg" />}
               title="Exames"
               description="Consulte os seus exames realizados"
-              onClick={() => window.scrollTo({ top: 400, behavior: "smooth" })}
+              onClick={() => {
+                if (pacienteId) {
+                  navigate(`/pacientes/${pacienteId}/documentacao/exames`);
+                } else {
+                  navigate("/documentacao/exames");
+                }
+              }}
             />
             <DocCard
               icon={
@@ -127,7 +133,13 @@ function Documentacao() {
               }
               title="Justificações"
               description="Consulte as suas justificações"
-              onClick={() => window.scrollTo({ top: 400, behavior: "smooth" })}
+              onClick={() => {
+                if (pacienteId) {
+                  navigate(`/pacientes/${pacienteId}/documentacao/justificacoes`);
+                } else {
+                  navigate("/documentacao/justificacoes");
+                }
+              }}
             />
             <DocCard
               icon={
@@ -157,18 +169,27 @@ function Documentacao() {
 
             {!loading && !error && latestAnexos.length > 0 && (
               <div className="doc-list">
-                {latestAnexos.map((item) => (
-                  <a
-                    key={`${item.type}-${item.id}`}
-                    className="doc-list-item"
-                    href={item.url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <span className="doc-item-type">{item.type}</span>
-                    <span className="doc-item-label">{item.label}</span>
-                  </a>
-                ))}
+                {latestAnexos.map((item) => {
+                  const rawUrl = item.url || "#";
+                  const token = localStorage.getItem("token");
+                  const sep = rawUrl.includes("?") ? "&" : "?";
+                  const downloadUrl = token
+                    ? `${rawUrl}${sep}token=${token}`
+                    : rawUrl;
+
+                  return (
+                    <a
+                      key={`${item.type}-${item.id}`}
+                      className="doc-list-item"
+                      href={downloadUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <span className="doc-item-type">{item.type}</span>
+                      <span className="doc-item-label">{item.label}</span>
+                    </a>
+                  );
+                })}
               </div>
             )}
           </div>

@@ -8,7 +8,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Edit, Upload, ArrowLeft } from "lucide-react";
+import { Edit, Upload, ArrowLeft, Download, Trash2 } from "lucide-react";
 import { Navbar } from "../components";
 import api from "../services/api";
 import "./TratamentoPacienteDetalhe.css";
@@ -33,6 +33,9 @@ function TratamentoPacienteDetalhe() {
   // File upload
   const fileInputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
+  // Anexo modal state
+  const [showAnexoModal, setShowAnexoModal] = useState(false);
+  const [selectedAnexo, setSelectedAnexo] = useState(null);
 
   // Consultas associadas (empty for now, will be fetched later)
   const consultas = [];
@@ -197,7 +200,7 @@ function TratamentoPacienteDetalhe() {
         <header className="tratamento-detalhe-header">
           <div className="header-row">
             <button className="back-btn" onClick={() => navigate(-1)}>
-              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
+              <ArrowLeft size={20} style={{ marginRight: "8px" }} /> Voltar
             </button>
             <h1 className="page-title">TRATAMENTOS ATUAIS</h1>
           </div>
@@ -243,7 +246,71 @@ function TratamentoPacienteDetalhe() {
                   {anexos.length > 0 ? (
                     anexos.map((anexo) => (
                       <div key={anexo.id} className="anexo-item">
-                        {anexo.nome}
+                        <button
+                          type="button"
+                          className="anexo-name"
+                          onClick={() => {
+                            setSelectedAnexo(anexo);
+                            setShowAnexoModal(true);
+                          }}
+                        >
+                          {anexo.nome}
+                        </button>
+                        <div className="anexo-actions">
+                          <a
+                            href={() => {
+                              const rawUrl = anexo.url
+                                ? anexo.url.startsWith("http")
+                                  ? anexo.url
+                                  : `${api.defaults.baseURL}${anexo.url}`
+                                : anexo.anexoUrl || "#";
+                              const token = localStorage.getItem("token");
+                              const sep = rawUrl.includes("?") ? "&" : "?";
+                              return token ? `${rawUrl}${sep}token=${token}` : rawUrl;
+                            }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const rawUrl = anexo.url
+                                ? anexo.url.startsWith("http")
+                                  ? anexo.url
+                                  : `${api.defaults.baseURL}${anexo.url}`
+                                : anexo.anexoUrl || "#";
+                              const token = localStorage.getItem("token");
+                              const sep = rawUrl.includes("?") ? "&" : "?";
+                              const finalUrl = token ? `${rawUrl}${sep}token=${token}` : rawUrl;
+                              window.open(finalUrl, "_blank");
+                            }}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="download-link"
+                            title="Download"
+                          >
+                            <Download size={14} />
+                          </a>
+                          <button
+                            type="button"
+                            className="delete-btn"
+                            title="Eliminar"
+                            onClick={async () => {
+                              if (!confirm("Eliminar anexo?")) return;
+                              try {
+                                await api.delete(
+                                  `/tratamentos/${tratamentoId}/anexos/${anexo.id}`
+                                );
+                                const resp = await api.get(
+                                  `/tratamentos/${tratamentoId}/anexos`
+                                );
+                                setAnexos(resp?.data || []);
+                                alert("Anexo eliminado com sucesso.");
+                              } catch (err) {
+                                console.error(err);
+                                alert("Erro ao eliminar anexo.");
+                              }
+                            }}
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
                       </div>
                     ))
                   ) : (
@@ -299,7 +366,6 @@ function TratamentoPacienteDetalhe() {
                   <div className="consulta-info">
                     <span>Dia: {consulta.data}</span>
                     <span>Horário: {consulta.horario}</span>
-
                   </div>
                 </div>
               ))

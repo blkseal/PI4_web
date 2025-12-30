@@ -125,7 +125,20 @@ function TratamentoDetalheUtente() {
                     <span className="anexo-nome">{anexo.nome || anexo}</span>
                     {anexo.url && (
                       <a
-                        href={`${api.defaults.baseURL}${anexo.url}`}
+                        href={() => {
+                          const rawUrl = `${api.defaults.baseURL}${anexo.url}`;
+                          const token = localStorage.getItem("token");
+                          const sep = rawUrl.includes("?") ? "&" : "?";
+                          return token ? `${rawUrl}${sep}token=${token}` : rawUrl;
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const rawUrl = `${api.defaults.baseURL}${anexo.url}`;
+                          const token = localStorage.getItem("token");
+                          const sep = rawUrl.includes("?") ? "&" : "?";
+                          const finalUrl = token ? `${rawUrl}${sep}token=${token}` : rawUrl;
+                          window.open(finalUrl, "_blank");
+                        }}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="download-link"

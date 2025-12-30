@@ -221,15 +221,36 @@
   font-size: 0.9rem;
 }
 
-.download-link {
-  color: #fff;
-  opacity: 0.8;
-  transition: opacity 0.2s;
-  cursor: pointer;
+/* Actions alignment inside each exame item */
+.exame-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
-.download-link:hover {
+.exame-actions .download-link,
+.exame-actions .delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.exame-actions .download-link:hover,
+.exame-actions .delete-btn:hover {
   opacity: 1;
+}
+
+.exame-actions .delete-btn {
+  color: #fff;
+  background: rgba(139, 0, 0, 0.18);
 }
 
 .no-exames {
