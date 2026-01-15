@@ -27,10 +27,10 @@ function Profile() {
             const personal = await profileService.getPersonalData();
             data = { ...(data || {}), ...(personal || {}) };
           } catch (e) {
-            // ignore - we'll show whatever summary contains
+            // Ignorar e manter os dados do resumo
           }
         }
-        // If we still don't have a patient number, try fetching linked paciente records
+        // Se o número de utente não existir, tentar obter dados a partir de registos de paciente ligados
         const hasNumber = Boolean(data && (data.nus || data.numeroUtente));
         if (!hasNumber) {
           const candidates = [
@@ -51,7 +51,7 @@ function Profile() {
                 break;
               }
             } catch (e) {
-              // try next candidate
+              // Tentar o próximo candidato
             }
           }
         }
@@ -158,7 +158,6 @@ function Profile() {
             </div>
           </button>
 
-
           {/* Card 2: Histórico Dentário */}
           <button
             className="profile-card bronze"
@@ -174,7 +173,6 @@ function Profile() {
               <History size={48} color="white" />
             </div>
           </button>
-
 
           {/* Card 3: Dependentes */}
           <button

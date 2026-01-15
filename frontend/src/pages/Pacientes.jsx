@@ -122,8 +122,8 @@ function Pacientes() {
         } else {
           setPacientes((prev) => {
             // Re-sort and re-filter combined list if needed (mostly just sort)
-            // Since we filter the fetched page, we append filtered results.
-            // Note: if user changes filter, page resets to 1, so prev is empty.
+            // The fetched page is filtered client-side, so append only the filtered results.
+            // When filters change, the page resets to 1 and the previous list is cleared.
             const combined = [...prev, ...normalize];
             combined.sort((a, b) => {
               if (currentFilters?.creationDate) {
@@ -155,7 +155,7 @@ function Pacientes() {
       }
     },
     []
-  ); // Removed specific filter dependcy to rely on args
+  ); // Dependências tratadas via argumentos (search/page/filters)
 
   useEffect(() => {
     fetchPacientes(search, 1, filters);

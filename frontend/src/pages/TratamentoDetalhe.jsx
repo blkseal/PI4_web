@@ -24,7 +24,7 @@ function TratamentoDetalhe() {
       setLoading(true);
       setError("");
       try {
-        // Fetch all tipos and find the one we need
+        // Obter lista de tipos e selecionar o tipo pelo ID
         const resp = await api.get("/tratamentos/tipos");
         const tipos = resp?.data || [];
         const tipo = tipos.find(
@@ -94,7 +94,7 @@ function TratamentoDetalhe() {
         <header className="tratamento-detalhe-header">
           <div className="header-row">
             <button className="back-btn" onClick={() => navigate(-1)}>
-              <ArrowLeft size={20} style={{ marginRight: '8px' }} /> Voltar
+              <ArrowLeft size={20} style={{ marginRight: "8px" }} /> Voltar
             </button>
             <h1 className="page-title">TRATAMENTO</h1>
           </div>

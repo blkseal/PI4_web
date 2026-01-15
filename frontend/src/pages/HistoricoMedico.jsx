@@ -114,10 +114,8 @@ function HistoricoMedico() {
         alert("Exame anexado com sucesso!");
       } else {
         alert("Justificação anexada com sucesso!");
-        // We are currently not displaying Justificacoes in HistoricoMedico, so no list to update.
-        // User can view it in the dedicated Justificacoes page.
+        // As justificações não são listadas nesta página; consultar a página de Justificações.
       }
-
     } catch (err) {
       console.error("Erro ao enviar ficheiro:", err);
       alert(err.response?.data?.mensagem || "Erro ao enviar ficheiro.");
@@ -386,8 +384,18 @@ function HistoricoMedico() {
             </div>
 
             <div className="exames-upload">
-              <div style={{ marginBottom: "1rem", display: "flex", gap: "10px", alignItems: "center", justifyContent: "center" }}>
-                <label style={{ fontSize: "0.9rem", color: "#ddd" }}>Tipo de Documento:</label>
+              <div
+                style={{
+                  marginBottom: "1rem",
+                  display: "flex",
+                  gap: "10px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <label style={{ fontSize: "0.9rem", color: "#ddd" }}>
+                  Tipo de Documento:
+                </label>
                 <select
                   value={uploadType}
                   onChange={(e) => setUploadType(e.target.value)}
@@ -397,11 +405,15 @@ function HistoricoMedico() {
                     border: "1px solid rgba(255,255,255,0.3)",
                     background: "rgba(255,255,255,0.1)",
                     color: "white",
-                    cursor: "pointer"
+                    cursor: "pointer",
                   }}
                 >
-                  <option value="exame" style={{ color: "#333" }}>Exame</option>
-                  <option value="justificacao" style={{ color: "#333" }}>Justificação</option>
+                  <option value="exame" style={{ color: "#333" }}>
+                    Exame
+                  </option>
+                  <option value="justificacao" style={{ color: "#333" }}>
+                    Justificação
+                  </option>
                 </select>
               </div>
 
@@ -421,7 +433,11 @@ function HistoricoMedico() {
                 onClick={() => fileInputRef.current.click()}
                 disabled={uploading}
               >
-                {uploading ? "A enviar..." : `Anexar ${uploadType === "exame" ? "Exame" : "Justificação"}`}
+                {uploading
+                  ? "A enviar..."
+                  : `Anexar ${
+                      uploadType === "exame" ? "Exame" : "Justificação"
+                    }`}
                 <Upload size={16} style={{ marginLeft: 8 }} />
               </button>
             </div>
@@ -455,10 +471,10 @@ function HistoricoMedico() {
               Data:{" "}
               {new Date(
                 selectedExame.createdAt ||
-                selectedExame.data ||
-                selectedExame.data_criacao ||
-                selectedExame.created_at ||
-                Date.now()
+                  selectedExame.data ||
+                  selectedExame.data_criacao ||
+                  selectedExame.created_at ||
+                  Date.now()
               ).toLocaleString()}
             </p>
             <div className="modal-actions">

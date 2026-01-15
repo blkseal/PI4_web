@@ -76,7 +76,7 @@ function Login() {
       // Alguns backends retornam payload dentro de `data.data`.
       const payload = response?.data?.data || response?.data || {};
 
-      // Dev-time logging para diagnosticar problemas de formato
+      // Log de diagnóstico em desenvolvimento (formato do payload)
       if (process.env.NODE_ENV !== "production") {
         // eslint-disable-next-line no-console
         console.log("login response payload:", payload);
@@ -112,7 +112,7 @@ function Login() {
       }
 
       if (!authOk && !(accessToken || refreshToken)) {
-        // No tokens and profile check failed — provide actionable message
+        // Sem tokens e sem sessão por cookie (falhou obter /perfil)
         setError(
           "Login falhou: não foram recebidos tokens e a sessão por cookie não foi estabelecida. Verifique CORS/credentials do backend."
         );
