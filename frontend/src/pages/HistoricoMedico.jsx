@@ -346,7 +346,7 @@ function HistoricoMedico() {
                     </button>
                     <div className="exame-actions">
                       <a
-                        href={`${api.defaults.baseURL}${exame.url}`}
+                        href={exame.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="download-link"
@@ -362,10 +362,10 @@ function HistoricoMedico() {
                           if (!confirm("Eliminar exame?")) return;
                           try {
                             await api.delete(
-                              `/pacientes/${id}/exames/${exame.id}`
+                              `/pacientes/${id}/exames/${exame.id}`,
                             );
                             const resp = await api.get(
-                              `/pacientes/${id}/exames`
+                              `/pacientes/${id}/exames`,
                             );
                             setExames(resp.data || []);
                             alert("Exame eliminado com sucesso.");
@@ -474,13 +474,13 @@ function HistoricoMedico() {
                   selectedExame.data ||
                   selectedExame.data_criacao ||
                   selectedExame.created_at ||
-                  Date.now()
+                  Date.now(),
               ).toLocaleString()}
             </p>
             <div className="modal-actions">
               <a
                 className="action-btn"
-                href={`${api.defaults.baseURL}${selectedExame.url}`}
+                href={selectedExame.url}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -492,7 +492,7 @@ function HistoricoMedico() {
                   if (!confirm("Eliminar exame?")) return;
                   try {
                     await api.delete(
-                      `/pacientes/${id}/exames/${selectedExame.id}`
+                      `/pacientes/${id}/exames/${selectedExame.id}`,
                     );
                     const resp = await api.get(`/pacientes/${id}/exames`);
                     setExames(resp.data || []);
