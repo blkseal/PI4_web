@@ -37,6 +37,8 @@ const ConsultasGestor = () => {
         params: { pageSize: 1000 },
       });
 
+      console.log("Response data:", response.data);
+
       // Get today's date at start of day for comparison
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -47,11 +49,20 @@ const ConsultasGestor = () => {
           // 1. Filter: Only UPCOMING consultas (date is today or in the future)
           const consultaDate = new Date(consulta.data);
           consultaDate.setHours(0, 0, 0, 0);
-          if (consultaDate < today) return false;
+          if (consultaDate < today) {
+            console.log("Filtered out past date:", consulta.data);
+            return false;
+          }
 
-          // 2. Filter by Estado: Pendente or Por Acontecer only
+          // Log the raw estado value to debug
           const st = (consulta.estado || "").toLowerCase();
-          if (st !== "pendente" && st !== "por acontecer") return false;
+          console.log("Estado for consulta:", consulta.id, "=", st);
+
+          // 2. Filter by Estado: Accept all for now to debug, can filter by "pendente" or "por acontecer"
+          // if (st !== "pendente" && st !== "por acontecer") {
+          //   console.log("Filtered out by estado:", st);
+          //   return false;
+          // }
 
           // 3. Filter by Medico (loose match)
           const medicoMatch =
@@ -92,6 +103,7 @@ const ConsultasGestor = () => {
           estado: consulta.estado || "pendente",
         }));
 
+      console.log("Formatted consultas:", formattedConsultas);
       setConsultas(formattedConsultas);
     } catch (err) {
       console.error("Erro ao buscar consultas:", err);
